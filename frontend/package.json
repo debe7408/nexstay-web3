@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@fontsource/roboto": "^4.5.8",
+    "@mui/icons-material": "^5.11.11",
     "@mui/material": "^5.11.11",
     "@mui/styled-engine": "npm:@mui/styled-engine-sc@latest",
     "@testing-library/jest-dom": "^5.14.1",
@@ -15,6 +16,8 @@
     "@types/react-dom": "^18.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-hook-form": "^7.43.5",
+    "react-router-dom": "^6.8.2",
     "react-scripts": "5.0.1",
     "styled-components": "^5.3.6",
     "typescript": "^4.4.2",
@@ -46,5 +49,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/styled-components": "^5.1.26"
   }
 }
