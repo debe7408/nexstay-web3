@@ -5,12 +5,12 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import CssBaseline from "@mui/material/CssBaseline";
 import { BrowserRouter } from "react-router-dom";
-
+import Main from "./components/RouteComponent";
+import GlobalStyles from "./GlobalStyles";
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
-import Main from "./components/RouteComponent";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -19,10 +19,10 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      <CssBaseline>
-        <App />
-        <Main />
-      </CssBaseline>
+      <CssBaseline />
+      <GlobalStyles />
+      <App />
+      <Main />
     </BrowserRouter>
   </React.StrictMode>
 );
