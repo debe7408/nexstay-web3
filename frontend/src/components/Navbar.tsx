@@ -30,7 +30,11 @@ const Navbar: React.FC = () => {
 };
 
 const StyledAppBar = styled(AppBar)`
-  background-color: ${themes.dark.main};
+  background: linear-gradient(
+    to right,
+    ${themes.dark.main} 0%,
+    ${themes.dark.dark_accent} 100%
+  );
 `;
 
 export default Navbar;

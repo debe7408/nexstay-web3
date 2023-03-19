@@ -10,7 +10,8 @@ export const themes = {
     background: "#302F68",
     main: "#302F68",
     light: "#AB8DC3",
-    light_accent: "#F4F5F3",
+    text: "#F4F5F3",
+    secondary_text: "#AB8DC3",
     dark_accent: "#D17C87",
   },
 };
