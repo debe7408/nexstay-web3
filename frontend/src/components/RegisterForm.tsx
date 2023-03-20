@@ -16,9 +16,11 @@ import styled from "styled-components";
 import { themes } from "../constants/colors";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import axios from "axios";
+import CustomButton from "./CustomButton";
 
 type FormInputs = {
-  firstName: string;
+  name: string;
   surname: string;
   age: number;
   email: string;
@@ -27,12 +29,13 @@ type FormInputs = {
 
 const RegisterForm: React.FC = () => {
   const [submitButtonText, setSubmitButtonText] = useState("Sign Up");
+  const [isLoading, setIsLoading] = useState(false);
 
-  const schema = yup
+  const formValidationSchema = yup
     .object({
-      firstName: yup.string().required(),
+      name: yup.string().required(),
       surname: yup.string().required(),
-      age: yup.number().positive().integer().required(),
+      age: yup.number().positive().moreThan(18).integer().required(),
       email: yup.string().email().required(),
       password: yup.string().min(8).required().max(20),
     })
@@ -43,13 +46,23 @@ const RegisterForm: React.FC = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<FormInputs>({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(formValidationSchema),
   });
 
-  const onSubmit: SubmitHandler<FormInputs> = (formValues, event) => {
+  const onSubmit: SubmitHandler<FormInputs> = async (formValues, event) => {
     event?.preventDefault();
-    console.log(formValues);
-    alert("Form submitted!");
+    setIsLoading(true);
+
+    try {
+      const response = await axios.post(
+        "http://localhost:3001/api/register",
+        formValues
+      );
+      response.data.token && localStorage.setItem("token", response.data.token);
+      setIsLoading(false);
+    } catch (error) {
+      setIsLoading(false);
+    }
   };
 
   const onError = (error: FieldErrors<FormInputs>) => console.log(error);
@@ -79,11 +92,11 @@ const RegisterForm: React.FC = () => {
         <CssBaseline />
         <TextField
           margin="normal"
-          id="input-firstName"
+          id="input-name"
           label="Name"
           variant="outlined"
-          error={errors.firstName ? true : false}
-          {...register("firstName", { required: true })}
+          error={errors.name ? true : false}
+          {...register("name", { required: true })}
         />
 
         <TextField
@@ -140,16 +153,17 @@ const RegisterForm: React.FC = () => {
           error={errors.password ? true : false}
           {...register("password", { required: true })}
         ></TextField>
-        <StyledButton
+        <StyledCustomButton
           type="submit"
           fullWidth
+          loading={isLoading}
           error={errors}
           variant="contained"
           onMouseEnter={() => handleButtonHover()}
           onMouseLeave={() => handleButtonHoverOver()}
         >
           {submitButtonText}
-        </StyledButton>
+        </StyledCustomButton>
         <Button component={Link} to="/signin">
           Already have an account? Sign in
         </Button>
@@ -158,14 +172,21 @@ const RegisterForm: React.FC = () => {
   );
 };
 
-const StyledButton = styled(Button)<{ error: FieldErrors<FormInputs> }>`
+const StyledCustomButton = styled(CustomButton)<{
+  error: FieldErrors<FormInputs>;
+  loading: boolean;
+}>`
   background: ${({ error }) => (error.password ? "red" : themes.dark.main)};
   mt: 3;
   mb: 2;
   color: ${({ error }) => (error.password ? "white" : themes.dark.text)};
   &:hover {
-    background: ${({ error }) =>
-      error.password ? "red !important" : "green !important"};
+    background: ${({ error, loading }) =>
+      loading
+        ? themes.dark.main
+        : error.password
+        ? "red !important"
+        : "green !important"};
   }
 `;
 
