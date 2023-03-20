@@ -1,23 +1,31 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import bodyParser from "body-parser";
+import indexRouter from "./router.js";
 
 dotenv.config();
 
 const app = express();
 
 app.use(cors());
+app.use(bodyParser.json());
+app.use(
+  bodyParser.urlencoded({
+    extended: true,
+  })
+);
 
-app.get("/", (req, res) => {
-  res.send("Hello World");
-});
+app.use("/api", indexRouter);
 
-app.get("/about", (req, res) => {
-  res.send("About route");
-});
-
-app.get("/api", (req, res) => {
-  res.json({ message: "Hello from server!" });
+// Handling Errors
+app.use((err, req, res, next) => {
+  console.log(err);
+  err.statusCode = err.statusCode || 500;
+  err.message = err.message || "Internal Server Error";
+  res.status(err.statusCode).json({
+    message: err.message,
+  });
 });
 
 app.listen(process.env.PORT, () =>
