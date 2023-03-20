@@ -20,22 +20,15 @@ import axios from "axios";
 import CustomButton from "./CustomButton";
 
 type FormInputs = {
-  name: string;
-  surname: string;
-  age: number;
   email: string;
   password: string;
 };
 
-const RegisterForm: React.FC = () => {
-  const [submitButtonText, setSubmitButtonText] = useState("Sign Up");
+const LoginForm: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const formValidationSchema = yup
     .object({
-      name: yup.string().required(),
-      surname: yup.string().required(),
-      age: yup.number().positive().moreThan(18).integer().required(),
       email: yup.string().email().required(),
       password: yup.string().min(8).required().max(20),
     })
@@ -52,28 +45,29 @@ const RegisterForm: React.FC = () => {
   const onSubmit: SubmitHandler<FormInputs> = async (formValues, event) => {
     event?.preventDefault();
     setIsLoading(true);
-
     try {
       const response = await axios.post(
-        "http://localhost:3001/api/register",
+        "http://localhost:3001/api/login",
         formValues
       );
-      response.data.token && localStorage.setItem("token", response.data.token);
-      setIsLoading(false);
+
+      if (response.status === 200) {
+        console.log("Login successful.");
+        response.data.token &&
+          localStorage.setItem("token", response.data.token);
+      } else {
+        console.log(
+          "Error has occured. Reason: " + response.data + response.status
+        );
+      }
     } catch (error) {
-      setIsLoading(false);
+      console.log(error);
     }
+
+    setIsLoading(false);
   };
 
   const onError = (error: FieldErrors<FormInputs>) => console.log(error);
-
-  const handleButtonHover = () => {
-    setSubmitButtonText("Let's go! 🚀");
-  };
-
-  const handleButtonHoverOver = () => {
-    setSubmitButtonText("Sign Up");
-  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit, onError)}>
@@ -90,44 +84,13 @@ const RegisterForm: React.FC = () => {
         }}
       >
         <CssBaseline />
-        <TextField
-          margin="normal"
-          id="input-name-register"
-          key={"name"}
-          label="Name"
-          variant="outlined"
-          error={errors.name ? true : false}
-          {...register("name", { required: true })}
-        />
 
         <TextField
           margin="normal"
-          id="input-surname-register"
-          key={"surname"}
-          label="Surname"
-          variant="outlined"
-          error={errors.surname ? true : false}
-          {...register("surname", { required: true })}
-        />
-
-        <TextField
-          margin="normal"
-          id="input-age-register"
-          key={"age"}
-          label="Age"
-          type="number"
-          variant="outlined"
-          error={errors.age ? true : false}
-          {...register("age", { required: true, max: 100, min: 1 })}
-        />
-
-        <TextField
-          margin="normal"
-          id="input-email-address-register"
+          id="input-email-address-login"
           key={"email"}
           label="Email address"
           type="email"
-          helperText="We'll never share your email."
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
@@ -138,14 +101,13 @@ const RegisterForm: React.FC = () => {
           variant="outlined"
           error={errors.email ? true : false}
           {...register("email", { required: true })}
-        ></TextField>
+        />
 
         <TextField
           margin="normal"
-          id="input-password-register"
+          id="input-password-login"
           key={"password"}
           label="Password"
-          helperText="Password must be at least 8 and not longer than 20 characters."
           type="password"
           InputProps={{
             startAdornment: (
@@ -157,20 +119,19 @@ const RegisterForm: React.FC = () => {
           variant="outlined"
           error={errors.password ? true : false}
           {...register("password", { required: true })}
-        ></TextField>
+        />
+
         <StyledCustomButton
           type="submit"
           fullWidth
           loading={isLoading}
           error={errors}
           variant="contained"
-          onMouseEnter={() => handleButtonHover()}
-          onMouseLeave={() => handleButtonHoverOver()}
         >
-          {submitButtonText}
+          Log In
         </StyledCustomButton>
         <Button component={Link} to="/signin">
-          Already have an account? Sign in
+          Forgot password?
         </Button>
       </Box>
     </form>
@@ -182,23 +143,19 @@ const StyledCustomButton = styled(CustomButton)<{
   loading: boolean;
 }>`
   background: ${({ error }) =>
-    error.password || error.email || error.age || error.name || error.age
-      ? "red"
-      : themes.dark.main};
+    error.password || error.email ? "red" : themes.dark.main};
   mt: 3;
   mb: 2;
   color: ${({ error }) =>
-    error.password || error.email || error.age || error.name || error.age
-      ? "white"
-      : themes.dark.text};
+    error.password || error.email ? "white" : themes.dark.text};
   &:hover {
     background: ${({ error, loading }) =>
       loading
         ? themes.dark.main
-        : error.password || error.email || error.age || error.name || error.age
+        : error.password || error.email
         ? "red !important"
         : "green !important"};
   }
 `;
 
-export default RegisterForm;
+export default LoginForm;
