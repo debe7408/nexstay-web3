@@ -11,8 +11,18 @@ const GlobalStyles = createGlobalStyle`
     overflow-y: scroll;
     -ms-overflow-style: none;  
     scrollbar-width: none; 
-    background: ${themes.dark.main} !important;
 
+  }
+
+  @media screen and (min-width: 0px) and (max-width: 600px) {
+    body { background: linear-gradient(
+      to bottom,
+      ${themes.dark.main} 0%,
+      ${themes.dark.dark_accent} 100%
+    ); !important }
+  }
+  @media screen and (min-width: 600px) {
+    body { background: #f6ebf4 !important; }
   }
 
   .fade-enter {
@@ -26,11 +36,12 @@ const GlobalStyles = createGlobalStyle`
   
   .fade-exit {
     opacity: 1;
+    pointer-events: none;
   }
   
   .fade-exit-active {
     opacity: 0;
-    transition: opacity 300ms ease-in;
+    transition: opacity 300ms cubic-bezier(0.4, 0, 0.2, 1);  
   }
 
   body::-webkit-scrollbar {

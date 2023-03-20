@@ -20,7 +20,7 @@ interface CustomCardProps {
 const CardContainer = styled(Card)`
   margin-top: 20px;
   margin-bottom: 20px;
-  border-radius: 10px;
+  border-radius: 20px;
   background: linear-gradient(
     to bottom,
     ${themes.dark.main} 0%,
@@ -52,7 +52,11 @@ const CustomCardComponent: React.FC<CustomCardProps> = ({
             {titleIcon}
             {title}
           </Typography>
-          <Typography variant="subtitle1" color={themes.dark.secondary_text}>
+          <Typography
+            variant="subtitle1"
+            marginBottom="10px"
+            color={themes.dark.secondary_text}
+          >
             {subtitle}
           </Typography>
           <Typography variant="body2" component="div">

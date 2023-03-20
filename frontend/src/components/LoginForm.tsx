@@ -79,8 +79,8 @@ const LoginForm: React.FC = () => {
           flexDirection: "column",
           alignItems: "left",
           maxWidth: "100%",
-          backgroundColor: themes.dark.text,
-          borderRadius: "5px",
+          backgroundColor: "#e0e0e0",
+          borderRadius: "15px",
         }}
       >
         <CssBaseline />
