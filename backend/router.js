@@ -26,7 +26,7 @@ router.post("/login", loginValidation, async (req, res) => {
     const sql = `SELECT * FROM users WHERE email = ? LIMIT 1`;
     const response = await queryDb(sql, [emailLowercase]);
 
-    if (!response[0].email)
+    if (response.length === 0)
       return res.status(401).send("Invalid email or password 1");
 
     const passwordMatch = await bcrypt.compare(password, response[0].password);
