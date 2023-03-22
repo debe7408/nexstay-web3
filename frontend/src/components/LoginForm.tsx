@@ -59,6 +59,12 @@ const LoginForm: React.FC = () => {
         });
       })
       .catch((error) => {
+        if (!error.response) {
+          enqueueSnackbar("Internal error. Please try again later.", {
+            variant: "error",
+          });
+          return;
+        }
         enqueueSnackbar(error.response.data, {
           variant: "error",
         });

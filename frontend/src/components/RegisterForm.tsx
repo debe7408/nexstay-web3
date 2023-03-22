@@ -64,6 +64,12 @@ const RegisterForm: React.FC = () => {
         localStorage.setItem("token", response.data.token);
       })
       .catch((error) => {
+        if (!error.response) {
+          enqueueSnackbar("Internal error. Please try again later.", {
+            variant: "error",
+          });
+          return;
+        }
         enqueueSnackbar(error.response.data, {
           variant: "error",
         });

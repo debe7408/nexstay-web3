@@ -1,4 +1,5 @@
 import { Box, Button, Grid } from "@mui/material";
+import { enqueueSnackbar } from "notistack";
 import React, { useState } from "react";
 import axiosClient from "../axios/axiosClient";
 
@@ -22,9 +23,20 @@ const Home = () => {
       .get("/users")
       .then((response) => {
         setResponseData(response.data);
+        enqueueSnackbar("Data fetched", {
+          variant: "success",
+        });
       })
-      .catch((err) => {
-        console.log(err.response);
+      .catch((error) => {
+        if (!error.response) {
+          enqueueSnackbar("Internal error. Please try again later.", {
+            variant: "error",
+          });
+          return;
+        }
+        enqueueSnackbar(error.response.data.message, {
+          variant: "error",
+        });
       });
   };
 
