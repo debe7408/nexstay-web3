@@ -4,6 +4,7 @@ import { AppBar, Toolbar, Typography, Button } from "@mui/material";
 import Logo from "../assets/logo.svg";
 import styled from "styled-components";
 import { themes } from "../constants/colors";
+import ProfileBadge from "./ProfileBadgeComponent";
 
 const Navbar: React.FC = () => {
   return (
@@ -18,12 +19,8 @@ const Navbar: React.FC = () => {
           About
         </Button>
         <Typography variant="h6" style={{ flexGrow: 1 }}></Typography>
-        <Button color="inherit" component={Link} to="/register">
-          Register
-        </Button>
-        <Button color="inherit" component={Link} to="/signin">
-          Login
-        </Button>
+
+        <ProfileBadge />
       </Toolbar>
     </StyledAppBar>
   );

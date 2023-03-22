@@ -33,6 +33,7 @@ const CardContainer = styled(Card)`
 
 const MediaContainer = styled(CardMedia)`
   height: 140px;
+  width: 100%;
 `;
 
 const CustomCardComponent: React.FC<CustomCardProps> = ({
@@ -46,7 +47,15 @@ const CustomCardComponent: React.FC<CustomCardProps> = ({
   return (
     <Container maxWidth={cardWidth || "xs"}>
       <CardContainer>
-        {imageSrc && <MediaContainer image={imageSrc} title={title} />}
+        {imageSrc && (
+          <MediaContainer
+            sx={{
+              borderRadius: "20px",
+            }}
+            image={imageSrc}
+            title={title}
+          />
+        )}
         <CardContent>
           <Typography gutterBottom variant="h5">
             {titleIcon}
