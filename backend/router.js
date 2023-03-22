@@ -27,12 +27,12 @@ router.post("/login", loginValidation, async (req, res) => {
     const response = await queryDb(sql, [emailLowercase]);
 
     if (response.length === 0)
-      return res.status(401).send("Invalid email or password 1");
+      return res.status(401).send("Invalid email or password");
 
     const passwordMatch = await bcrypt.compare(password, response[0].password);
 
     if (!passwordMatch)
-      return res.status(401).send("Invalid email or password 2");
+      return res.status(401).send("Invalid email or password");
 
     const token = jwt.sign({ id: response[0].id }, process.env.JWT_SECRET, {
       expiresIn: "1h",
