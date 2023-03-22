@@ -16,8 +16,9 @@ import styled from "styled-components";
 import { themes } from "../constants/colors";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import axios from "axios";
 import CustomButton from "./CustomButton";
+import { useSnackbar } from "notistack";
+import axiosClient from "../axios/axiosClient";
 
 type FormInputs = {
   email: string;
@@ -25,6 +26,8 @@ type FormInputs = {
 };
 
 const LoginForm: React.FC = () => {
+  const { enqueueSnackbar } = useSnackbar();
+
   const [isLoading, setIsLoading] = useState(false);
 
   const formValidationSchema = yup
@@ -45,24 +48,21 @@ const LoginForm: React.FC = () => {
   const onSubmit: SubmitHandler<FormInputs> = async (formValues, event) => {
     event?.preventDefault();
     setIsLoading(true);
-    try {
-      const response = await axios.post(
-        "http://localhost:3001/api/login",
-        formValues
-      );
 
-      if (response.status === 200) {
-        console.log("Login successful.");
-        response.data.token &&
-          localStorage.setItem("token", response.data.token);
-      } else {
-        console.log(
-          "Error has occured. Reason: " + response.data + response.status
-        );
-      }
-    } catch (error) {
-      console.log(error);
-    }
+    await axiosClient
+      .post("/login", formValues)
+      .then((response) => {
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("authenticated", "true");
+        enqueueSnackbar("Login successful.", {
+          variant: "success",
+        });
+      })
+      .catch((error) => {
+        enqueueSnackbar(error.response.data, {
+          variant: "error",
+        });
+      });
 
     setIsLoading(false);
   };

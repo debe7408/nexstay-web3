@@ -1,6 +1,5 @@
 import EmailIcon from "@mui/icons-material/Email";
 import PasswordIcon from "@mui/icons-material/Password";
-
 import {
   Box,
   Button,
@@ -16,8 +15,9 @@ import styled from "styled-components";
 import { themes } from "../constants/colors";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import axios from "axios";
 import CustomButton from "./CustomButton";
+import { useSnackbar } from "notistack";
+import axiosClient from "../axios/axiosClient";
 
 type FormInputs = {
   name: string;
@@ -28,6 +28,8 @@ type FormInputs = {
 };
 
 const RegisterForm: React.FC = () => {
+  const { enqueueSnackbar } = useSnackbar();
+
   const [submitButtonText, setSubmitButtonText] = useState("Sign Up");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -53,19 +55,22 @@ const RegisterForm: React.FC = () => {
     event?.preventDefault();
     setIsLoading(true);
 
-    try {
-      const response = await axios.post(
-        "http://localhost:3001/api/register",
-        formValues
-      );
-      response.data.token && localStorage.setItem("token", response.data.token);
-      setIsLoading(false);
-    } catch (error) {
-      setIsLoading(false);
-    }
-  };
+    await axiosClient
+      .post("/register", formValues)
+      .then((response) => {
+        enqueueSnackbar("You have successfully registered!", {
+          variant: "success",
+        });
+        localStorage.setItem("token", response.data.token);
+      })
+      .catch((error) => {
+        enqueueSnackbar(error.response.data, {
+          variant: "error",
+        });
+      });
 
-  const onError = (error: FieldErrors<FormInputs>) => console.log(error);
+    setIsLoading(false);
+  };
 
   const handleButtonHover = () => {
     setSubmitButtonText("Let's go! 🚀");
@@ -76,7 +81,7 @@ const RegisterForm: React.FC = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit, onError)}>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <Box
         sx={{
           marginTop: "3px",

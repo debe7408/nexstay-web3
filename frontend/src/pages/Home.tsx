@@ -1,6 +1,6 @@
 import { Box, Button, Grid } from "@mui/material";
-import axios from "axios";
 import React, { useState } from "react";
+import axiosClient from "../axios/axiosClient";
 
 const Home = () => {
   const [responseData, setResponseData] = useState<User>();
@@ -18,13 +18,14 @@ const Home = () => {
     }
   ];
   const handleOnClick = async () => {
-    try {
-      const response = await axios.get("http://localhost:3001/api/users");
-      console.log(response);
-      setResponseData(response.data);
-    } catch (error) {
-      console.log(error);
-    }
+    await axiosClient
+      .get("/users")
+      .then((response) => {
+        setResponseData(response.data);
+      })
+      .catch((err) => {
+        console.log(err.response);
+      });
   };
 
   const CustomDivBody = (data: User) => {
