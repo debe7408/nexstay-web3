@@ -180,7 +180,7 @@ const RegisterForm: React.FC = () => {
         >
           {submitButtonText}
         </StyledCustomButton>
-        <Button component={Link} to="/signin">
+        <Button component={Link} to="/login">
           Already have an account? Sign in
         </Button>
       </Box>

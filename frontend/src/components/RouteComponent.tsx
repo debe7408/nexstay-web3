@@ -2,7 +2,7 @@ import { Routes, Route, useLocation } from "react-router-dom";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import HomePage from "../pages/Home";
 import RegisterPage from "../pages/RegisterPage";
-import SigninPage from "../pages/SignInPage";
+import LoginPage from "../pages/LoginPage";
 import ProfilePage from "../pages/Profile";
 
 const Main = () => {
@@ -14,7 +14,7 @@ const Main = () => {
         <Routes location={location}>
           <Route path="/" element={<HomePage />} />
           <Route path="/register" element={<RegisterPage />} />
-          <Route path="/signin" element={<SigninPage />} />
+          <Route path="/login" element={<LoginPage />} />
           <Route path="/profile" element={<ProfilePage />} />
         </Routes>
       </CSSTransition>

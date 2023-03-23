@@ -2,7 +2,7 @@ import React from "react";
 import CustomCard from "../components/CustomCard";
 import LoginForm from "../components/LoginForm";
 
-const SigninPage = () => {
+const LoginPage = () => {
   return (
     <>
       <CustomCard
@@ -15,4 +15,4 @@ const SigninPage = () => {
   );
 };
 
-export default SigninPage;
+export default LoginPage;
