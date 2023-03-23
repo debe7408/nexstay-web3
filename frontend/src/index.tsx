@@ -4,9 +4,10 @@ import "./index.css";
 import App from "./App";
 import CssBaseline from "@mui/material/CssBaseline";
 import { BrowserRouter } from "react-router-dom";
-import Router from "./components/RouteComponent";
 import GlobalStyles from "./GlobalStyles";
 import { SnackbarProvider } from "notistack";
+import { Provider } from "react-redux";
+import { store } from "./app/store";
 
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
@@ -18,12 +19,13 @@ const root = ReactDOM.createRoot(
 );
 
 root.render(
-  <BrowserRouter>
-    <SnackbarProvider>
-      <CssBaseline />
-      <GlobalStyles />
-      <App />
-      <Router />
-    </SnackbarProvider>
-  </BrowserRouter>
+  <Provider store={store}>
+    <BrowserRouter>
+      <SnackbarProvider>
+        <CssBaseline />
+        <GlobalStyles />
+        <App />
+      </SnackbarProvider>
+    </BrowserRouter>
+  </Provider>
 );

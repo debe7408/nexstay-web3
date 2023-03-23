@@ -3,19 +3,13 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { themes } from "../constants/colors";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { logout, selectLogin } from "../app/loginSlice";
 
 const ProfileBadge = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  useEffect(() => {
-    const authenticated = localStorage.getItem("authenticated");
-    if (authenticated) {
-      setIsLoggedIn(true);
-    } else {
-      setIsLoggedIn(false);
-    }
-  }, []);
+  const dispatch = useAppDispatch();
+  const loggedIn = useAppSelector(selectLogin);
 
   const handleOnExpand = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -25,11 +19,16 @@ const ProfileBadge = () => {
     setAnchorEl(null);
   };
 
+  const handleLogOut = () => {
+    dispatch(logout());
+    handleOnClose();
+  };
+
   return (
     <>
       <IconButton size="small" onClick={handleOnExpand}>
         <Badge
-          color={isLoggedIn ? "success" : "error"}
+          color={loggedIn ? "success" : "error"}
           variant="dot"
           sx={{
             "& .MuiBadge-badge": {
@@ -50,11 +49,12 @@ const ProfileBadge = () => {
         onClose={handleOnClose}
         anchorEl={anchorEl}
       >
-        {isLoggedIn ? (
+        {loggedIn ? (
           <MenuItemsLoggedIn
             onClick={() => {
               handleOnClose();
             }}
+            onLogOut={handleLogOut}
           />
         ) : (
           <MenuItemsLoggedOut
@@ -70,12 +70,13 @@ const ProfileBadge = () => {
 
 interface MenuItemsProps {
   onClick: () => void;
+  onLogOut?: () => void;
 }
 
 const MenuItemsLoggedOut = (props: MenuItemsProps) => {
   return (
     <>
-      <MenuItem component={Link} to="/signin" onClick={props.onClick}>
+      <MenuItem component={Link} to="/login" onClick={props.onClick}>
         Log in
       </MenuItem>
       <MenuItem component={Link} to="/register" onClick={props.onClick}>
@@ -95,7 +96,7 @@ const MenuItemsLoggedIn = (props: MenuItemsProps) => {
         Profile
       </MenuItem>
       <hr></hr>
-      <MenuItem component={Link} to="/logout" onClick={props.onClick}>
+      <MenuItem component={Link} to="/login" onClick={props.onLogOut}>
         Log out
       </MenuItem>
     </>

@@ -19,6 +19,8 @@ import * as yup from "yup";
 import CustomButton from "./CustomButton";
 import { useSnackbar } from "notistack";
 import axiosClient from "../axios/axiosClient";
+import { useAppDispatch } from "../app/hooks";
+import { login } from "../app/loginSlice";
 
 type FormInputs = {
   email: string;
@@ -27,7 +29,7 @@ type FormInputs = {
 
 const LoginForm: React.FC = () => {
   const { enqueueSnackbar } = useSnackbar();
-
+  const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState(false);
 
   const formValidationSchema = yup
@@ -53,7 +55,7 @@ const LoginForm: React.FC = () => {
       .post("/login", formValues)
       .then((response) => {
         localStorage.setItem("token", response.data.token);
-        localStorage.setItem("authenticated", "true");
+        dispatch(login());
         enqueueSnackbar("Login successful.", {
           variant: "success",
         });
@@ -136,7 +138,7 @@ const LoginForm: React.FC = () => {
         >
           Log In
         </StyledCustomButton>
-        <Button component={Link} to="/signin">
+        <Button component={Link} to="/login">
           Forgot password?
         </Button>
       </Box>
