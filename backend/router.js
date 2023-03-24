@@ -95,7 +95,7 @@ router.post("/register", signupValidation, async (req, res) => {
   }
 });
 
-router.get("/getUserInfo", jwtAuthorize, async (req, res) => {
+router.post("/getUserInfo", jwtAuthorize, async (req, res) => {
   const userEmail = req.body.email;
 
   const sql = `SELECT * FROM users WHERE email = ? LIMIT 1`;
