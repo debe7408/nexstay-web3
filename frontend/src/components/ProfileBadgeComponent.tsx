@@ -1,15 +1,15 @@
 import { Avatar, Badge, IconButton, Menu, MenuItem } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { themes } from "../constants/colors";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { logout, selectLogin } from "../app/loginSlice";
+import { logout, selectLoginState } from "../app/loginSlice";
 
 const ProfileBadge = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const dispatch = useAppDispatch();
-  const loggedIn = useAppSelector(selectLogin);
+  const loggedIn = useAppSelector(selectLoginState);
 
   const handleOnExpand = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);

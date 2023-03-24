@@ -2,9 +2,12 @@ import { Box, Button, Grid } from "@mui/material";
 import { enqueueSnackbar } from "notistack";
 import React, { useState } from "react";
 import axiosClient from "../axios/axiosClient";
+import { useAppSelector } from "../app/hooks";
+import { selectEmailAddress } from "../app/loginSlice";
 
 const Home = () => {
   const [responseData, setResponseData] = useState<User>();
+  const emailAddress = useAppSelector(selectEmailAddress);
 
   type User = [
     {
@@ -18,7 +21,7 @@ const Home = () => {
       password: string;
     }
   ];
-  const handleOnClick = async () => {
+  const handleFetchAllUsers = async () => {
     await axiosClient
       .get("/users")
       .then((response) => {
@@ -35,6 +38,28 @@ const Home = () => {
           return;
         }
         enqueueSnackbar(error.response.data.message, {
+          variant: "error",
+        });
+      });
+  };
+
+  const handleFetchUserInfo = async () => {
+    await axiosClient
+      .post("/getUserInfo", { email: emailAddress })
+      .then((response) => {
+        setResponseData([response.data]);
+        enqueueSnackbar("Data fetched", {
+          variant: "success",
+        });
+      })
+      .catch((error) => {
+        if (!error.response) {
+          enqueueSnackbar("Internal error. Please try again later.", {
+            variant: "error",
+          });
+          return;
+        }
+        enqueueSnackbar(error.response.data, {
           variant: "error",
         });
       });
@@ -67,9 +92,11 @@ const Home = () => {
   return (
     <>
       <h1>Home</h1>
-      <Button variant="contained" onClick={handleOnClick}>
-        {" "}
-        Hello World
+      <Button variant="contained" onClick={handleFetchAllUsers}>
+        Get all users info
+      </Button>
+      <Button variant="contained" onClick={handleFetchUserInfo}>
+        Get user info
       </Button>
       {responseData && CustomDivBody(responseData)}
     </>

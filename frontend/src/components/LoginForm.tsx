@@ -8,7 +8,7 @@ import {
   InputAdornment,
   TextField,
 } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { useState } from "react";
 import { FieldErrors, SubmitHandler, useForm } from "react-hook-form";
@@ -31,6 +31,7 @@ const LoginForm: React.FC = () => {
   const { enqueueSnackbar } = useSnackbar();
   const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   const formValidationSchema = yup
     .object({
@@ -54,8 +55,8 @@ const LoginForm: React.FC = () => {
     await axiosClient
       .post("/login", formValues)
       .then((response) => {
-        localStorage.setItem("token", response.data.token);
-        dispatch(login());
+        dispatch(login([response.data.token, formValues.email]));
+        navigate("/profile");
         enqueueSnackbar("Login successful.", {
           variant: "success",
         });

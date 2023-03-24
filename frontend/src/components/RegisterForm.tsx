@@ -7,8 +7,7 @@ import {
   InputAdornment,
   TextField,
 } from "@mui/material";
-import { Link } from "react-router-dom";
-
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { FieldErrors, SubmitHandler, useForm } from "react-hook-form";
 import styled from "styled-components";
@@ -18,6 +17,8 @@ import * as yup from "yup";
 import CustomButton from "./CustomButton";
 import { useSnackbar } from "notistack";
 import axiosClient from "../axios/axiosClient";
+import { useAppDispatch } from "../app/hooks";
+import { login } from "../app/loginSlice";
 
 type FormInputs = {
   name: string;
@@ -29,6 +30,8 @@ type FormInputs = {
 
 const RegisterForm: React.FC = () => {
   const { enqueueSnackbar } = useSnackbar();
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const [submitButtonText, setSubmitButtonText] = useState("Sign Up");
   const [isLoading, setIsLoading] = useState(false);
@@ -61,7 +64,8 @@ const RegisterForm: React.FC = () => {
         enqueueSnackbar("You have successfully registered!", {
           variant: "success",
         });
-        localStorage.setItem("token", response.data.token);
+        dispatch(login([response.data.token, formValues.email]));
+        navigate("/profile");
       })
       .catch((error) => {
         if (!error.response) {
