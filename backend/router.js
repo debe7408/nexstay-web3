@@ -2,7 +2,11 @@ import express from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { queryDb } from "./databaseConnection.js";
-import { signupValidation, loginValidation } from "./validation.js";
+import {
+  signupValidation,
+  loginValidation,
+  jwtAuthorize,
+} from "./validation.js";
 import { validationResult } from "express-validator";
 
 const router = express.Router();
@@ -34,9 +38,13 @@ router.post("/login", loginValidation, async (req, res) => {
     if (!passwordMatch)
       return res.status(401).send("Invalid email or password");
 
-    const token = jwt.sign({ id: response[0].id }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
-    });
+    const token = jwt.sign(
+      { email: response[0].email },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "1d",
+      }
+    );
 
     return res.send({ token });
   } catch (error) {
@@ -68,7 +76,7 @@ router.post("/register", signupValidation, async (req, res) => {
 
     const insertSql = `INSERT INTO users (name, surname, age, email, password) VALUES (? , ? , ? , ? , ?)`;
 
-    const { insertId } = await queryDb(insertSql, [
+    await queryDb(insertSql, [
       name,
       surname,
       age,
@@ -76,8 +84,8 @@ router.post("/register", signupValidation, async (req, res) => {
       hashedPassword,
     ]);
 
-    const token = jwt.sign({ id: insertId }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
+    const token = jwt.sign({ email: emailLowercased }, process.env.JWT_SECRET, {
+      expiresIn: "1d",
     });
 
     return res.send({ token });
@@ -85,6 +93,18 @@ router.post("/register", signupValidation, async (req, res) => {
     console.error(error);
     res.status(500).send("Internal server error");
   }
+});
+
+router.get("/getUserInfo", jwtAuthorize, async (req, res) => {
+  const userEmail = req.body.email;
+
+  const sql = `SELECT * FROM users WHERE email = ? LIMIT 1`;
+  const response = await queryDb(sql, [userEmail]);
+
+  const [user] = response;
+  if (!user) return res.status(404).send("User not found");
+
+  return res.send(user);
 });
 
 export default router;
