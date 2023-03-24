@@ -43,7 +43,7 @@ export const jwtAuthorize = (req, res, next) => {
     });
 
     // Check if JWT payload email and request body email is the same
-    if (payload.email !== req.body.email)
+    if (payload.email.toLowerCase() !== req.body.email.toLowerCase())
       return res
         .status(401)
         .send("You are not authorized to access this information!");
