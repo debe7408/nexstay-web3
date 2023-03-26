@@ -8,7 +8,9 @@ import { validationResult } from "express-validator";
 const router = express.Router();
 
 router.get("/users", async (req, res) => {
-  const response = await queryDb("SELECT * FROM users");
+  const response = await queryDb(
+    "SELECT id, type, email, name, surname, age, banned FROM users"
+  );
   return res.json(response);
 });
 
@@ -102,7 +104,7 @@ router.post(
 router.post("/getUserInfo", jwtAuthorize, async (req, res) => {
   const userEmail = req.body.email;
 
-  const sql = `SELECT * FROM users WHERE email = ? LIMIT 1`;
+  const sql = `SELECT id, type, email, name, surname, age, banned FROM users WHERE email = ? LIMIT 1`;
   const response = await queryDb(sql, [userEmail]);
 
   const [user] = response;
