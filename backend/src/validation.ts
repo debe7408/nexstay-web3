@@ -1,5 +1,7 @@
+import { NextFunction, Request, Response } from "express";
 import { check } from "express-validator";
 import jwt from "jsonwebtoken";
+import { HttpError } from "./http-error";
 
 export const signupValidation = [
   check("name", "Name is requied").not().isEmpty(),
@@ -24,7 +26,11 @@ export const loginValidation = [
   }),
 ];
 
-export const jwtAuthorize = (req, res, next) => {
+export const jwtAuthorize = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   // Check if authorization header is present
   const authHeader = req.headers.authorization;
   if (!authHeader) {
@@ -38,9 +44,13 @@ export const jwtAuthorize = (req, res, next) => {
   }
 
   try {
-    const payload = jwt.verify(token, process.env.JWT_SECRET, {
+    const payload = jwt.verify(token, process.env.JWT_SECRET as string, {
       algorithms: ["HS256"],
     });
+
+    if (typeof payload === "string") {
+      return res.status(401).send("Invalid token");
+    }
 
     // Check if JWT payload email and request body email is the same
     if (payload.email.toLowerCase() !== req.body.email.toLowerCase())
@@ -51,7 +61,8 @@ export const jwtAuthorize = (req, res, next) => {
     next();
   } catch (err) {
     // If error is jwt expired, return custom message
-    if (err.message === "jwt expired")
+    const httpError = err as HttpError;
+    if (httpError.message === "jwt expired")
       return res.status(401).send("JWT token has expired!");
 
     // Else return generic error message

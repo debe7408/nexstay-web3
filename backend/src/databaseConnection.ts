@@ -12,7 +12,7 @@ databaseConnection.connect((error) => {
   console.log("Database connection successful");
 });
 
-export const queryDb = async (sql, params) => {
+export const queryDb = async (sql: string, params?: any): Promise<any> => {
   return new Promise((resolve, reject) => {
     query(sql, params, (error, results, fields) => {
       if (error) {
