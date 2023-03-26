@@ -73,7 +73,6 @@ export const jwtAuthorize = (
     if (typeof payload === "string") {
       return res.status(401).send("Invalid token");
     }
-    console.log(payload.id);
 
     // Check if JWT payload email and request body email is the same
     // if (payload.email.toLowerCase() !== req.body.email.toLowerCase())
