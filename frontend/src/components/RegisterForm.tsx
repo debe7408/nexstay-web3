@@ -59,7 +59,7 @@ const RegisterForm: React.FC = () => {
     setIsLoading(true);
 
     await axiosClient
-      .post("/register", formValues)
+      .post("/users/register", formValues)
       .then((response) => {
         enqueueSnackbar("You have successfully registered!", {
           variant: "success",

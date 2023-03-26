@@ -6,7 +6,7 @@ export const getSingleUserInfo = async (
   emailAddress: string
 ): Promise<UserInfo> => {
   try {
-    const response = await axiosClient.post("/getUserInfo", {
+    const response = await axiosClient.post("/users/getUserInfo", {
       email: emailAddress,
     });
     return {
@@ -30,7 +30,7 @@ export const getSingleUserInfo = async (
 
 export const getAllUsersInfo = async (): Promise<UserInfo> => {
   try {
-    const response = await axiosClient.get("/users");
+    const response = await axiosClient.get("/users/users");
 
     return {
       hasError: false,

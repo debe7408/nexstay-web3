@@ -53,7 +53,7 @@ const LoginForm: React.FC = () => {
     setIsLoading(true);
 
     await axiosClient
-      .post("/login", formValues)
+      .post("/users/login", formValues)
       .then((response) => {
         dispatch(login([response.data.token, formValues.email]));
         navigate("/profile");
