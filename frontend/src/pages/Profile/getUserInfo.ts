@@ -2,13 +2,9 @@ import { AxiosError } from "axios";
 import axiosClient from "../../axios/axiosClient";
 import { UserInfo } from "../../types/user";
 
-export const getSingleUserInfo = async (
-  emailAddress: string
-): Promise<UserInfo> => {
+export const getSingleUserInfo = async (): Promise<UserInfo> => {
   try {
-    const response = await axiosClient.post("/users/getUserInfo", {
-      email: emailAddress,
-    });
+    const response = await axiosClient.get("/users/getUserInfo", {});
     return {
       hasError: false,
       user: response.data,

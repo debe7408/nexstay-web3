@@ -1,22 +1,19 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import CustomProfileCard from "../../components/CustomProfileCard";
-import { useAppSelector } from "../../app/hooks";
-import { selectEmailAddress } from "../../app/loginSlice";
 import { useSnackbar } from "notistack";
 import { getSingleUserInfo } from "./getUserInfo";
 import { User } from "../../types/user";
 import { Box, Grid } from "@mui/material";
 
 const Profile = () => {
-  const emailAddress = useAppSelector(selectEmailAddress);
   const [responseData, setResponseData] = useState<User>();
 
   const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     const fetchData = async () => {
-      const { hasError, message, user } = await getSingleUserInfo(emailAddress);
+      const { hasError, message, user } = await getSingleUserInfo();
 
       if (hasError) {
         enqueueSnackbar(message, {
@@ -27,8 +24,8 @@ const Profile = () => {
 
       setResponseData(user);
     };
-    emailAddress && fetchData();
-  }, [emailAddress]);
+    fetchData();
+  });
 
   const title = responseData
     ? `${responseData.name} ${responseData.surname} `

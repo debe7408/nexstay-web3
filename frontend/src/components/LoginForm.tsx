@@ -1,6 +1,5 @@
 import EmailIcon from "@mui/icons-material/Email";
 import PasswordIcon from "@mui/icons-material/Password";
-
 import {
   Box,
   Button,
@@ -9,7 +8,6 @@ import {
   TextField,
 } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
-
 import { useState } from "react";
 import { FieldErrors, SubmitHandler, useForm } from "react-hook-form";
 import styled from "styled-components";
@@ -55,7 +53,7 @@ const LoginForm: React.FC = () => {
     await axiosClient
       .post("/users/login", formValues)
       .then((response) => {
-        dispatch(login([response.data.token, formValues.email]));
+        dispatch(login(response.data.token));
         navigate("/profile");
         enqueueSnackbar("Login successful.", {
           variant: "success",
