@@ -57,4 +57,24 @@ propertyRoutes.post(
   }
 );
 
+propertyRoutes.delete("/deleteProperty", jwtAuthorize, async (req, res) => {
+  const { property_id } = req.body;
+  const userId = req.body.id;
+
+  if (!property_id) return res.status(400).json("Missing property id");
+
+  const sqlQuery = `DELETE FROM properties WHERE id = ? AND owner_id = ?`;
+
+  await queryDb(sqlQuery, [property_id, userId])
+    .catch((err) => {
+      return res.status(500).json("Internal server error");
+    })
+    .then((result) => {
+      if (result.affectedRows === 0) {
+        return res.status(400).json("Property not found");
+      }
+      return res.status(200).json("Property deleted");
+    });
+});
+
 export default propertyRoutes;
