@@ -1,6 +1,6 @@
 import { AxiosError } from "axios";
-import axiosClient from "../../axios/axiosClient";
-import { UserInfo } from "../../types/user";
+import axiosClient from "../axios/axiosClient";
+import { UserInfo } from "../types/user";
 
 export const getSingleUserInfo = async (): Promise<UserInfo> => {
   try {
