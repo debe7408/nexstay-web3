@@ -1,8 +1,30 @@
+import Container from "@mui/material/Container";
+import { useEffect, useState } from "react";
+import PropertyContainer from "./components/PropertyContainer";
+import { getAllProperties } from "../../api/getAllProperties";
+import { Property } from "./types/property";
+
 const Home = () => {
+  const [properties, setProperties] = useState<Property[]>([]);
+
+  useEffect(() => {
+    fetchedProperties();
+  }, []);
+
+  const fetchedProperties = async () => {
+    const { hasError, message, properties } = await getAllProperties();
+    if (hasError || !properties) {
+      console.log(message);
+      return;
+    }
+    setProperties(properties);
+  };
+
   return (
-    <>
-      <h1>Home</h1>
-    </>
+    <Container>
+      <h1>Your journey starts here</h1>
+      <PropertyContainer properties={properties}></PropertyContainer>
+    </Container>
   );
 };
 

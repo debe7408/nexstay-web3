@@ -2,12 +2,16 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import CustomProfileCard from "../../components/CustomProfileCard";
 import { useSnackbar } from "notistack";
-import { getSingleUserInfo } from "./getUserInfo";
+import { getSingleUserInfo } from "../../api/getUserInfo";
 import { User } from "../../types/user";
-import { Box, Grid } from "@mui/material";
+import { Box, Button, Grid } from "@mui/material";
+import { addProperty } from "../../api/addProperty";
+import { useAppSelector } from "../../app/hooks";
+import { selectLoginState } from "../../app/loginSlice";
 
 const Profile = () => {
   const [responseData, setResponseData] = useState<User>();
+  const loginState = useAppSelector(selectLoginState);
 
   const { enqueueSnackbar } = useSnackbar();
 
@@ -24,8 +28,23 @@ const Profile = () => {
 
       setResponseData(user);
     };
-    fetchData();
+    loginState && fetchData();
   });
+
+  const handleAddProperty = async () => {
+    const { hasError, message } = await addProperty();
+
+    if (hasError) {
+      enqueueSnackbar(message, {
+        variant: "error",
+      });
+      return;
+    }
+
+    enqueueSnackbar("Property added!", {
+      variant: "success",
+    });
+  };
 
   const title = responseData
     ? `${responseData.name} ${responseData.surname} `
@@ -40,7 +59,12 @@ const Profile = () => {
         cardWidth="xl"
         body={
           responseData ? (
-            <CustomDivBody data={responseData}></CustomDivBody>
+            <>
+              <CustomDivBody data={responseData}></CustomDivBody>
+              <Button onClick={async () => await handleAddProperty()}>
+                add new
+              </Button>
+            </>
           ) : (
             "body"
           )

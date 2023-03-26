@@ -15,9 +15,6 @@ const Navbar: React.FC = () => {
             <img src={Logo} alt="Logo" height="20" />
           </Link>
         </Typography>
-        <Button color="inherit" component={Link} to="/about">
-          About
-        </Button>
         <Typography variant="h6" style={{ flexGrow: 1 }}></Typography>
 
         <ProfileBadge />
