@@ -53,11 +53,11 @@ export const jwtAuthorize = (
     }
 
     // Check if JWT payload email and request body email is the same
-    if (payload.email.toLowerCase() !== req.body.email.toLowerCase())
-      return res
-        .status(401)
-        .send("You are not authorized to access this information!");
-
+    // if (payload.email.toLowerCase() !== req.body.email.toLowerCase())
+    //   return res
+    //     .status(401)
+    //     .send("You are not authorized to access this information!");
+    req.body.id = payload.id;
     next();
   } catch (err) {
     // If error is jwt expired, return custom message

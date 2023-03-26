@@ -43,7 +43,7 @@ userRoutes.post(
         return res.status(401).send("Invalid email or password");
 
       const token = jwt.sign(
-        { email: response[0].email },
+        { id: response[0].id },
         process.env.JWT_SECRET as string,
         {
           expiresIn: "1d",
@@ -84,7 +84,7 @@ userRoutes.post(
 
       const insertSql = `INSERT INTO users (name, surname, age, email, password) VALUES (? , ? , ? , ? , ?)`;
 
-      await queryDb(insertSql, [
+      const { insertId } = await queryDb(insertSql, [
         name,
         surname,
         age,
@@ -93,7 +93,7 @@ userRoutes.post(
       ]);
 
       const token = jwt.sign(
-        { email: emailLowercased },
+        { id: insertId },
         process.env.JWT_SECRET as string,
         {
           expiresIn: "1d",
@@ -108,11 +108,11 @@ userRoutes.post(
   }
 );
 
-userRoutes.post("/getUserInfo", jwtAuthorize, async (req, res) => {
-  const userEmail = req.body.email;
+userRoutes.get("/getUserInfo", jwtAuthorize, async (req, res) => {
+  const userId = req.body.id;
 
-  const sql = `SELECT id, type, email, name, surname, age, banned FROM users WHERE email = ? LIMIT 1`;
-  const response = await queryDb(sql, [userEmail]);
+  const sql = `SELECT id, type, email, name, surname, age, banned FROM users WHERE id = ? LIMIT 1`;
+  const response = await queryDb(sql, [userId]);
 
   const [user] = response;
   if (!user) return res.status(404).send("User not found");
