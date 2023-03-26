@@ -26,6 +26,28 @@ export const loginValidation = [
   }),
 ];
 
+export const addPropertyValidation = [
+  check("name", "Property has to have a name").not().isEmpty(),
+  check("property_type", "Property has to have a type").not().isEmpty(),
+  check("country", "Property has to have a country").not().isEmpty(),
+  check("city", "Property has to have a city").not().isEmpty(),
+  check("address", "Property has to have an address").not().isEmpty(),
+  check("price", "Property has to have a price in a number format")
+    .isDecimal()
+    .not()
+    .isEmpty(),
+  check("amenities", "Property has to have amenities. JSON object")
+    .not()
+    .isEmpty(),
+  check("pictures", "Property has to have pictures. JSON object")
+    .not()
+    .isEmpty(),
+  check("booking_status", "Property has to have a booking state. Boolean")
+    .isBoolean()
+    .not()
+    .isEmpty(),
+];
+
 export const jwtAuthorize = (
   req: Request,
   res: Response,
@@ -51,6 +73,7 @@ export const jwtAuthorize = (
     if (typeof payload === "string") {
       return res.status(401).send("Invalid token");
     }
+    console.log(payload.id);
 
     // Check if JWT payload email and request body email is the same
     // if (payload.email.toLowerCase() !== req.body.email.toLowerCase())
