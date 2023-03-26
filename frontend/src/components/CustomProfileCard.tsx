@@ -77,14 +77,14 @@ const CustomProfileCard: React.FC<CustomCardProps> = ({
             </StyledBox>
           </Grid>
           <Grid item xs={12}>
+            <Typography
+              variant="subtitle1"
+              marginBottom="10px"
+              color={themes.dark.text}
+            >
+              {subtitle}
+            </Typography>
             <StyledBox>
-              <Typography
-                variant="subtitle1"
-                marginBottom="10px"
-                color={themes.dark.text}
-              >
-                {subtitle}
-              </Typography>
               <Typography variant="body2" component="div">
                 {body}
               </Typography>

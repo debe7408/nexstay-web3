@@ -1,9 +1,9 @@
 import { Routes, Route, useLocation } from "react-router-dom";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
-import HomePage from "../pages/Home";
-import RegisterPage from "../pages/RegisterPage";
-import LoginPage from "../pages/LoginPage";
-import ProfilePage from "../pages/Profile";
+import HomePage from "../pages/Home/Home";
+import RegisterPage from "../pages/Register/RegisterPage";
+import LoginPage from "../pages/Login/LoginPage";
+import ProfilePage from "../pages/Profile/Profile";
 
 const Main = () => {
   const location = useLocation();

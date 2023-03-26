@@ -1,6 +1,6 @@
 import React from "react";
-import CustomCard from "../components/CustomCard";
-import RegisterForm from "../components/RegisterForm";
+import CustomCard from "../../components/CustomCard";
+import RegisterForm from "../../components/RegisterForm";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 
 const RegisterPage = () => {

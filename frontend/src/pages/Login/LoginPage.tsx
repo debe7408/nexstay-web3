@@ -1,6 +1,6 @@
 import React from "react";
-import CustomCard from "../components/CustomCard";
-import LoginForm from "../components/LoginForm";
+import CustomCard from "../../components/CustomCard";
+import LoginForm from "../../components/LoginForm";
 
 const LoginPage = () => {
   return (
