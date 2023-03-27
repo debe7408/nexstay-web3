@@ -4,6 +4,7 @@ import HomePage from "../pages/Home/Home";
 import RegisterPage from "../pages/Register/RegisterPage";
 import LoginPage from "../pages/Login/LoginPage";
 import ProfilePage from "../pages/Profile/Profile";
+import HostFAQ from "../pages/Host/HostLandingPage";
 
 const Main = () => {
   const location = useLocation();
@@ -16,6 +17,7 @@ const Main = () => {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/host/information" element={<HostFAQ />} />
         </Routes>
       </CSSTransition>
     </TransitionGroup>
