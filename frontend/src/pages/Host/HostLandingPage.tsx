@@ -1,16 +1,11 @@
-import {
-  Container,
-  Grid,
-  Box,
-  Typography,
-  Slider,
-  Button,
-} from "@mui/material";
+import { Container, Grid, Typography, Slider, Button } from "@mui/material";
 import AddHomeOutlinedIcon from "@mui/icons-material/AddHomeOutlined";
 import { useState } from "react";
-import styled from "styled-components";
 import { themes } from "../../constants/colors";
 import HostFAQComponent from "./HostFAQ";
+import StyledBox from "../../components/StyledBox";
+import { Link } from "react-router-dom";
+
 const HostFAQ = () => {
   const [selectedNights, setSelectedNights] = useState(1);
   return (
@@ -27,10 +22,16 @@ const HostFAQ = () => {
           }}
         >
           <Grid item xs={12} md={12} lg={6}>
-            <CustomBox>
+            <StyledBox>
               <Typography
                 variant="h3"
-                sx={{ fontWeight: "500", color: `${themes.dark.main}` }}
+                sx={{
+                  fontWeight: "500",
+                  color: {
+                    xs: `${themes.dark.dark_accent}`,
+                    md: `${themes.dark.main}`,
+                  },
+                }}
               >
                 Become a Host
               </Typography>
@@ -51,15 +52,15 @@ const HostFAQ = () => {
                 valueLabelFormat={(value) => `${value} nights`}
                 color="secondary"
               />
-            </CustomBox>
+            </StyledBox>
           </Grid>
           <Grid item xs={12} md={12} lg={6}>
-            <CustomBox>
+            <StyledBox>
               <h2>This will include a map</h2>
-            </CustomBox>
+            </StyledBox>
           </Grid>
           <Grid item xs={12}>
-            <CustomBox>
+            <StyledBox>
               <Typography variant="h3">
                 Become a host in just few steps with{" "}
                 <b
@@ -70,31 +71,31 @@ const HostFAQ = () => {
                   Easy Setup
                 </b>
               </Typography>
-            </CustomBox>
+            </StyledBox>
           </Grid>
           <Grid item xs={12} md={6} lg={3}>
-            <CustomBox>
+            <StyledBox>
               <Typography variant="h4" gutterBottom>
                 1. Create your listing
               </Typography>
-            </CustomBox>
+            </StyledBox>
           </Grid>
           <Grid item xs={12} md={6} lg={3}>
-            <CustomBox>
+            <StyledBox>
               <Typography variant="h4" gutterBottom>
                 2. Set your price
               </Typography>
-            </CustomBox>
+            </StyledBox>
           </Grid>
           <Grid item xs={12} md={6} lg={3}>
-            <CustomBox>
+            <StyledBox>
               <Typography variant="h4" gutterBottom>
                 3. Get your first booking
               </Typography>
-            </CustomBox>
+            </StyledBox>
           </Grid>
           <Grid item xs={12}>
-            <CustomBox>
+            <StyledBox>
               <Typography variant="overline">Read to become a host?</Typography>
               <Button
                 variant="contained"
@@ -104,10 +105,12 @@ const HostFAQ = () => {
                     backgroundColor: `${themes.dark.dark_accent}`,
                   },
                 }}
+                component={Link}
+                to="/host/start-hosting"
               >
                 <AddHomeOutlinedIcon /> Become a host!
               </Button>
-            </CustomBox>
+            </StyledBox>
           </Grid>
         </Grid>
       </Container>
@@ -115,13 +118,5 @@ const HostFAQ = () => {
     </>
   );
 };
-
-const CustomBox = styled(Box)`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-`;
 
 export default HostFAQ;

@@ -6,12 +6,11 @@ import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
-  Box,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import styled from "styled-components";
 import { themes } from "../../constants/colors";
 import { questions } from "../../constants/faqHosting";
+import StyledBox from "../../components/StyledBox";
 
 const HostFAQComponent = () => {
   return (
@@ -26,9 +25,15 @@ const HostFAQComponent = () => {
     >
       <Grid container spacing={2}>
         <Grid item xs={12} lg={6}>
-          <CustomBox>
+          <StyledBox
+            customstyles={{
+              justifyContent: "flex-start",
+              alignItems: "flex-start",
+              textAlign: "left",
+            }}
+          >
             <Typography variant="h4">Let's answer your questions</Typography>
-          </CustomBox>
+          </StyledBox>
         </Grid>
         <Grid item xs={12} lg={6}>
           <Stack spacing={1}>
@@ -53,11 +58,3 @@ const HostFAQComponent = () => {
 };
 
 export default HostFAQComponent;
-
-const CustomBox = styled(Box)`
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-  text-align: flex-start;
-`;
