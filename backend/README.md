@@ -84,7 +84,7 @@ Install required dependencies from package.json file
 
 Compile all the TypeScript files to JavaScript and copy contents of the .env file
 ```bash
-yarn run postinstall
+yarn run build
 ```
 Start your production server. Changes to the code can not be made.
 ```bash
