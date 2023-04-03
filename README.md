@@ -28,7 +28,11 @@ This is a university project for 3rd year course work, as well as, project syste
 ## Documentation
 
 [Documentation](https://github.com/debe7408/trip.io/blob/main/Course_work.pdf)
+## Deployment
+
+To deploy this project, see README.md of both Frontend and Backend in the corresponding folders.
+
+
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)
-
