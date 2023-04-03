@@ -19,9 +19,8 @@
   },
   "scripts": {
     "dev": "nodemon --exec ts-node --transpile-only -r dotenv/config src/index.ts",
-    "build-dev": "cp .env ./dist && tsc",
-    "start": "node -r dotenv/config ./dist/index.js",
-    "postinstall": "yarn run build-dev"
+    "build": "tsc && cp .env ./dist",
+    "start": "node -r dotenv/config ./dist/index.js"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
