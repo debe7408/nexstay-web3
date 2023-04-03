@@ -1,27 +1,44 @@
+
 # Trip.io React.js
 
-This repository holds the frontend part of the Trip.io system.\
-The project is written in Typescript using React.js library.
+This repository holds the frontend part of the Trip.io system.
+The project is written in Typescript and React.js.
 
-## How to begin?
+## Authors
 
-In order to run the frontend locally, follow these steps:
+- Deividas Bendaravičius [@debe7408](https://www.github.com/debe7408)
 
-1. Navigate to the right folder `cd trip.io/frontend`
-2. Run one of the following scripts:
 
-### `yarn start`
+## Run Locally
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Clone the repository by one of the following ways:
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+```bash
+  git clone https://github.com/debe7408/trip.io.git
+  git clone git@github.com:debe7408/trip.io.git
+  gh repo clone debe7408/trip.io
+```
 
-### `yarn build`
+Go to the frontend folder 
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```bash
+  cd tripio/frontend
+```
 
-The build is minified and the filenames include the hashes.\
-The app is basically ready for production!
+Install required dependencies from package.json file
+
+```bash
+  yarn install
+```
+
+Start the development server (will start a local server on port 3000).
+
+```bash
+  yarn run dev
+```
+
+
+## Tech Stack
+
+**Client:** React, Redux, MaterialUI, Typescript
+
