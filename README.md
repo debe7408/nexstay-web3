@@ -10,6 +10,7 @@ I'm a a third-year computer science student at Vilnius University, trying to bec
 ## About project
 This is a university project for 3rd year course work, as well as, project system architecture course.
 
+Code base [Github](https://github.com/debe7408/trip.io)
 
 ## Features
 
