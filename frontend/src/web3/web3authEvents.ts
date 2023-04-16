@@ -31,6 +31,7 @@ const subscribeAuthEvents = (web3auth: Web3Auth) => {
 
   web3auth.on(ADAPTER_EVENTS.DISCONNECTED, () => {
     dispatch(reset());
+    window.location.reload();
   });
 
   web3auth.on(ADAPTER_EVENTS.CONNECTING, () => {});
