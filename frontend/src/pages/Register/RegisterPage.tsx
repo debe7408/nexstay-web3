@@ -1,8 +1,10 @@
-import React from "react";
 import CustomCard from "../../components/CustomCard";
 import RegisterForm from "../../components/RegisterForm";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 
+/**
+ * Depricated, use web3Auth instead to register
+ */
 const RegisterPage = () => {
   return (
     <>

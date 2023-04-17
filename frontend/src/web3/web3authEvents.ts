@@ -1,8 +1,8 @@
 import { ADAPTER_EVENTS, CONNECTED_EVENT_DATA } from "@web3auth/base";
-import { LOGIN_MODAL_EVENTS } from "@web3auth/ui";
 import { Web3Auth } from "@web3auth/modal";
 import { Web3Provider } from "@ethersproject/providers";
 import { setWeb3Params, reset } from "../app/web3Slice";
+import { login, logout } from "../app/loginSlice";
 import { store } from "../app/store";
 
 const subscribeAuthEvents = (web3auth: Web3Auth) => {
@@ -22,6 +22,8 @@ const subscribeAuthEvents = (web3auth: Web3Auth) => {
             provider: web3Provider,
           })
         );
+
+        dispatch(login(data.adapter));
       }
     } catch (error) {
       console.log(error);
@@ -30,13 +32,12 @@ const subscribeAuthEvents = (web3auth: Web3Auth) => {
   });
 
   web3auth.on(ADAPTER_EVENTS.DISCONNECTED, () => {
+    dispatch(logout());
     dispatch(reset());
     window.location.reload();
   });
 
-  web3auth.on(ADAPTER_EVENTS.CONNECTING, () => {});
   web3auth.on(ADAPTER_EVENTS.ERRORED, (error) => {});
-  web3auth.on(LOGIN_MODAL_EVENTS.MODAL_VISIBILITY, (isVisible) => {});
 };
 
 export default subscribeAuthEvents;

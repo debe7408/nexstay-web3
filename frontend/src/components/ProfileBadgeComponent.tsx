@@ -3,12 +3,14 @@ import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { themes } from "../constants/colors";
-import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { logout, selectLoginState } from "../app/loginSlice";
+import { useAppSelector } from "../app/hooks";
+import { selectLoginState } from "../app/loginSlice";
+import { web3authSelector } from "../app/web3Slice";
+import { connectWeb3auth, disconnectWeb3auth } from "../web3/web3auth";
 
 const ProfileBadge = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const dispatch = useAppDispatch();
+  const web3AuthInstance = useAppSelector(web3authSelector);
   const loggedIn = useAppSelector(selectLoginState);
 
   const handleOnExpand = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -20,7 +22,12 @@ const ProfileBadge = () => {
   };
 
   const handleLogOut = () => {
-    dispatch(logout());
+    disconnectWeb3auth(web3AuthInstance);
+    handleOnClose();
+  };
+
+  const handleLogIn = async () => {
+    await connectWeb3auth(web3AuthInstance);
     handleOnClose();
   };
 
@@ -61,6 +68,7 @@ const ProfileBadge = () => {
             onClick={() => {
               handleOnClose();
             }}
+            onLogin={async () => await handleLogIn()}
           />
         )}
       </Menu>
@@ -71,17 +79,13 @@ const ProfileBadge = () => {
 interface MenuItemsProps {
   onClick: () => void;
   onLogOut?: () => void;
+  onLogin?: () => void;
 }
 
 const MenuItemsLoggedOut = (props: MenuItemsProps) => {
   return (
     <>
-      <MenuItem component={Link} to="/login" onClick={props.onClick}>
-        Log in
-      </MenuItem>
-      <MenuItem component={Link} to="/register" onClick={props.onClick}>
-        Sign up
-      </MenuItem>
+      <MenuItem onClick={props.onLogin}>Sign in</MenuItem>
     </>
   );
 };
@@ -99,9 +103,7 @@ const MenuItemsLoggedIn = (props: MenuItemsProps) => {
         Become a Host
       </MenuItem>
       <hr></hr>
-      <MenuItem component={Link} to="/login" onClick={props.onLogOut}>
-        Log out
-      </MenuItem>
+      <MenuItem onClick={props.onLogOut}>Sign out</MenuItem>
     </>
   );
 };

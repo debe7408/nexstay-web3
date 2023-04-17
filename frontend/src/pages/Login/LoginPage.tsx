@@ -1,7 +1,9 @@
-import React from "react";
 import CustomCard from "../../components/CustomCard";
 import LoginForm from "../../components/LoginForm";
 
+/**
+ * Depricated, use web3Auth instead to login
+ */
 const LoginPage = () => {
   return (
     <>
