@@ -3,15 +3,19 @@ import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { themes } from "../constants/colors";
-import { useAppSelector } from "../app/hooks";
-import { selectLoginState } from "../app/loginSlice";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { login, selectLoginState } from "../app/loginSlice";
 import { web3authSelector } from "../app/web3Slice";
 import { connectWeb3auth, disconnectWeb3auth } from "../web3/web3auth";
+import { loginUser } from "../api/loginUser";
+import { useSnackbar } from "notistack";
 
 const ProfileBadge = () => {
+  const { enqueueSnackbar } = useSnackbar();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const web3AuthInstance = useAppSelector(web3authSelector);
   const loggedIn = useAppSelector(selectLoginState);
+  const dispatch = useAppDispatch();
 
   const handleOnExpand = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -27,7 +31,27 @@ const ProfileBadge = () => {
   };
 
   const handleLogIn = async () => {
-    await connectWeb3auth(web3AuthInstance);
+    const signerAddress = await connectWeb3auth(web3AuthInstance);
+
+    const { hasError, message, token } = await loginUser(signerAddress);
+
+    if (hasError || !token) {
+      if (message) {
+        enqueueSnackbar(message, {
+          variant: "error",
+        });
+      } else {
+        enqueueSnackbar("Internal error. Please try again later.", {
+          variant: "error",
+        });
+      }
+      return;
+    }
+
+    enqueueSnackbar("Login successful.", {
+      variant: "success",
+    });
+    dispatch(login(token));
     handleOnClose();
   };
 

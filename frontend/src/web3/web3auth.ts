@@ -1,5 +1,6 @@
 import { Web3Auth } from "@web3auth/modal";
 import { CHAIN_NAMESPACES } from "@web3auth/base";
+import { Web3Provider } from "@ethersproject/providers";
 import Logo from "../assets/logo.svg";
 import subscribeAuthEvents from "./web3authEvents";
 
@@ -39,7 +40,10 @@ export const initWeb3Auth = async () => {
 export const connectWeb3auth = async (web3auth: Web3Auth | null) => {
   if (!web3auth) return;
   const web3authProvider = await web3auth.connect();
-  return web3authProvider;
+  const web3Provider = new Web3Provider(web3authProvider!);
+  const signerAddress = await web3Provider.getSigner().getAddress();
+
+  return signerAddress;
 };
 
 export const disconnectWeb3auth = async (web3auth: Web3Auth | null) => {

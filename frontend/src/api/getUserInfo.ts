@@ -4,7 +4,7 @@ import { UserInfo } from "../types/user";
 
 export const getSingleUserInfo = async (): Promise<UserInfo> => {
   try {
-    const response = await axiosClient.get("/users/getUserInfo", {});
+    const response = await axiosClient.get("/usersRoute/users", {});
     return {
       hasError: false,
       user: response.data,
@@ -26,7 +26,7 @@ export const getSingleUserInfo = async (): Promise<UserInfo> => {
 
 export const getAllUsersInfo = async (): Promise<UserInfo> => {
   try {
-    const response = await axiosClient.get("/users/users");
+    const response = await axiosClient.get("/usersRoute/getAllUsers");
 
     return {
       hasError: false,

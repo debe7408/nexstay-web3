@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import styled from "styled-components";
 import CustomProfileCard from "../../components/CustomProfileCard";
 import { useSnackbar } from "notistack";
 import { getSingleUserInfo } from "../../api/getUserInfo";
@@ -90,7 +89,7 @@ const CustomDivBody = ({ data }: { data: User }) => {
         <p>{data.banned}</p>
         <p>{data.type}</p>
         <p>{data.surname}</p>
-        <p>{data.password}</p>
+        <p>{data.publicAddress}</p>
       </Box>
     </Grid>
   );

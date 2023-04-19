@@ -19,7 +19,7 @@ export default function App() {
 
     initAxiosClient(authorizationToken);
 
-    init();
+    !authorizationToken && init();
   }, [authorizationToken]);
 
   return (

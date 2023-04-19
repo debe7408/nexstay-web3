@@ -6,11 +6,11 @@ export interface UserInfo extends BaseError {
 
 export type User = {
   id: number;
-  type: string;
+  publicAddress: string;
   email: string;
-  password: string;
   name: string;
   surname: string;
   age: number;
   banned: boolean;
+  type: string;
 };

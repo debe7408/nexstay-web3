@@ -45,7 +45,8 @@ const web3Slice = createSlice({
 export const { reset, setWeb3Params, setWeb3AuthState } = web3Slice.actions;
 
 const chainIdSelector = (state: RootState) => state.web3.chainId;
-const signerAddressSelector = (state: RootState) => state.web3.signerAddress;
+export const signerAddressSelector = (state: RootState) =>
+  state.web3.signerAddress;
 const providerSelector = (state: RootState) => state.web3.provider;
 export const web3authSelector = (state: RootState) => state.web3.web3auth;
 
