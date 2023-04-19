@@ -1,30 +1,12 @@
 import { NextFunction, Request, Response } from "express";
 import { check } from "express-validator";
-import jwt from "jsonwebtoken";
-import { HttpError } from "./http-error";
+import { HttpError } from "../http-error";
 import * as jose from "jose";
 
-export const signupValidation = [
-  check("name", "Name is requied").not().isEmpty(),
-  check("surname", "Surname is requied").not().isEmpty(),
-  check("age", "Age is required").isDecimal().not().isEmpty(),
-  check("email", "Please include a valid email")
-    .isEmail()
-    .normalizeEmail({ gmail_remove_dots: true }),
-  check("password", "Password must be 6 or more characters").isLength({
-    min: 8,
-    max: 20,
-  }),
-];
-
-export const loginValidation = [
-  check("email", "Please include a valid email")
-    .isEmail()
-    .normalizeEmail({ gmail_remove_dots: true }),
-  check("password", "Password must be 6 or more characters").isLength({
-    min: 8,
-    max: 20,
-  }),
+export const usersPostValidation = [
+  check("publicAddress", "Please include a valid ETH public wallet address")
+    .notEmpty()
+    .matches(/^0x[a-fA-F0-9]{40}$/g),
 ];
 
 export const addPropertyValidation = [
@@ -49,51 +31,14 @@ export const addPropertyValidation = [
     .isEmpty(),
 ];
 
-export const jwtAuthorize = (
+/**
+ * Not functional as of yet. Considering removing this
+ */
+export const jwtVerification = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  // Check if authorization header is present
-  const authHeader = req.headers.authorization;
-  if (!authHeader) {
-    return res.status(401).send("Authorization header not found!");
-  }
-
-  // Check if authorization header included token
-  const token = authHeader.split(" ")[1];
-  if (!token) {
-    return res.status(401).send("Authorization header is empty!");
-  }
-
-  try {
-    const payload = jwt.verify(token, process.env.JWT_SECRET as string, {
-      algorithms: ["HS256"],
-    });
-
-    if (typeof payload === "string") {
-      return res.status(401).send("Invalid token");
-    }
-
-    // Check if JWT payload email and request body email is the same
-    // if (payload.email.toLowerCase() !== req.body.email.toLowerCase())
-    //   return res
-    //     .status(401)
-    //     .send("You are not authorized to access this information!");
-    req.body.id = payload.id;
-    next();
-  } catch (err) {
-    // If error is jwt expired, return custom message
-    const httpError = err as HttpError;
-    if (httpError.message === "jwt expired")
-      return res.status(401).send("JWT token has expired!");
-
-    // Else return generic error message
-    return res.status(401).send("Invalid Token!");
-  }
-};
-
-export const jwtVerification = async (req: Request, res: Response) => {
   const idToken = req.headers.authorization?.split(" ")[1];
   const publicAddress = req.body.publicAddress;
   const adapter = req.body.adapter;
@@ -124,7 +69,7 @@ export const jwtVerification = async (req: Request, res: Response) => {
 
     // check if the public address from the JWT matches the public address from the request
     if (publicAddressFromJWT === publicAddress.toLowerCase()) {
-      return res.status(200).json({ response: "Verification Successful" });
+      next();
     } else {
       return res.status(400).json({ response: "Verification Failed" });
     }

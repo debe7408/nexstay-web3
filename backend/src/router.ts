@@ -4,7 +4,7 @@ import propertyRoutes from "./api/propertyRoutes";
 
 const router = express.Router();
 
-router.use("/users", userRoutes);
+router.use("/usersRoute", userRoutes);
 router.use("/properties", propertyRoutes);
 
 export default router;

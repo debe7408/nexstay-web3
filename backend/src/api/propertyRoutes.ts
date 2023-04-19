@@ -1,7 +1,9 @@
 import express, { Request, Response } from "express";
-import { addPropertyValidation, jwtAuthorize } from "../validation";
+import { addPropertyValidation } from "../utils/validationSchemas";
 import { queryDb } from "../databaseConnection";
 import { validationResult } from "express-validator";
+import { verifyToken } from "../utils/tokenHelpers";
+import { checkIfUserExist } from "../utils/userHelpers";
 
 const propertyRoutes = express.Router();
 
@@ -13,7 +15,7 @@ propertyRoutes.get("/getProperties", async (req, res) => {
 propertyRoutes.post(
   "/addProperty",
   addPropertyValidation,
-  jwtAuthorize,
+  verifyToken,
   async (req: Request, res: Response) => {
     const errors = validationResult(req);
 
@@ -34,6 +36,10 @@ propertyRoutes.post(
     } = req.body;
 
     const userId = req.body.id;
+    const publicAddress = req.body.publicAddress;
+
+    const user = await checkIfUserExist(publicAddress);
+    if (!user) return res.status(404).json("User not found");
 
     const sqlQuery = `INSERT INTO properties (owner_id, name, property_type, country, city, address, price, amenities, pictures, booking_status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
@@ -57,10 +63,13 @@ propertyRoutes.post(
   }
 );
 
-propertyRoutes.delete("/deleteProperty", jwtAuthorize, async (req, res) => {
+propertyRoutes.delete("/deleteProperty", verifyToken, async (req, res) => {
   const { property_id } = req.body;
   const userId = req.body.id;
+  const publicAddress = req.body.publicAddress;
+  const user = await checkIfUserExist(publicAddress);
 
+  if (!user) return res.status(404).json("User not found");
   if (!property_id) return res.status(400).json("Missing property id");
 
   const sqlQuery = `DELETE FROM properties WHERE id = ? AND owner_id = ?`;
