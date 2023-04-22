@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import { RadioGroup, Grid, Typography } from "@mui/material";
+import { RadioGroup, Grid } from "@mui/material";
 import availablePropertyTypes from "../../../constants/availablePropertyTypes";
-import StyledBox from "../../../components/StyledBox";
-import { themes } from "../../../constants/colors";
 import CustomRadioButton from "../../../components/CustomRadioButton";
+import SectionTitle from "../../../components/SectionTitle";
 
 const PropertType = () => {
   const [selectedValue, setSelectedValue] = useState("");
@@ -26,19 +25,7 @@ const PropertType = () => {
             gap: "10px",
           }}
         >
-          <Grid item xs={12} md={12} lg={12}>
-            <StyledBox textAlign="left">
-              <Typography
-                variant="h4"
-                sx={{
-                  fontWeight: "bold",
-                  color: { xs: `${themes.dark.dark_accent}`, md: "black" },
-                }}
-              >
-                Which describes your property best?
-              </Typography>
-            </StyledBox>
-          </Grid>
+          <SectionTitle title="Which describes your place the best?" />
           {availablePropertyTypes.map((propertyType) => (
             <CustomRadioButton
               key={propertyType}
