@@ -21,10 +21,12 @@ In order to run this project, you will need to add the following environment var
 
 `REACT_APP_BASE_API_URL` - backend api url.
 
+`REACT_APP_GOOGLE_MAPS_API_KEY` - google maps api key
+
 Here is an example of how the .env file should look like:
 
 ```bash
-REACT_APP_WEB3AUTH_CLIENTID="someClientId123"
+REACT_APP_WEB3AUTH_CLIENTID="YOUR_WEB3AUTH_CLIENT_ID_HERE"
 
 REACT_APP_CHAIN_ID="0x61"
 
@@ -33,6 +35,8 @@ REACT_APP_RPC_TARGET="https://data-seed-prebsc-1-s3.binance.org:8545"
 REACT_APP_BLOCK_EXPLORER="https://testnet.bscscan.com/"
 
 REACT_APP_BASE_API_URL="http://localhost:3001/api"
+
+REACT_APP_GOOGLE_MAPS_API_KEY="YOUR_API_KEY_HERE"
 ```
 
 ## Run Locally

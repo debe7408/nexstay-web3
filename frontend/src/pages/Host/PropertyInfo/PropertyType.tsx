@@ -41,6 +41,7 @@ const PropertType = () => {
           </Grid>
           {availablePropertyTypes.map((propertyType) => (
             <CustomRadioButton
+              key={propertyType}
               propertyType={propertyType}
               selectedValue={selectedValue}
             />

@@ -17,6 +17,7 @@ const CustomRadioButton: React.FC<Props> = ({
     <Grid item xs={12} sm={4} md={3}>
       <StyledBox>
         <FormControlLabel
+          key={propertyType}
           value={propertyType}
           control={<Radio color="primary" icon={<></>} checkedIcon={<></>} />}
           label={
