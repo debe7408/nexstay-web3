@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, Container } from "@mui/material";
+import { Grid } from "@mui/material";
 import { Property } from "../types/property";
 import PropertyBox from "./PropertyBox";
 

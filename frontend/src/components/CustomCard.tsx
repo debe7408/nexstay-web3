@@ -9,9 +9,9 @@ import styled from "styled-components";
 import { themes } from "../constants/colors";
 
 interface CustomCardProps {
-  title: string;
-  subtitle: string;
   body: string | JSX.Element;
+  title?: string;
+  subtitle?: string;
   imageSrc?: string;
   titleIcon?: JSX.Element;
   cardWidth?: false | "xs" | "sm" | "md" | "lg" | "xl" | undefined;

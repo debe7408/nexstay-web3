@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { AppBar, Toolbar, Typography, Button } from "@mui/material";
+import { AppBar, Toolbar, Typography } from "@mui/material";
 import Logo from "../assets/logo.svg";
 import styled from "styled-components";
 import { themes } from "../constants/colors";

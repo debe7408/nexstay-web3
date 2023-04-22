@@ -3,7 +3,7 @@ import { CSSTransition, TransitionGroup } from "react-transition-group";
 import HomePage from "../pages/Home/Home";
 import ProfilePage from "../pages/Profile/Profile";
 import HostLandingPage from "../pages/Host/HostLandingPage";
-import BecomeHostPage from "../pages/Host/BecomeHost";
+import HostForm from "../pages/Host/HostingForm";
 
 const Main = () => {
   const location = useLocation();
@@ -15,7 +15,7 @@ const Main = () => {
           <Route path="/" element={<HomePage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/host/information" element={<HostLandingPage />} />
-          <Route path="/host/start-hosting" element={<BecomeHostPage />} />
+          <Route path="/host/start-hosting" element={<HostForm />} />
         </Routes>
       </CSSTransition>
     </TransitionGroup>

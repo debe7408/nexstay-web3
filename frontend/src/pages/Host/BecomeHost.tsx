@@ -1,9 +1,6 @@
 import {
   Container,
   Grid,
-  Stepper,
-  Step,
-  StepLabel,
   Typography,
   List,
   ListItem,
@@ -16,7 +13,6 @@ import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutli
 import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
 import StyledBox from "../../components/StyledBox";
 import { themes } from "../../constants/colors";
-import HostingFormComponent from "./HostingForm";
 
 const BecomeHostComponent = () => {
   return (
@@ -104,7 +100,6 @@ const BecomeHostComponent = () => {
           </Grid>
         </Grid>
       </Container>
-      <HostingFormComponent></HostingFormComponent>
     </>
   );
 };
