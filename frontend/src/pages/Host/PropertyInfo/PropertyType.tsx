@@ -1,10 +1,18 @@
 import React, { useState } from "react";
 import { RadioGroup, Grid } from "@mui/material";
 import availablePropertyTypes from "../../../constants/availablePropertyTypes";
-import CustomRadioButton from "../../../components/CustomRadioButton";
+import CustomRadioButton from "../components/CustomRadioButton";
 import SectionTitle from "../../../components/SectionTitle";
+import { FieldErrors, UseFormRegister } from "react-hook-form";
+import { FormData } from "./PropertyInfo";
+import ErrorComponent from "../../../components/ErrorComponent";
 
-const PropertType = () => {
+interface Props {
+  register: UseFormRegister<FormData>;
+  errors: FieldErrors<FormData>;
+}
+
+const PropertType: React.FC<Props> = ({ register, errors }) => {
   const [selectedValue, setSelectedValue] = useState("");
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -31,9 +39,11 @@ const PropertType = () => {
               key={propertyType}
               propertyType={propertyType}
               selectedValue={selectedValue}
+              register={register}
             />
           ))}
         </Grid>
+        {errors.propertyType && <ErrorComponent />}
       </RadioGroup>
     </>
   );

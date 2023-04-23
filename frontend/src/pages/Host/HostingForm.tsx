@@ -1,12 +1,4 @@
-import {
-  Container,
-  Stepper,
-  Step,
-  StepLabel,
-  Button,
-  Grid,
-  Box,
-} from "@mui/material";
+import { Container, Stepper, Step, StepLabel, Grid } from "@mui/material";
 import { useState } from "react";
 import BecomeHostComponent from "./BecomeHost";
 import ContactInfo from "./ContactInfo/ContactInfo";
@@ -18,25 +10,39 @@ const steps = [
   "Property information",
   "Last touches",
 ];
-export interface FormData {
-  firstName: string;
-  lastName: string;
-  email: string;
-  age: number;
-  labas: string;
-}
 
 const HostingFormComponent = () => {
   const [activeStep, setActiveStep] = useState(0);
 
-  const formContent = (step: number) => {
+  const stepContent = (step: number) => {
     switch (step) {
       case 0:
-        return <BecomeHostComponent />;
+        return (
+          <BecomeHostComponent
+            steps={steps}
+            activeStep={activeStep}
+            handleNextStep={handleNextStep}
+            handlePreviousStep={handlePreviousStep}
+          />
+        );
       case 1:
-        return <ContactInfo />;
+        return (
+          <ContactInfo
+            steps={steps}
+            activeStep={activeStep}
+            handleNextStep={handleNextStep}
+            handlePreviousStep={handlePreviousStep}
+          />
+        );
       case 2:
-        return <PropertyInfo />;
+        return (
+          <PropertyInfo
+            steps={steps}
+            activeStep={activeStep}
+            handleNextStep={handleNextStep}
+            handlePreviousStep={handlePreviousStep}
+          />
+        );
       default:
         return <div>404: Not Found</div>;
     }
@@ -51,7 +57,7 @@ const HostingFormComponent = () => {
 
   return (
     <Container maxWidth="lg">
-      {formContent(activeStep)}
+      {stepContent(activeStep)}
       <Grid item xs={12}>
         <Stepper activeStep={activeStep} alternativeLabel>
           {steps.map((label) => (
@@ -60,19 +66,6 @@ const HostingFormComponent = () => {
             </Step>
           ))}
         </Stepper>
-      </Grid>
-      <Grid item xs={12}>
-        <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-          <Button disabled={activeStep === 0} onClick={handlePreviousStep}>
-            Back
-          </Button>
-          <Box sx={{ flex: "1 1 auto" }} />
-          {activeStep === steps.length - 1 ? (
-            <Button type="submit">Submit</Button>
-          ) : (
-            <Button onClick={handleNextStep}>Next</Button>
-          )}
-        </Box>
       </Grid>
     </Container>
   );

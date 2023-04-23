@@ -3,6 +3,12 @@ import StyledBox from "../../../components/StyledBox";
 import MapsComponent from "../../../components/Maps";
 import AddressForm from "./AddressForm";
 import SectionTitle from "../../../components/SectionTitle";
+import { FieldErrors, UseFormRegister } from "react-hook-form";
+import { FormData } from "./PropertyInfo";
+interface Props {
+  register: UseFormRegister<FormData>;
+  errors: FieldErrors<FormData>;
+}
 
 const containerStyle = {
   width: "100%",
@@ -15,7 +21,7 @@ const center = {
   lng: 25.26221793326186,
 };
 
-const PropertType = () => {
+const PropertType: React.FC<Props> = ({ register, errors }) => {
   return (
     <>
       <Grid
@@ -37,7 +43,7 @@ const PropertType = () => {
         </Grid>
         <Grid item xs={12} md={12} lg={12}>
           <StyledBox>
-            <AddressForm />
+            <AddressForm register={register} errors={errors} />
           </StyledBox>
         </Grid>
       </Grid>

@@ -1,9 +1,14 @@
 import EmailIcon from "@mui/icons-material/Email";
 import { Box, CssBaseline, InputAdornment, TextField } from "@mui/material";
+import { FieldErrors, UseFormRegister } from "react-hook-form";
+import { FormData } from "./ContactInfo";
 
-interface Props {}
+interface Props {
+  register: UseFormRegister<FormData>;
+  errors: FieldErrors<FormData>;
+}
 
-const ContactInfoForm: React.FC<Props> = () => {
+const ContactInfoForm: React.FC<Props> = ({ register, errors }) => {
   return (
     <Box
       sx={{
@@ -13,7 +18,7 @@ const ContactInfoForm: React.FC<Props> = () => {
         flexDirection: "column",
         alignItems: "left",
         maxWidth: "100%",
-        backgroundColor: "#e0e0e0",
+        width: "100%",
         borderRadius: "15px",
       }}
     >
@@ -24,6 +29,8 @@ const ContactInfoForm: React.FC<Props> = () => {
         key={"name"}
         label="Name"
         variant="outlined"
+        {...register("firstName")}
+        error={errors.firstName ? true : false}
       />
 
       <TextField
@@ -32,6 +39,8 @@ const ContactInfoForm: React.FC<Props> = () => {
         key={"surname"}
         label="Surname"
         variant="outlined"
+        {...register("lastName")}
+        error={errors.lastName ? true : false}
       />
 
       <TextField
@@ -41,6 +50,8 @@ const ContactInfoForm: React.FC<Props> = () => {
         label="Age"
         type="number"
         variant="outlined"
+        {...register("age")}
+        error={errors.age ? true : false}
       />
 
       <TextField
@@ -58,33 +69,11 @@ const ContactInfoForm: React.FC<Props> = () => {
           ),
         }}
         variant="outlined"
+        {...register("email")}
+        error={errors.email ? true : false}
       ></TextField>
     </Box>
   );
 };
-
-// const StyledCustomButton = styled(CustomButton)<{
-//   error: FieldErrors<FormInputs>;
-//   loading: boolean;
-// }>`
-//   background: ${({ error }) =>
-//     error.password || error.email || error.age || error.name || error.age
-//       ? "red"
-//       : themes.dark.main};
-//   mt: 3;
-//   mb: 2;
-//   color: ${({ error }) =>
-//     error.password || error.email || error.age || error.name || error.age
-//       ? "white"
-//       : themes.dark.text};
-//   &:hover {
-//     background: ${({ error, loading }) =>
-//       loading
-//         ? themes.dark.main
-//         : error.password || error.email || error.age || error.name || error.age
-//         ? "red !important"
-//         : "green !important"};
-//   }
-// `;
 
 export default ContactInfoForm;

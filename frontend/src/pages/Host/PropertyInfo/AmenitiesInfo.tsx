@@ -2,11 +2,14 @@ import { Grid, FormGroup, Divider } from "@mui/material";
 import SectionTitle from "../../../components/SectionTitle";
 import { safetyAmenities, amenities } from "../../../constants/amenities";
 import CustomCheckboxButton from "../../../components/CustomCheckboxButton";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { UseFormSetValue } from "react-hook-form";
+import { FormData } from "./PropertyInfo";
+interface Props {
+  setValue: UseFormSetValue<FormData>;
+}
 
-interface Props {}
-
-const AmenitiesInfo: React.FC<Props> = () => {
+const AmenitiesInfo: React.FC<Props> = ({ setValue }) => {
   const [selectedValues, setSelectedValues] = useState({
     amenities: amenities.map(() => ({
       checked: false,
@@ -15,6 +18,19 @@ const AmenitiesInfo: React.FC<Props> = () => {
       checked: false,
     })),
   });
+
+  useEffect(() => {
+    setValue(
+      "amenities",
+      amenities.filter((_, i) => selectedValues.amenities[i].checked)
+    );
+    setValue(
+      "safetyAmenities",
+      safetyAmenities.filter(
+        (_, i) => selectedValues.safetyAmenities[i].checked
+      )
+    );
+  }, [selectedValues, setSelectedValues]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, checked } = event.target;

@@ -13,8 +13,21 @@ import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutli
 import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
 import StyledBox from "../../components/StyledBox";
 import { themes } from "../../constants/colors";
+import StepperNavigation from "./components/StepperNavigation";
 
-const BecomeHostComponent = () => {
+interface Props {
+  steps: string[];
+  activeStep: number;
+  handleNextStep: () => void;
+  handlePreviousStep: () => void;
+}
+
+const BecomeHostComponent: React.FC<Props> = ({
+  activeStep,
+  steps,
+  handleNextStep,
+  handlePreviousStep,
+}) => {
   return (
     <>
       <Container maxWidth="lg">
@@ -26,7 +39,7 @@ const BecomeHostComponent = () => {
             justifyContent: "center",
             alignItems: "center",
             paddingTop: "100px",
-            paddingBottom: "100px",
+            paddingBottom: "20px",
           }}
         >
           <Grid item xs={12} md={12} lg={6}>
@@ -99,6 +112,12 @@ const BecomeHostComponent = () => {
             </StyledBox>
           </Grid>
         </Grid>
+        <StepperNavigation
+          activeStep={activeStep}
+          steps={steps}
+          handlePreviousStep={handlePreviousStep}
+          handleNextStep={handleNextStep}
+        />
       </Container>
     </>
   );

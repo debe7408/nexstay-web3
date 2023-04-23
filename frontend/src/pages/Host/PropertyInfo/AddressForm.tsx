@@ -1,30 +1,20 @@
 import React from "react";
 import { TextField, Grid } from "@mui/material";
 import styled from "styled-components";
+import { FieldErrors, UseFormRegister } from "react-hook-form";
+import { FormData } from "./PropertyInfo";
+import ErrorComponent from "../../../components/ErrorComponent";
 
-interface AddressFormProps {
-  streetAddress?: string;
-  setStreetAddress?: (value: string) => void;
-  city?: string;
-  setCity?: (value: string) => void;
-  country?: string;
-  setCountry?: (value: string) => void;
-  zipCode?: string;
-  setZipCode?: (value: string) => void;
+interface Props {
+  register: UseFormRegister<FormData>;
+  errors: FieldErrors<FormData>;
 }
 
 const StyledTextField = styled(TextField)`
   margin-bottom: 20px;
 `;
 
-const AddressForm: React.FC<AddressFormProps> = ({
-  streetAddress,
-  setStreetAddress,
-  country,
-  setCountry,
-  city,
-  setCity,
-}) => {
+const AddressForm: React.FC<Props> = ({ register, errors }) => {
   return (
     <Grid container spacing={2}>
       <Grid item xs={12}>
@@ -32,8 +22,8 @@ const AddressForm: React.FC<AddressFormProps> = ({
           fullWidth
           label="Street Address"
           variant="outlined"
-          value={streetAddress}
-          // onChange={(e) => setStreetAddress(e.target.value)}
+          {...register("propertyLocation.address")}
+          error={!!errors.propertyLocation?.address}
         />
       </Grid>
       <Grid item xs={12} sm={6}>
@@ -41,8 +31,8 @@ const AddressForm: React.FC<AddressFormProps> = ({
           fullWidth
           label="Country"
           variant="outlined"
-          value={country}
-          // onChange={(e) => setCity(e.target.value)}
+          {...register("propertyLocation.country")}
+          error={!!errors.propertyLocation?.country}
         />
       </Grid>
       <Grid item xs={12} sm={6}>
@@ -50,10 +40,11 @@ const AddressForm: React.FC<AddressFormProps> = ({
           fullWidth
           label="City"
           variant="outlined"
-          value={city}
-          // onChange={(e) => setState(e.target.value)}
+          {...register("propertyLocation.city")}
+          error={!!errors.propertyLocation?.city}
         />
       </Grid>
+      {errors.propertyLocation && <ErrorComponent />}
     </Grid>
   );
 };

@@ -2,7 +2,6 @@ import styled from "styled-components";
 import { FormControlLabel, Grid } from "@mui/material";
 import { Favorite as FavoriteIcon } from "@mui/icons-material";
 import Checkbox from "@mui/material/Checkbox";
-
 import StyledBox from "./StyledBox";
 import { themes } from "../constants/colors";
 

@@ -1,14 +1,53 @@
-import { Container, Grid, Typography } from "@mui/material";
+import { Container, Grid } from "@mui/material";
 import StyledBox from "../../../components/StyledBox";
-import { themes } from "../../../constants/colors";
 import ContactInfoForm from "./ContactInfoForm";
-import CustomCard from "../../../components/CustomCard";
+import { useForm } from "react-hook-form";
+import SectionTitle from "../../../components/SectionTitle";
+import StepperNavigation from "../components/StepperNavigation";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 
-interface Props {}
+interface Props {
+  steps: string[];
+  activeStep: number;
+  handleNextStep: () => void;
+  handlePreviousStep: () => void;
+}
+export interface FormData {
+  firstName: string;
+  lastName: string;
+  email: string;
+  age: number;
+}
 
-const BecomeHostComponent: React.FC<Props> = () => {
+const ContactInfo: React.FC<Props> = ({
+  activeStep,
+  steps,
+  handleNextStep,
+  handlePreviousStep,
+}) => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormData>({
+    resolver: yupResolver(
+      yup.object().shape({
+        firstName: yup.string().required().min(2),
+        lastName: yup.string().required().min(3),
+        email: yup.string().required().email(),
+        age: yup.number().required().min(18).max(99),
+      })
+    ),
+  });
+
+  const onSubmit = handleSubmit((data) => {
+    console.log(data);
+    handleNextStep();
+  });
+
   return (
-    <>
+    <form onSubmit={onSubmit}>
       <Container maxWidth="lg">
         <Grid
           container
@@ -20,28 +59,22 @@ const BecomeHostComponent: React.FC<Props> = () => {
             paddingBottom: "20px",
           }}
         >
-          <Grid item xs={12} md={12} lg={12}>
-            <StyledBox textAlign="left">
-              <Typography
-                variant="h3"
-                sx={{
-                  fontWeight: "bold",
-                  color: { xs: `${themes.dark.dark_accent}`, md: "black" },
-                }}
-              >
-                Let's setup your contact information first...
-              </Typography>
-            </StyledBox>
-          </Grid>
+          <SectionTitle title="Let's setup your contact information first..." />
           <Grid item xs={12} md={12} lg={12}>
             <StyledBox>
-              <CustomCard body={<ContactInfoForm />} cardWidth="lg" />
+              {<ContactInfoForm register={register} errors={errors} />}
             </StyledBox>
           </Grid>
+          <StepperNavigation
+            activeStep={activeStep}
+            steps={steps}
+            handleNextStep={handleNextStep}
+            handlePreviousStep={handlePreviousStep}
+          />
         </Grid>
       </Container>
-    </>
+    </form>
   );
 };
 
-export default BecomeHostComponent;
+export default ContactInfo;
