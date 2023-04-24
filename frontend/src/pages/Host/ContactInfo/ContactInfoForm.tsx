@@ -1,11 +1,10 @@
 import EmailIcon from "@mui/icons-material/Email";
 import { Box, CssBaseline, InputAdornment, TextField } from "@mui/material";
 import { FieldErrors, UseFormRegister } from "react-hook-form";
-import { FormData } from "./ContactInfo";
-
+import { ContactInfo } from "../../../types/contactInfo";
 interface Props {
-  register: UseFormRegister<FormData>;
-  errors: FieldErrors<FormData>;
+  register: UseFormRegister<ContactInfo>;
+  errors: FieldErrors<ContactInfo>;
 }
 
 const ContactInfoForm: React.FC<Props> = ({ register, errors }) => {

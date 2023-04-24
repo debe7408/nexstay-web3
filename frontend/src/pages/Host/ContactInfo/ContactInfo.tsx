@@ -6,44 +6,52 @@ import SectionTitle from "../../../components/SectionTitle";
 import StepperNavigation from "../components/StepperNavigation";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-
+import { updateContactInfo } from "../../../api/updateContactInfo";
+import { ContactInfo } from "../../../types/contactInfo";
+import { useSnackbar } from "notistack";
 interface Props {
   steps: string[];
   activeStep: number;
   handleNextStep: () => void;
   handlePreviousStep: () => void;
 }
-export interface FormData {
-  firstName: string;
-  lastName: string;
-  email: string;
-  age: number;
-}
 
-const ContactInfo: React.FC<Props> = ({
+const ContactInfoComponent: React.FC<Props> = ({
   activeStep,
   steps,
   handleNextStep,
   handlePreviousStep,
 }) => {
+  const { enqueueSnackbar } = useSnackbar();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormData>({
+  } = useForm<ContactInfo>({
     resolver: yupResolver(
       yup.object().shape({
         firstName: yup.string().required().min(2),
         lastName: yup.string().required().min(3),
         email: yup.string().required().email(),
-        age: yup.number().required().min(18).max(99),
+        age: yup.number().required().min(20).max(90),
       })
     ),
   });
 
-  const onSubmit = handleSubmit((data) => {
-    console.log(data);
-    handleNextStep();
+  const onSubmit = handleSubmit(async (formData, event) => {
+    const { hasError } = await updateContactInfo(formData);
+
+    if (!hasError) {
+      enqueueSnackbar("Contact information updated", {
+        variant: "success",
+      });
+      handleNextStep();
+    } else {
+      enqueueSnackbar("Contact could not be updated", {
+        variant: "error",
+      });
+    }
   });
 
   return (
@@ -77,4 +85,4 @@ const ContactInfo: React.FC<Props> = ({
   );
 };
 
-export default ContactInfo;
+export default ContactInfoComponent;

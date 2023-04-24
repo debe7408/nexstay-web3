@@ -1,6 +1,6 @@
 import { AxiosError } from "axios";
 import axiosClient from "../axios/axiosClient";
-import { PropertyInfo } from "../pages/Home/types/property";
+import { PropertyInfo } from "../types/property";
 
 export const getAllProperties = async (): Promise<PropertyInfo> => {
   try {

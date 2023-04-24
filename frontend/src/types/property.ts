@@ -1,4 +1,4 @@
-import { BaseError } from "../../../types/baseError";
+import { BaseError } from "./baseError";
 
 export interface PropertyInfo extends BaseError {
   properties?: Property[];

@@ -1,23 +1,13 @@
 import { AxiosError } from "axios";
 import axiosClient from "../axios/axiosClient";
-import { Property } from "../types/property";
 import { BaseError } from "../types/baseError";
+import { ContactInfo } from "../types/contactInfo";
 
-const item: Property = {
-  name: "test name",
-  property_type: "test property type",
-  country: "test country",
-  city: "test city",
-  address: "test address",
-  price: 100,
-  amenities: { wifi: "test amenity 1" },
-  pictures: { asd: "test picture 1" },
-  booking_status: false,
-};
-
-export const addProperty = async (): Promise<BaseError> => {
+export const updateContactInfo = async (
+  contactInfo: ContactInfo
+): Promise<BaseError> => {
   try {
-    await axiosClient.post("/properties/addProperty", item);
+    await axiosClient.post("/usersRoute/updateContactInfo", contactInfo);
   } catch (error) {
     const requestError = error as AxiosError;
     if (!requestError.response) {

@@ -1,6 +1,9 @@
 import express, { Request, Response } from "express";
 import { queryDb } from "../databaseConnection";
-import { usersPostValidation } from "../utils/validationSchemas";
+import {
+  usersPostValidation,
+  userUpdateContactInfo,
+} from "../utils/validationSchemas";
 import { validationResult } from "express-validator";
 import { signToken, verifyToken } from "../utils/tokenHelpers";
 import { checkIfUserExist } from "../utils/userHelpers";
@@ -11,6 +14,41 @@ userRoutes.get("/allUsers", async (req, res) => {
   const response = await queryDb("SELECT * FROM users");
   return res.json(response);
 });
+
+userRoutes.post(
+  "/updateContactInfo",
+  userUpdateContactInfo,
+  verifyToken,
+  async (req: Request, res: Response) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty())
+      return res.status(400).json({ errors: errors.array() });
+
+    const { publicAddress, firstName, lastName, email, age } = req.body;
+    const publicAddressLowercased = publicAddress.toLowerCase();
+
+    try {
+      const user = await checkIfUserExist(publicAddressLowercased);
+
+      if (!user) return res.status(404).send("User not found");
+
+      const updateSql = `UPDATE users SET firstName = ?, lastName = ?, email = ?, age = ? WHERE publicAddress = ?`;
+      await queryDb(updateSql, [
+        firstName,
+        lastName,
+        email,
+        age,
+        publicAddressLowercased,
+      ]);
+
+      return res.send({ message: "User updated" });
+    } catch (error) {
+      console.error(error);
+      res.status(500).send("Internal server error");
+    }
+  }
+);
 
 userRoutes.post(
   "/users",

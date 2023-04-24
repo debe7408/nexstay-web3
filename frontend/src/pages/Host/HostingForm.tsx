@@ -1,7 +1,7 @@
 import { Container, Stepper, Step, StepLabel, Grid } from "@mui/material";
 import { useState } from "react";
 import BecomeHostComponent from "./BecomeHost";
-import ContactInfo from "./ContactInfo/ContactInfo";
+import ContactInfoComponent from "./ContactInfo/ContactInfo";
 import PropertyInfo from "./PropertyInfo/PropertyInfo";
 
 const steps = [
@@ -27,7 +27,7 @@ const HostingFormComponent = () => {
         );
       case 1:
         return (
-          <ContactInfo
+          <ContactInfoComponent
             steps={steps}
             activeStep={activeStep}
             handleNextStep={handleNextStep}

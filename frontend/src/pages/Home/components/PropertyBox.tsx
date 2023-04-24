@@ -1,5 +1,5 @@
 import { Grid, Box, Typography } from "@mui/material";
-import { Property } from "../types/property";
+import { Property } from "../../../types/property";
 import React from "react";
 import styled from "styled-components";
 

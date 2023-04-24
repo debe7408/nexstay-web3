@@ -9,6 +9,13 @@ export const usersPostValidation = [
     .matches(/^0x[a-fA-F0-9]{40}$/g),
 ];
 
+export const userUpdateContactInfo = [
+  check("firstName", "Please include a valid first name").not().isEmpty(),
+  check("lastName", "Please include a valid last name").not().isEmpty(),
+  check("email", "Please include a valid email").isEmail(),
+  check("age", "Age has to be between 20 and 90").isInt({ min: 20, max: 90 }),
+];
+
 export const addPropertyValidation = [
   check("name", "Property has to have a name").not().isEmpty(),
   check("property_type", "Property has to have a type").not().isEmpty(),
