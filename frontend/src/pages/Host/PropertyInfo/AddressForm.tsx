@@ -2,12 +2,12 @@ import React from "react";
 import { TextField, Grid } from "@mui/material";
 import styled from "styled-components";
 import { FieldErrors, UseFormRegister } from "react-hook-form";
-import { FormData } from "./PropertyInfo";
 import ErrorComponent from "../../../components/ErrorComponent";
+import { PropertyInfoForm } from "../../../types/property";
 
 interface Props {
-  register: UseFormRegister<FormData>;
-  errors: FieldErrors<FormData>;
+  register: UseFormRegister<PropertyInfoForm>;
+  errors: FieldErrors<PropertyInfoForm>;
 }
 
 const StyledTextField = styled(TextField)`
@@ -22,8 +22,8 @@ const AddressForm: React.FC<Props> = ({ register, errors }) => {
           fullWidth
           label="Street Address"
           variant="outlined"
-          {...register("propertyLocation.address")}
-          error={!!errors.propertyLocation?.address}
+          {...register("location.address")}
+          error={!!errors.location?.address}
         />
       </Grid>
       <Grid item xs={12} sm={6}>
@@ -31,8 +31,8 @@ const AddressForm: React.FC<Props> = ({ register, errors }) => {
           fullWidth
           label="Country"
           variant="outlined"
-          {...register("propertyLocation.country")}
-          error={!!errors.propertyLocation?.country}
+          {...register("location.country")}
+          error={!!errors.location?.country}
         />
       </Grid>
       <Grid item xs={12} sm={6}>
@@ -40,11 +40,11 @@ const AddressForm: React.FC<Props> = ({ register, errors }) => {
           fullWidth
           label="City"
           variant="outlined"
-          {...register("propertyLocation.city")}
-          error={!!errors.propertyLocation?.city}
+          {...register("location.city")}
+          error={!!errors.location?.city}
         />
       </Grid>
-      {errors.propertyLocation && <ErrorComponent />}
+      {errors.location && <ErrorComponent />}
     </Grid>
   );
 };

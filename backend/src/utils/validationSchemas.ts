@@ -18,21 +18,41 @@ export const userUpdateContactInfo = [
 
 export const addPropertyValidation = [
   check("name", "Property has to have a name").not().isEmpty(),
-  check("property_type", "Property has to have a type").not().isEmpty(),
-  check("country", "Property has to have a country").not().isEmpty(),
-  check("city", "Property has to have a city").not().isEmpty(),
-  check("address", "Property has to have an address").not().isEmpty(),
+  check("description", "Property has to have a description").not().isEmpty(),
+  check("type", "Property has to have a type").not().isEmpty(),
+  check("size", "Property has to have a sizing")
+    .isObject()
+    .custom((sizeProp) => {
+      if (!sizeProp.beds || !sizeProp.bathrooms || !sizeProp.guests) {
+        throw new Error(
+          "Property sizing should contain beds, bathrooms, guests"
+        );
+      }
+      return true;
+    }),
+  check("location", "Property has to have a location")
+    .isObject()
+    .custom((locationProp) => {
+      if (
+        !locationProp.country ||
+        !locationProp.city ||
+        !locationProp.address
+      ) {
+        throw new Error(
+          "Property location should contain country, city, address"
+        );
+      }
+      return true;
+    }),
   check("price", "Property has to have a price in a number format")
     .isDecimal()
     .not()
     .isEmpty(),
-  check("amenities", "Property has to have amenities. JSON object")
-    .not()
-    .isEmpty(),
-  check("pictures", "Property has to have pictures. JSON object")
-    .not()
-    .isEmpty(),
-  check("booking_status", "Property has to have a booking state. Boolean")
+  check("amenities", "Property has to have amenities").isArray(),
+
+  check("safety_amenities", "Property has to have safety amenities").isArray(),
+  check("pictures", "Property has to have pictures"),
+  check("booking_status", "Property has to have a booking status")
     .isBoolean()
     .not()
     .isEmpty(),

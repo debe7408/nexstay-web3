@@ -4,12 +4,12 @@ import availablePropertyTypes from "../../../constants/availablePropertyTypes";
 import CustomRadioButton from "../components/CustomRadioButton";
 import SectionTitle from "../../../components/SectionTitle";
 import { FieldErrors, UseFormRegister } from "react-hook-form";
-import { FormData } from "./PropertyInfo";
 import ErrorComponent from "../../../components/ErrorComponent";
+import { PropertyInfoForm } from "../../../types/property";
 
 interface Props {
-  register: UseFormRegister<FormData>;
-  errors: FieldErrors<FormData>;
+  register: UseFormRegister<PropertyInfoForm>;
+  errors: FieldErrors<PropertyInfoForm>;
 }
 
 const PropertType: React.FC<Props> = ({ register, errors }) => {
@@ -43,7 +43,7 @@ const PropertType: React.FC<Props> = ({ register, errors }) => {
             />
           ))}
         </Grid>
-        {errors.propertyType && <ErrorComponent />}
+        {errors.type && <ErrorComponent />}
       </RadioGroup>
     </>
   );

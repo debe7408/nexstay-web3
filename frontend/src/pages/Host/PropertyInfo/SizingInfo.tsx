@@ -4,10 +4,10 @@ import styled from "styled-components";
 import StepperButton from "../../../components/StepperButton";
 import { useState } from "react";
 import { FieldErrors, UseFormRegister } from "react-hook-form";
-import { FormData } from "./PropertyInfo";
+import { PropertyInfoForm } from "../../../types/property";
 interface Props {
-  register: UseFormRegister<FormData>;
-  errors: FieldErrors<FormData>;
+  register: UseFormRegister<PropertyInfoForm>;
+  errors: FieldErrors<PropertyInfoForm>;
 }
 
 /**
@@ -34,11 +34,7 @@ const SizingInfo: React.FC<Props> = ({ register, errors }) => {
       <GridItem item xs={12} md={12} lg={12}>
         <Typography variant="h5">Guests</Typography>
         <Box sx={{ flex: "1 1 auto" }} />
-        <input
-          type="hidden"
-          value={guestCount}
-          {...register("propertySize.guests")}
-        />
+        <input type="hidden" value={guestCount} {...register("size.guests")} />
         <StepperButton count={guestCount} setCount={setGuestCount} />
       </GridItem>
       <Divider
@@ -51,11 +47,7 @@ const SizingInfo: React.FC<Props> = ({ register, errors }) => {
       <GridItem item xs={12} md={12} lg={12}>
         <Typography variant="h5">Beds</Typography>
         <Box sx={{ flex: "1 1 auto" }} />
-        <input
-          type="hidden"
-          value={bedCount}
-          {...register("propertySize.beds")}
-        />
+        <input type="hidden" value={bedCount} {...register("size.beds")} />
         <StepperButton count={bedCount} setCount={setBedCount} />
       </GridItem>
       <Divider
@@ -71,7 +63,7 @@ const SizingInfo: React.FC<Props> = ({ register, errors }) => {
         <input
           type="hidden"
           value={bathroomCount}
-          {...register("propertySize.bathrooms")}
+          {...register("size.bathrooms")}
         />
         <StepperButton count={bathroomCount} setCount={setBathroomCount} />
       </GridItem>

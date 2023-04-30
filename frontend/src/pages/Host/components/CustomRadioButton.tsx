@@ -4,12 +4,12 @@ import { Favorite as FavoriteIcon } from "@mui/icons-material";
 import StyledBox from "../../../components/StyledBox";
 import { themes } from "../../../constants/colors";
 import { UseFormRegister } from "react-hook-form";
-import { FormData } from "../PropertyInfo/PropertyInfo";
+import { PropertyInfoForm } from "../../../types/property";
 
 interface Props {
   propertyType: string;
   selectedValue: string;
-  register: UseFormRegister<FormData>;
+  register: UseFormRegister<PropertyInfoForm>;
 }
 
 const CustomRadioButton: React.FC<Props> = ({
@@ -30,7 +30,7 @@ const CustomRadioButton: React.FC<Props> = ({
               {propertyType}
             </Box>
           }
-          {...register("propertyType")}
+          {...register("type")}
         />
       </StyledBox>
     </Grid>

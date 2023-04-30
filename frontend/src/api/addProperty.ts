@@ -1,23 +1,13 @@
 import { AxiosError } from "axios";
 import axiosClient from "../axios/axiosClient";
-import { Property } from "../types/property";
+import { PropertyForm } from "../types/property";
 import { BaseError } from "../types/baseError";
 
-const item: Property = {
-  name: "test name",
-  property_type: "test property type",
-  country: "test country",
-  city: "test city",
-  address: "test address",
-  price: 100,
-  amenities: { wifi: "test amenity 1" },
-  pictures: { asd: "test picture 1" },
-  booking_status: false,
-};
-
-export const addProperty = async (): Promise<BaseError> => {
+export const addProperty = async (
+  propertyData: PropertyForm
+): Promise<BaseError> => {
   try {
-    await axiosClient.post("/properties/addProperty", item);
+    await axiosClient.post("/properties/addProperty", propertyData);
   } catch (error) {
     const requestError = error as AxiosError;
     if (!requestError.response) {
@@ -28,11 +18,12 @@ export const addProperty = async (): Promise<BaseError> => {
     }
     return {
       hasError: true,
-      message: requestError.response.data as string,
+      message: "Could not add property. Please check your data and try again",
     };
   }
 
   return {
     hasError: false,
+    message: "Property added!",
   };
 };

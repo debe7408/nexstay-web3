@@ -2,17 +2,37 @@ import { Container, Stepper, Step, StepLabel, Grid } from "@mui/material";
 import { useState } from "react";
 import BecomeHostComponent from "./BecomeHost";
 import ContactInfoComponent from "./ContactInfo/ContactInfo";
-import PropertyInfo from "./PropertyInfo/PropertyInfo";
+import PropertyInfoComponent from "./PropertyInfo/PropertyInfo";
+import ReviewInfoComponent from "./ReviewInfo/ReviewInfoComponent";
+import { PropertyForm, PropertyInfoForm } from "../../types/property";
+import { addProperty } from "../../api/addProperty";
+import { useSnackbar } from "notistack";
 
 const steps = [
-  "Start of a Journey",
+  "Start of a journey",
   "Contact information",
   "Property information",
-  "Last touches",
+  "Review and host",
 ];
 
 const HostingFormComponent = () => {
-  const [activeStep, setActiveStep] = useState(0);
+  const { enqueueSnackbar } = useSnackbar();
+  const [activeStep, setActiveStep] = useState(3);
+  const [propertyData, setPropertyData] = useState({} as PropertyInfoForm);
+
+  const handleInitialPropertyData = (data: PropertyInfoForm) => {
+    setPropertyData(data);
+  };
+
+  const handleFinalSubmit = async (data: PropertyForm) => {
+    const { hasError, message } = await addProperty(data);
+    if (hasError) {
+      enqueueSnackbar(message, { variant: "error" });
+      return;
+    }
+    enqueueSnackbar(message, { variant: "success" });
+    return;
+  };
 
   const stepContent = (step: number) => {
     switch (step) {
@@ -36,15 +56,25 @@ const HostingFormComponent = () => {
         );
       case 2:
         return (
-          <PropertyInfo
+          <PropertyInfoComponent
             steps={steps}
             activeStep={activeStep}
             handleNextStep={handleNextStep}
             handlePreviousStep={handlePreviousStep}
+            handleSubmitData={handleInitialPropertyData}
           />
         );
-      default:
-        return <div>404: Not Found</div>;
+      case 3:
+        return (
+          <ReviewInfoComponent
+            steps={steps}
+            activeStep={activeStep}
+            handleNextStep={handleNextStep}
+            handlePreviousStep={handlePreviousStep}
+            propertyData={propertyData}
+            handlePropertySubmit={handleFinalSubmit}
+          />
+        );
     }
   };
 

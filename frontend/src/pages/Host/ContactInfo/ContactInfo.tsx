@@ -70,7 +70,7 @@ const ContactInfoComponent: React.FC<Props> = ({
           <SectionTitle title="Let's setup your contact information first..." />
           <Grid item xs={12} md={12} lg={12}>
             <StyledBox>
-              {<ContactInfoForm register={register} errors={errors} />}
+              <ContactInfoForm register={register} errors={errors} />
             </StyledBox>
           </Grid>
           <StepperNavigation

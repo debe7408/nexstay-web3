@@ -23,17 +23,23 @@ propertyRoutes.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
+    console.log(req.body);
+
     const {
       name,
-      property_type,
-      country,
-      city,
-      address,
+      type,
+      description,
+      location,
       price,
       amenities,
+      safety_amenities,
       pictures,
+      size,
       booking_status,
     } = req.body;
+
+    const { country, city, address } = location;
+    const { beds, bathrooms, guests } = size;
 
     const userId = req.body.id;
     const publicAddress = req.body.publicAddress;
@@ -41,17 +47,22 @@ propertyRoutes.post(
     const user = await checkIfUserExist(publicAddress);
     if (!user) return res.status(404).json("User not found");
 
-    const sqlQuery = `INSERT INTO properties (owner_id, name, property_type, country, city, address, price, amenities, pictures, booking_status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+    const sqlQuery = `INSERT INTO properties (owner_id, name, description, type, country, city, address, price, amenities, safety_amenities, beds, guests, bathrooms, pictures, booking_status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
     await queryDb(sqlQuery, [
       userId,
       name,
-      property_type,
+      description,
+      type,
       country,
       city,
       address,
       price,
       JSON.stringify(amenities),
+      JSON.stringify(safety_amenities),
+      beds,
+      guests,
+      bathrooms,
       JSON.stringify(pictures),
       booking_status,
     ]).catch((err) => {

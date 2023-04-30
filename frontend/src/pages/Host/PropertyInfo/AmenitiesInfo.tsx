@@ -4,9 +4,9 @@ import { safetyAmenities, amenities } from "../../../constants/amenities";
 import CustomCheckboxButton from "../../../components/CustomCheckboxButton";
 import { useState, useEffect } from "react";
 import { UseFormSetValue } from "react-hook-form";
-import { FormData } from "./PropertyInfo";
+import { PropertyInfoForm } from "../../../types/property";
 interface Props {
-  setValue: UseFormSetValue<FormData>;
+  setValue: UseFormSetValue<PropertyInfoForm>;
 }
 
 const AmenitiesInfo: React.FC<Props> = ({ setValue }) => {
@@ -25,7 +25,7 @@ const AmenitiesInfo: React.FC<Props> = ({ setValue }) => {
       amenities.filter((_, i) => selectedValues.amenities[i].checked)
     );
     setValue(
-      "safetyAmenities",
+      "safety_amenities",
       safetyAmenities.filter(
         (_, i) => selectedValues.safetyAmenities[i].checked
       )

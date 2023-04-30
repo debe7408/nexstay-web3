@@ -3,8 +3,7 @@ import CustomProfileCard from "../../components/CustomProfileCard";
 import { useSnackbar } from "notistack";
 import { getSingleUserInfo } from "../../api/getUserInfo";
 import { User } from "../../types/user";
-import { Box, Button, Grid } from "@mui/material";
-import { addProperty } from "../../api/addProperty";
+import { Box, Grid } from "@mui/material";
 import { useAppSelector } from "../../app/hooks";
 import { selectLoginState } from "../../app/loginSlice";
 
@@ -28,22 +27,7 @@ const Profile = () => {
       setResponseData(user);
     };
     loginState && fetchData();
-  });
-
-  const handleAddProperty = async () => {
-    const { hasError, message } = await addProperty();
-
-    if (hasError) {
-      enqueueSnackbar(message, {
-        variant: "error",
-      });
-      return;
-    }
-
-    enqueueSnackbar("Property added!", {
-      variant: "success",
-    });
-  };
+  }, [loginState]);
 
   const title = responseData
     ? `${responseData.name} ${responseData.surname} `
@@ -60,9 +44,6 @@ const Profile = () => {
           responseData ? (
             <>
               <CustomDivBody data={responseData}></CustomDivBody>
-              <Button onClick={async () => await handleAddProperty()}>
-                add new
-              </Button>
             </>
           ) : (
             "body"

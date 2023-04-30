@@ -22,7 +22,10 @@ const PropertyBox: React.FC<PropertyComponentProps> = ({ item, imageSrc }) => {
           </Typography>
 
           <Typography variant="overline" component="p">
-            {item.price} € night
+            {item.price} $ night
+          </Typography>
+          <Typography variant="overline" component="p">
+            {item.type}
           </Typography>
         </Content>
       </StyledBox>

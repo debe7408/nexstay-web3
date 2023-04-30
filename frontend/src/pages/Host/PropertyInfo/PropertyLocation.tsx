@@ -4,10 +4,10 @@ import MapsComponent from "../../../components/Maps";
 import AddressForm from "./AddressForm";
 import SectionTitle from "../../../components/SectionTitle";
 import { FieldErrors, UseFormRegister } from "react-hook-form";
-import { FormData } from "./PropertyInfo";
+import { PropertyInfoForm } from "../../../types/property";
 interface Props {
-  register: UseFormRegister<FormData>;
-  errors: FieldErrors<FormData>;
+  register: UseFormRegister<PropertyInfoForm>;
+  errors: FieldErrors<PropertyInfoForm>;
 }
 
 const containerStyle = {
