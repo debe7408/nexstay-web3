@@ -1,6 +1,6 @@
 import React from "react";
 import { Grid } from "@mui/material";
-import { Property } from "../../../types/property";
+import { Property } from "../types/property";
 import PropertyBox from "./PropertyBox";
 
 interface PropertyContainerProps {

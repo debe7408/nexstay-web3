@@ -3,18 +3,21 @@ import CustomProfileCard from "../../components/CustomProfileCard";
 import { useSnackbar } from "notistack";
 import { getSingleUserInfo } from "../../api/getUserInfo";
 import { User } from "../../types/user";
-import { Box, Grid } from "@mui/material";
+import { Box, Grid, Container } from "@mui/material";
 import { useAppSelector } from "../../app/hooks";
 import { selectLoginState } from "../../app/loginSlice";
+import styled from "styled-components";
+import ProfileHeader from "./components/ProfileHeader";
+import ProfileUserInfo from "./components/ProfileUserInfo";
 
 const Profile = () => {
-  const [responseData, setResponseData] = useState<User>();
+  const [user, setUser] = useState<User>();
   const loginState = useAppSelector(selectLoginState);
 
   const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchUserInfo = async () => {
       const { hasError, message, user } = await getSingleUserInfo();
 
       if (hasError) {
@@ -24,56 +27,26 @@ const Profile = () => {
         return;
       }
 
-      setResponseData(user);
+      setUser(user);
     };
-    loginState && fetchData();
+
+    loginState && fetchUserInfo();
   }, [loginState]);
 
-  const title = responseData
-    ? `${responseData.name} ${responseData.surname} `
-    : "Log in to see your profile";
-
   return (
-    <>
-      <CustomProfileCard
-        title={title}
-        subtitle="This is your profile page"
-        bannerImageSrc="https://source.unsplash.com/random"
-        cardWidth="xl"
-        body={
-          responseData ? (
-            <>
-              <CustomDivBody data={responseData}></CustomDivBody>
-            </>
-          ) : (
-            "body"
-          )
-        }
-      ></CustomProfileCard>
-    </>
+    <StyledContainer maxWidth="xl">
+      <ProfileHeader
+        bannerUrl={`https://source.unsplash.com/random/?profile,color,user,${user?.id}`}
+        avatarUrl={`https://source.unsplash.com/random/?profile,picture,user,${user?.id}`}
+      />
+      {user && <ProfileUserInfo user={user} />}
+    </StyledContainer>
   );
 };
 
-const CustomDivBody = ({ data }: { data: User }) => {
-  return (
-    <Grid container>
-      <Box
-        key={data.id}
-        sx={{
-          border: 1,
-          margin: 1,
-        }}
-      >
-        <p>{data.name}</p>
-        <p>{data.email}</p>
-        <p>{data.age}</p>
-        <p>{data.banned}</p>
-        <p>{data.type}</p>
-        <p>{data.surname}</p>
-        <p>{data.publicAddress}</p>
-      </Box>
-    </Grid>
-  );
-};
+const StyledContainer = styled(Container)`
+  margin-top: 50px;
+  margin-bottom: 50px;
+`;
 
 export default Profile;
