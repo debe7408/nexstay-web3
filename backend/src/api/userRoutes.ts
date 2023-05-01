@@ -6,7 +6,10 @@ import {
 } from "../utils/validationSchemas";
 import { validationResult } from "express-validator";
 import { signToken, verifyToken } from "../utils/tokenHelpers";
-import { checkIfUserExist } from "../utils/userHelpers";
+import {
+  checkIfUserExist,
+  checkIfUserHasProperties,
+} from "../utils/userHelpers";
 
 const userRoutes = express.Router();
 
@@ -88,6 +91,12 @@ userRoutes.get("/users", verifyToken, async (req, res) => {
   const user = await checkIfUserExist(publicAddress.toLowerCase());
 
   if (!user) return res.status(404).send("User not found");
+
+  const properties = await checkIfUserHasProperties(user.id);
+
+  if (properties) {
+    user.ownedProperties = properties;
+  }
 
   return res.send(user);
 });

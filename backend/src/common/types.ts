@@ -1,4 +1,5 @@
 type UserTypes = "admin" | "host" | "user";
+
 export type User = {
   id: number;
   publicAddress: string;
@@ -8,4 +9,24 @@ export type User = {
   age: number;
   banned: boolean;
   type: UserTypes;
+  ownedProperties?: Property[];
+};
+
+export type Property = {
+  id: number;
+  owner_id: number;
+  name: string;
+  type: string;
+  description: string;
+  city: string;
+  country: string;
+  address: string;
+  price: number;
+  amenities: string;
+  safety_amenities: string;
+  pictures: string;
+  beds: number;
+  bathrooms: number;
+  guests: number;
+  booking_status: boolean;
 };
