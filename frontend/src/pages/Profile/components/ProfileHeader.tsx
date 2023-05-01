@@ -3,10 +3,10 @@ import ProfileAvatar from "../../../components/Avatar";
 
 interface Props {
   bannerUrl: string;
-  publicAddress: string;
+  userId: number;
 }
 
-const ProfileHeader: React.FC<Props> = ({ bannerUrl, publicAddress }) => {
+const ProfileHeader: React.FC<Props> = ({ bannerUrl, userId }) => {
   return (
     <Grid container>
       <Box
@@ -27,11 +27,7 @@ const ProfileHeader: React.FC<Props> = ({ bannerUrl, publicAddress }) => {
           top: { sm: "-80px", md: "-80px" },
         }}
       >
-        <ProfileAvatar
-          publicAddress={publicAddress}
-          customHeight="8rem"
-          customWidth="8rem"
-        />
+        <ProfileAvatar id={userId} customHeight="8rem" customWidth="8rem" />
       </Box>
     </Grid>
   );

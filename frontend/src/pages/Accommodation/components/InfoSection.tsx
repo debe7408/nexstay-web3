@@ -1,4 +1,5 @@
 import { Grid, Typography, Avatar } from "@mui/material";
+import ProfileAvatar from "../../../components/Avatar";
 import { Property } from "../../../types/property";
 import styled from "styled-components";
 import { useState } from "react";
@@ -32,7 +33,13 @@ const BasicInfo: React.FC<Props> = ({ property }) => {
         </Typography>
       </Grid>
       <AvatarGrid item xs={12} md={6}>
-        <StyledAvatar />
+        {property.owner_id && (
+          <ProfileAvatar
+            id={property.owner_id}
+            customHeight="6rem"
+            customWidth="6rem"
+          />
+        )}
       </AvatarGrid>
     </Grid>
   );

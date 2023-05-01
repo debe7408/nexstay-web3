@@ -2,7 +2,7 @@ import { Badge, IconButton, Menu, MenuItem } from "@mui/material";
 import React from "react";
 import { Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { login, selectLoginState } from "../app/loginSlice";
+import { login, selectLoginState, selectUserId } from "../app/loginSlice";
 import { web3Selectors } from "../app/web3Slice";
 import { connectWeb3auth, disconnectWeb3auth } from "../web3/web3auth";
 import { loginUser } from "../api/loginUser";
@@ -13,7 +13,8 @@ import ProfileAvatar from "./Avatar";
 const ProfileBadge = () => {
   const { enqueueSnackbar } = useSnackbar();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const { web3auth, signerAddress } = useAppSelector(web3Selectors);
+  const { web3auth } = useAppSelector(web3Selectors);
+  const userId = useAppSelector(selectUserId);
   const loggedIn = useAppSelector(selectLoginState);
   const dispatch = useAppDispatch();
 
@@ -72,8 +73,8 @@ const ProfileBadge = () => {
           overlap="circular"
           anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
         >
-          {signerAddress ? (
-            <ProfileAvatar publicAddress={signerAddress} />
+          {userId ? (
+            <ProfileAvatar id={userId} />
           ) : (
             <AccountCircleIcon
               sx={{

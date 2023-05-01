@@ -54,7 +54,7 @@ const Profile = () => {
         <>
           <ProfileHeader
             bannerUrl={`https://source.unsplash.com/random/?profile,color,user,${user?.id}`}
-            publicAddress={user.publicAddress}
+            userId={user?.id}
           />
           <ProfileUserInfo user={user} bookmarkedProperties={bookmarked} />
         </>

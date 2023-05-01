@@ -1,17 +1,13 @@
 import Avatar, { genConfig } from "react-nice-avatar";
 
 interface Props {
-  publicAddress: string;
+  id: number;
   customWidth?: string;
   customHeight?: string;
 }
 
-const ProfileAvatar: React.FC<Props> = ({
-  publicAddress,
-  customWidth,
-  customHeight,
-}) => {
-  const config = genConfig(publicAddress);
+const ProfileAvatar: React.FC<Props> = ({ id, customWidth, customHeight }) => {
+  const config = genConfig(id.toString());
 
   return (
     <Avatar
