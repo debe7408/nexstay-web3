@@ -2,21 +2,28 @@ import styled from "styled-components";
 import { Grid, Typography } from "@mui/material";
 import { Property } from "../../../types/property";
 import SaveIcon from "@mui/icons-material/FavoriteBorder";
+import SaveIconFilled from "@mui/icons-material/Favorite";
 import ShareIcon from "@mui/icons-material/IosShare";
 import DeleteIcon from "@mui/icons-material/DeleteOutline";
 
 interface Props {
   property: Property;
   editor: boolean;
+  bookmarked: boolean;
   handleDelete: () => void;
   handleCopy: () => void;
+  handleBookmark: () => void;
+  handleUnsave: () => void;
 }
 
 const Header: React.FC<Props> = ({
   property,
   editor,
+  bookmarked,
   handleDelete,
   handleCopy,
+  handleBookmark,
+  handleUnsave,
 }) => {
   return (
     <Grid container spacing={1}>
@@ -49,10 +56,17 @@ const Header: React.FC<Props> = ({
                   <Subtitle>Delete</Subtitle>
                 </IconBox>
               )}
-              <IconBox>
-                <SaveIcon />
-                <Subtitle>Save</Subtitle>
-              </IconBox>
+              {bookmarked ? (
+                <IconBox onClick={handleUnsave}>
+                  <SaveIconFilled />
+                  <Subtitle>Unsave</Subtitle>
+                </IconBox>
+              ) : (
+                <IconBox onClick={handleBookmark}>
+                  <SaveIcon />
+                  <Subtitle>Save</Subtitle>
+                </IconBox>
+              )}
               <IconBox onClick={handleCopy}>
                 <ShareIcon />
                 <Subtitle>Share</Subtitle>

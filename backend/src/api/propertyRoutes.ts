@@ -4,6 +4,11 @@ import { queryDb } from "../databaseConnection";
 import { validationResult } from "express-validator";
 import { verifyToken } from "../utils/tokenHelpers";
 import { checkIfUserExist } from "../utils/userHelpers";
+import {
+  checkIfPropertyExists,
+  checkIfPropertyBookmarked,
+  getBookmaredProperties,
+} from "../utils/propertyHelpers";
 
 const propertyRoutes = express.Router();
 
@@ -112,7 +117,6 @@ propertyRoutes.delete(
   "/deleteProperty/:propertyId",
   verifyToken,
   async (req, res) => {
-    console.log("Labas");
     const propertyId = req.params.propertyId;
     const userId = req.body.id;
     const publicAddress = req.body.publicAddress;
@@ -136,27 +140,91 @@ propertyRoutes.delete(
   }
 );
 
-// propertyRoutes.post("/bookmark/:propertyId", verifyToken, async (req, res) => {
-//   const propertyId = req.params.propertyId;
-//   const userId = req.body.id;
-//   const publicAddress = req.body.publicAddress;
+propertyRoutes.post("/bookmark/:propertyId", verifyToken, async (req, res) => {
+  const propertyId = req.params.propertyId;
+  const userId = req.body.id;
+  const publicAddress = req.body.publicAddress;
 
-//   const user = await checkIfUserExist(publicAddress);
-//   if (!user) return res.status(404).json("User not found");
+  const user = await checkIfUserExist(publicAddress);
+  if (!user) return res.status(404).json("User not found");
 
-//   const sqlQuery = `INSERT INTO saved_properties (user_id, property_id) VALUES (?, ?)`;
+  const exists = await checkIfPropertyExists(propertyId);
+  if (!exists) return res.status(404).json("Property not found");
 
-//   await queryDb(sqlQuery, [userId, propertyId])
-//     .catch((err) => {
-//       console.log(err);
-//       return res.status(500).json("Internal server error");
-//     })
-//     .then((result) => {
-//       if (result.affectedRows === 0) {
-//         return res.status(400).json("Property not found");
-//       }
-//       return res.status(200).json("Property bookmarked");
-//     });
-// });
+  const bookmarked = await checkIfPropertyBookmarked(userId, propertyId);
+  if (bookmarked) return res.status(400).json("Property already bookmarked");
+
+  console.log(bookmarked);
+
+  const sqlQuery = `INSERT INTO saved_properties (user_id, property_id) VALUES (?, ?)`;
+
+  await queryDb(sqlQuery, [userId, propertyId])
+    .catch((err) => {
+      console.log(err);
+      return res.status(500).json("Internal server error");
+    })
+    .then((result) => {
+      if (result.affectedRows === 0) {
+        return res.status(400).json("Property not found");
+      }
+      return res.status(200).json("Property bookmarked");
+    });
+});
+
+propertyRoutes.delete(
+  "/bookmark/:propertyId",
+  verifyToken,
+  async (req, res) => {
+    const propertyId = req.params.propertyId;
+    const userId = req.body.id;
+    const publicAddress = req.body.publicAddress;
+
+    const user = await checkIfUserExist(publicAddress);
+    if (!user) return res.status(404).json("User not found");
+
+    const exists = await checkIfPropertyExists(propertyId);
+    if (!exists) return res.status(404).json("Property not found");
+
+    const bookmarked = await checkIfPropertyBookmarked(userId, propertyId);
+    if (!bookmarked) return res.status(400).json("Property not bookmarked");
+
+    const sqlQuery = `DELETE FROM saved_properties WHERE user_id = ? AND property_id = ?`;
+
+    await queryDb(sqlQuery, [userId, propertyId])
+      .catch((err) => {
+        console.log(err);
+        return res.status(500).json("Internal server error");
+      })
+      .then((result) => {
+        if (result.affectedRows === 0) {
+          return res.status(400).json("Property not found");
+        }
+        return res.status(200).json("Property unsaved");
+      });
+  }
+);
+
+propertyRoutes.get("/bookmark", verifyToken, async (req, res) => {
+  const userId = req.body.id;
+  const publicAddress = req.body.publicAddress;
+
+  const user = await checkIfUserExist(publicAddress);
+  if (!user) return res.status(404).json("User not found");
+
+  const response = await getBookmaredProperties(userId);
+  return res.status(200).json(response);
+});
+
+propertyRoutes.get("/bookmark/:propertyId", verifyToken, async (req, res) => {
+  const propertyId = req.params.propertyId;
+  const userId = req.body.id;
+  const publicAddress = req.body.publicAddress;
+
+  const user = await checkIfUserExist(publicAddress);
+  if (!user) return res.status(404).json("User not found");
+
+  const response = await checkIfPropertyBookmarked(userId, propertyId);
+  return res.status(200).json(Boolean(response));
+});
 
 export default propertyRoutes;

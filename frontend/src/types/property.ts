@@ -24,6 +24,7 @@ export interface Property {
   bathrooms: number;
   booking_status: boolean;
   property_id: number;
+  id?: number;
   owner_id: number;
   owner_firstName: string;
   owner_lastName: string;

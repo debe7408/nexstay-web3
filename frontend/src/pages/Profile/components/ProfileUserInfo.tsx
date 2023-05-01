@@ -3,12 +3,14 @@ import { User } from "../../../types/user";
 import PropertyContainer from "../../../components/PropertyContainer";
 import Divider from "../../../components/DividerComponent";
 import EditProfileForm from "./EditProfileForm";
+import { Property } from "../../../types/property";
 
 interface Props {
   user: User;
+  bookmarkedProperties?: Property[];
 }
 
-const ProfileUserInfo: React.FC<Props> = ({ user }) => {
+const ProfileUserInfo: React.FC<Props> = ({ user, bookmarkedProperties }) => {
   return (
     <Container>
       <Grid container spacing={2}>
@@ -43,6 +45,22 @@ const ProfileUserInfo: React.FC<Props> = ({ user }) => {
             <Grid item xs={12}>
               <Typography variant="h5">Manage your bookings</Typography>
               <Divider />
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant="h5">Manage your favorited</Typography>
+              <Divider />
+            </Grid>
+            <Grid item xs={12}>
+              {bookmarkedProperties ? (
+                <PropertyContainer
+                  properties={bookmarkedProperties}
+                  itemsPerRow={{ md: 12, lg: 6 }}
+                ></PropertyContainer>
+              ) : (
+                <Typography variant="h3">
+                  You don't have any properties yet
+                </Typography>
+              )}
             </Grid>
           </Grid>
         </Grid>

@@ -54,3 +54,56 @@ export const deleteProperty = async (
     };
   }
 };
+
+export const bookmakrProperty = async (
+  propertyId: number
+): Promise<BaseError> => {
+  try {
+    const response = await axiosClient.post(
+      `/properties/bookmark/${propertyId}`
+    );
+
+    return {
+      hasError: false,
+      message: response.data.message,
+    };
+  } catch (error) {
+    const requestError = error as AxiosError;
+    if (!requestError.response) {
+      return {
+        hasError: true,
+        message: "Internal error. Please try again later",
+      };
+    }
+    return {
+      hasError: true,
+      message: requestError.response.data as string,
+    };
+  }
+};
+export const unsaveProperty = async (
+  propertyId: number
+): Promise<BaseError> => {
+  try {
+    const response = await axiosClient.delete(
+      `/properties/bookmark/${propertyId}`
+    );
+
+    return {
+      hasError: false,
+      message: response.data.message,
+    };
+  } catch (error) {
+    const requestError = error as AxiosError;
+    if (!requestError.response) {
+      return {
+        hasError: true,
+        message: "Internal error. Please try again later",
+      };
+    }
+    return {
+      hasError: true,
+      message: requestError.response.data as string,
+    };
+  }
+};

@@ -1,17 +1,19 @@
 import { useEffect, useState } from "react";
-import CustomProfileCard from "../../components/CustomProfileCard";
 import { useSnackbar } from "notistack";
 import { getSingleUserInfo } from "../../api/getUserInfo";
+import { getBookmarkedProperties } from "../../api/getProperty";
 import { User } from "../../types/user";
-import { Box, Grid, Container } from "@mui/material";
+import { Container } from "@mui/material";
 import { useAppSelector } from "../../app/hooks";
 import { selectLoginState } from "../../app/loginSlice";
 import styled from "styled-components";
 import ProfileHeader from "./components/ProfileHeader";
 import ProfileUserInfo from "./components/ProfileUserInfo";
+import { Property } from "../../types/property";
 
 const Profile = () => {
   const [user, setUser] = useState<User>();
+  const [bookmarked, setBookmarked] = useState<Property[]>([]);
   const loginState = useAppSelector(selectLoginState);
 
   const { enqueueSnackbar } = useSnackbar();
@@ -29,8 +31,21 @@ const Profile = () => {
 
       setUser(user);
     };
+    const fetchBookmarked = async () => {
+      const { hasError, message, properties } = await getBookmarkedProperties();
+
+      if (hasError || !properties) {
+        enqueueSnackbar(message, {
+          variant: "error",
+        });
+        return;
+      }
+
+      setBookmarked(properties);
+    };
 
     loginState && fetchUserInfo();
+    loginState && fetchBookmarked();
   }, [loginState]);
 
   return (
@@ -41,7 +56,7 @@ const Profile = () => {
             bannerUrl={`https://source.unsplash.com/random/?profile,color,user,${user?.id}`}
             publicAddress={user.publicAddress}
           />
-          <ProfileUserInfo user={user} />
+          <ProfileUserInfo user={user} bookmarkedProperties={bookmarked} />
         </>
       )}
     </StyledContainer>

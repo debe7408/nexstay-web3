@@ -23,7 +23,7 @@ const PropertyContainer: React.FC<PropertyContainerProps> = ({
         <PropertyBox
           item={item}
           imageSrc={`https://source.unsplash.com/random/?,${item.name}`}
-          key={item.property_id}
+          key={item.property_id || item.id}
           itemsPerRow={itemsPerRow}
         ></PropertyBox>
       ))}
