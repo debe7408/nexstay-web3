@@ -12,6 +12,20 @@ propertyRoutes.get("/getProperties", async (req, res) => {
   return res.status(200).json(response);
 });
 
+propertyRoutes.get("/getProperties/:propertyId", async (req, res) => {
+  const propertyId = req.params.propertyId;
+
+  const response = await queryDb("SELECT * FROM properties WHERE id = ?", [
+    propertyId,
+  ]);
+
+  if (response.length === 0) {
+    return res.status(404).json("Property not found");
+  }
+
+  return res.status(200).json(response[0]);
+});
+
 propertyRoutes.post(
   "/addProperty",
   addPropertyValidation,
@@ -22,8 +36,6 @@ propertyRoutes.post(
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-
-    console.log(req.body);
 
     const {
       name,
