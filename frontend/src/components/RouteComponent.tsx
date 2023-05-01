@@ -5,6 +5,7 @@ import ProfilePage from "../pages/Profile/Profile";
 import HostLandingPage from "../pages/Host/HostLandingPage";
 import HostForm from "../pages/Host/HostingForm";
 import UnauthorizedPage from "../pages/UnauthorizedPage";
+import AccommodationPage from "../pages/Accommodation/AccommodationPage";
 import { useAppSelector } from "../app/hooks";
 import { selectAuthToken } from "../app/loginSlice";
 
@@ -29,6 +30,7 @@ const Main = () => {
             path="/host/start-hosting"
             element={loginState ? <HostForm /> : <UnauthorizedPage />}
           />
+          <Route path="/accommodation/:id" element={<AccommodationPage />} />
         </Routes>
       </CSSTransition>
     </TransitionGroup>

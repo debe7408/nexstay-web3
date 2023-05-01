@@ -1,7 +1,7 @@
 import Container from "@mui/material/Container";
 import { useEffect, useState } from "react";
 import PropertyContainer from "./components/PropertyContainer";
-import { getAllProperties } from "../../api/getAllProperties";
+import { getAllProperties } from "../../api/getProperty";
 import { Property } from "../../types/property";
 
 const Home = () => {

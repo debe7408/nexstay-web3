@@ -15,11 +15,3 @@ export const themes = {
     dark_accent: "#D17C87",
   },
 };
-
-export const colorsInfomration = {
-  primary: "#d17c87",
-  info: "#302f68",
-  success: "#74a061",
-  warning: "#f19029",
-  danger: "#f44336",
-};

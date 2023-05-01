@@ -4,6 +4,10 @@ export interface PropertyInfo extends BaseError {
   properties?: Property[];
 }
 
+export interface SinglePropertyInfo extends BaseError {
+  property?: Property;
+}
+
 export interface Property {
   name: string;
   description: string;
@@ -12,8 +16,8 @@ export interface Property {
   city: string;
   address: string;
   price: number;
-  amenities: {};
-  safety_amenities: {};
+  amenities: string[];
+  safety_amenities: string[];
   pictures: {};
   beds: number;
   guests: number;

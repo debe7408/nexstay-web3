@@ -1,7 +1,8 @@
-import { Grid, Box, Typography } from "@mui/material";
+import { Grid, Box, Typography, Dialog } from "@mui/material";
 import { Property } from "../../../types/property";
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 interface PropertyComponentProps {
   item: Property;
@@ -9,9 +10,15 @@ interface PropertyComponentProps {
 }
 
 const PropertyBox: React.FC<PropertyComponentProps> = ({ item, imageSrc }) => {
+  const navigate = useNavigate();
+
+  const handleOpenPropertyInfo = () => {
+    navigate(`/accommodation/${item.id}`);
+  };
+
   return (
     <Grid item xs={12} sm={6} md={4} lg={3} key={item.id}>
-      <StyledBox>
+      <StyledBox onClick={handleOpenPropertyInfo}>
         <Image src={imageSrc} alt={item.name} />
         <Content>
           <Typography variant="h6" component="h6">
@@ -37,11 +44,11 @@ const StyledBox = styled(Box)`
   display: flex;
   flex-direction: column;
   height: 100%;
-  //   border: 2px solid black;
   margin: 1px;
   transition: transform 0.2s;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   border-radius: 5px;
+  cursor: pointer;
 
   &:hover {
     transform: scale(1.1);

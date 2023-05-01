@@ -23,7 +23,28 @@ propertyRoutes.get("/getProperties/:propertyId", async (req, res) => {
     return res.status(404).json("Property not found");
   }
 
+  const amenities = JSON.parse(response[0].amenities);
+  const safetyAmenities = JSON.parse(response[0].safety_amenities);
+
+  response[0].amenities = amenities;
+  response[0].safety_amenities = safetyAmenities;
+
   return res.status(200).json(response[0]);
+});
+
+propertyRoutes.get("/getPropertiesByOwner", verifyToken, async (req, res) => {
+  const userId = req.body.id;
+  const publicAddress = req.body.publicAddress;
+  const user = await checkIfUserExist(publicAddress);
+
+  if (!user) return res.status(404).json("User not found");
+
+  const response = await queryDb(
+    "SELECT * FROM properties WHERE owner_id = ?",
+    [userId]
+  );
+
+  return res.status(200).json(response);
 });
 
 propertyRoutes.post(
