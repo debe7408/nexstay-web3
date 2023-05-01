@@ -1,19 +1,19 @@
-import { Avatar, Badge, IconButton, Menu, MenuItem } from "@mui/material";
+import { Badge, IconButton, Menu, MenuItem } from "@mui/material";
 import React from "react";
 import { Link } from "react-router-dom";
-import styled from "styled-components";
-import { themes } from "../constants/colors";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { login, selectLoginState } from "../app/loginSlice";
-import { web3authSelector } from "../app/web3Slice";
+import { web3Selectors } from "../app/web3Slice";
 import { connectWeb3auth, disconnectWeb3auth } from "../web3/web3auth";
 import { loginUser } from "../api/loginUser";
 import { useSnackbar } from "notistack";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import ProfileAvatar from "./Avatar";
 
 const ProfileBadge = () => {
   const { enqueueSnackbar } = useSnackbar();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const web3AuthInstance = useAppSelector(web3authSelector);
+  const { web3auth, signerAddress } = useAppSelector(web3Selectors);
   const loggedIn = useAppSelector(selectLoginState);
   const dispatch = useAppDispatch();
 
@@ -26,14 +26,14 @@ const ProfileBadge = () => {
   };
 
   const handleLogOut = () => {
-    disconnectWeb3auth(web3AuthInstance);
+    disconnectWeb3auth(web3auth);
     handleOnClose();
   };
 
   const handleLogIn = async () => {
-    const signerAddress = await connectWeb3auth(web3AuthInstance);
+    const signerAddress = await connectWeb3auth(web3auth);
 
-    const { hasError, message, token } = await loginUser(signerAddress);
+    const { hasError, message, token, userId } = await loginUser(signerAddress);
 
     if (hasError || !token) {
       if (message) {
@@ -51,7 +51,7 @@ const ProfileBadge = () => {
     enqueueSnackbar("Login successful.", {
       variant: "success",
     });
-    dispatch(login(token));
+    dispatch(login({ token, userId }));
     handleOnClose();
   };
 
@@ -72,9 +72,19 @@ const ProfileBadge = () => {
           overlap="circular"
           anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
         >
-          <StyledAvatar alt="user-profile">DB</StyledAvatar>
+          {signerAddress ? (
+            <ProfileAvatar publicAddress={signerAddress} />
+          ) : (
+            <AccountCircleIcon
+              sx={{
+                width: "3rem",
+                height: "3rem",
+              }}
+            />
+          )}
         </Badge>
       </IconButton>
+
       <Menu
         open={Boolean(anchorEl)}
         onClose={handleOnClose}
@@ -120,7 +130,7 @@ const MenuItemsLoggedIn = (props: MenuItemsProps) => {
       <MenuItem component={Link} to="/" onClick={props.onClick}>
         Home
       </MenuItem>
-      <MenuItem component={Link} to="/profile" onClick={props.onClick}>
+      <MenuItem component={Link} to="/myProfile" onClick={props.onClick}>
         Profile
       </MenuItem>
       <MenuItem component={Link} to="/host/information" onClick={props.onClick}>
@@ -131,11 +141,5 @@ const MenuItemsLoggedIn = (props: MenuItemsProps) => {
     </>
   );
 };
-
-const StyledAvatar = styled(Avatar)`
-  background-color: ${themes.dark.main};
-  color: ${themes.dark.text};
-  box-shadow: 0 0 0 2px ${themes.dark.light};
-`;
 
 export default ProfileBadge;

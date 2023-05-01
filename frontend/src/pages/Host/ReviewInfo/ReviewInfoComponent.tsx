@@ -34,7 +34,7 @@ const ReviewInfoComponent: React.FC<Props> = ({
       yup.object().shape({
         name: yup.string().required().min(10),
         price: yup.number().integer().required().min(1),
-        description: yup.string().required().min(20).max(100),
+        description: yup.string().required().min(100),
       })
     ),
   });

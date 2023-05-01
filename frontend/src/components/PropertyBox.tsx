@@ -7,9 +7,20 @@ import { useNavigate } from "react-router-dom";
 interface PropertyComponentProps {
   item: Property;
   imageSrc: string;
+  handleClick?: () => void;
+  itemsPerRow?: {
+    xs?: number;
+    sm?: number;
+    md?: number;
+    lg?: number;
+  };
 }
 
-const PropertyBox: React.FC<PropertyComponentProps> = ({ item, imageSrc }) => {
+const PropertyBox: React.FC<PropertyComponentProps> = ({
+  item,
+  imageSrc,
+  itemsPerRow,
+}) => {
   const navigate = useNavigate();
 
   const handleOpenPropertyInfo = () => {
@@ -17,7 +28,14 @@ const PropertyBox: React.FC<PropertyComponentProps> = ({ item, imageSrc }) => {
   };
 
   return (
-    <Grid item xs={12} sm={6} md={4} lg={3} key={item.id}>
+    <Grid
+      item
+      xs={itemsPerRow?.xs || 12}
+      sm={itemsPerRow?.md || 6}
+      md={itemsPerRow?.md || 4}
+      lg={itemsPerRow?.lg || 3}
+      key={item.id}
+    >
       <StyledBox onClick={handleOpenPropertyInfo}>
         <Image src={imageSrc} alt={item.name} />
         <Content>

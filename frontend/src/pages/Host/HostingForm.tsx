@@ -17,7 +17,7 @@ const steps = [
 
 const HostingFormComponent = () => {
   const { enqueueSnackbar } = useSnackbar();
-  const [activeStep, setActiveStep] = useState(3);
+  const [activeStep, setActiveStep] = useState(0);
   const [propertyData, setPropertyData] = useState({} as PropertyInfoForm);
 
   const handleInitialPropertyData = (data: PropertyInfoForm) => {

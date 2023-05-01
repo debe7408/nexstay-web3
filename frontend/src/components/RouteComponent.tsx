@@ -19,7 +19,7 @@ const Main = () => {
         <Routes location={location}>
           <Route path="/" element={<HomePage />} />
           <Route
-            path="/profile"
+            path="/myProfile"
             element={loginState ? <ProfilePage /> : <UnauthorizedPage />}
           />
           <Route

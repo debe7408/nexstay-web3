@@ -54,7 +54,7 @@ const ReviewInfoForm: React.FC<Props> = ({ register, errors }) => {
           key={"description"}
           label="Description"
           variant="outlined"
-          helperText="Describe your place in 20 to 100 characters."
+          helperText="Describe your place with at least 100 characters."
           multiline
           rows={4}
           {...register("description")}

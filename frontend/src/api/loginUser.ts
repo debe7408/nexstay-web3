@@ -4,6 +4,7 @@ import axiosClient from "../axios/axiosClient";
 type RequestResponse = {
   message: string;
   token: string;
+  user_id: number;
 };
 export const loginUser = async (publicAddress?: string) => {
   try {
@@ -16,6 +17,7 @@ export const loginUser = async (publicAddress?: string) => {
     return {
       hasError: false,
       token: response.data.token,
+      userId: response.data.user_id,
     };
   } catch (error) {
     const requestError = error as AxiosError;

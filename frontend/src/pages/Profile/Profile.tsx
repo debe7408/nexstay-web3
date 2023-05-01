@@ -35,11 +35,15 @@ const Profile = () => {
 
   return (
     <StyledContainer maxWidth="xl">
-      <ProfileHeader
-        bannerUrl={`https://source.unsplash.com/random/?profile,color,user,${user?.id}`}
-        avatarUrl={`https://source.unsplash.com/random/?profile,picture,user,${user?.id}`}
-      />
-      {user && <ProfileUserInfo user={user} />}
+      {user && (
+        <>
+          <ProfileHeader
+            bannerUrl={`https://source.unsplash.com/random/?profile,color,user,${user?.id}`}
+            publicAddress={user.publicAddress}
+          />
+          <ProfileUserInfo user={user} />
+        </>
+      )}
     </StyledContainer>
   );
 };

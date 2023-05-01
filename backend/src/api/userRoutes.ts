@@ -74,11 +74,17 @@ userRoutes.post(
           publicAddressLowercased,
         ]);
         const token = signToken(publicAddressLowercased, insertId);
-        return res.send({ message: "New user added", token });
+        return res.send({
+          message: "New user added",
+          token,
+          user_id: insertId,
+        });
       }
       const token = signToken(publicAddressLowercased, user.id);
 
-      return res.status(200).send({ message: "Existing user found", token });
+      return res
+        .status(200)
+        .send({ message: "Existing user found", token, user_id: user.id });
     } catch (error) {
       console.error(error);
       res.status(500).send("Internal server error");

@@ -1,11 +1,12 @@
-import { Grid, Container, Box, Typography, Avatar } from "@mui/material";
+import { Grid, Box } from "@mui/material";
+import ProfileAvatar from "../../../components/Avatar";
 
 interface Props {
   bannerUrl: string;
-  avatarUrl: string;
+  publicAddress: string;
 }
 
-const ProfileHeader: React.FC<Props> = ({ bannerUrl, avatarUrl }) => {
+const ProfileHeader: React.FC<Props> = ({ bannerUrl, publicAddress }) => {
   return (
     <Grid container>
       <Box
@@ -26,13 +27,10 @@ const ProfileHeader: React.FC<Props> = ({ bannerUrl, avatarUrl }) => {
           top: { sm: "-80px", md: "-80px" },
         }}
       >
-        <Avatar
-          src={avatarUrl}
-          sx={{
-            width: { sm: "150px", md: "150px" },
-            height: { sm: "150px", md: "150px" },
-            border: "5px solid black",
-          }}
+        <ProfileAvatar
+          publicAddress={publicAddress}
+          customHeight="8rem"
+          customWidth="8rem"
         />
       </Box>
     </Grid>
