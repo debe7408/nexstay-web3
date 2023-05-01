@@ -23,7 +23,8 @@ export const checkIfUserExist = async (
 export const checkIfUserHasProperties = async (
   userId: number
 ): Promise<Property[] | undefined> => {
-  const sql = `SELECT * FROM properties WHERE owner_id = ?`;
+  const sql =
+    "SELECT * FROM user_properties WHERE user_properties.owner_id = ?";
   const response = await queryDb(sql, [userId]);
   if (response.length === 0) {
     return;

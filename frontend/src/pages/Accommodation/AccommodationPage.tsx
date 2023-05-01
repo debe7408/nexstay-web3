@@ -22,9 +22,7 @@ const AccommodationPage = () => {
       return;
     }
 
-    if (property.owner_id === userId) {
-      setCanEdit(true);
-    }
+    setCanEdit(userId === property.owner_id);
 
     setPropertyInfo(property);
   };
@@ -37,7 +35,7 @@ const AccommodationPage = () => {
     return <div>{errorMessage}</div>;
   }
 
-  return <AccommodationBody property={propertyInfo} />;
+  return <AccommodationBody editor={canEdit} property={propertyInfo} />;
 };
 
 export default AccommodationPage;

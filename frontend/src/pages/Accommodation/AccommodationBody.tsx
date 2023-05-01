@@ -15,15 +15,52 @@ import Header from "./components/Header";
 import Picutres from "./components/Picutres";
 import InfoSection from "./components/InfoSection";
 import ReserveCard from "./components/ReserveCard";
+import { deleteProperty } from "../../api/manageProperty";
+import { useNavigate } from "react-router-dom";
+import { useSnackbar } from "notistack";
 
 interface Props {
   property: Property;
+  editor: boolean;
 }
 
-const AccommodationBody: React.FC<Props> = ({ property }) => {
+const AccommodationBody: React.FC<Props> = ({ property, editor }) => {
+  const navigate = useNavigate();
+  const { enqueueSnackbar } = useSnackbar();
+
+  const handleOnDelete = async () => {
+    const { hasError, message } = await deleteProperty(property.property_id);
+
+    if (hasError && message) {
+      enqueueSnackbar(message, {
+        variant: "error",
+      });
+    }
+
+    enqueueSnackbar(message || "Property deleted successfully!", {
+      variant: "success",
+    });
+
+    navigate("/myProfile");
+  };
+
+  const handleOnCopy = () => {
+    navigator.clipboard.writeText(
+      `${window.location.origin}/accommodation/${property.property_id}`
+    );
+    enqueueSnackbar("Link copied to clipboard!", {
+      variant: "success",
+    });
+  };
+
   return (
     <StyledContainer maxWidth="lg">
-      <Header property={property} />
+      <Header
+        handleDelete={handleOnDelete}
+        handleCopy={handleOnCopy}
+        editor={editor}
+        property={property}
+      />
       <Picutres property={property} />
       <Grid container spacing={2}>
         <Grid item xs={12} md={8}>

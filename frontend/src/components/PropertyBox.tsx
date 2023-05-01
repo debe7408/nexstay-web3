@@ -24,7 +24,7 @@ const PropertyBox: React.FC<PropertyComponentProps> = ({
   const navigate = useNavigate();
 
   const handleOpenPropertyInfo = () => {
-    navigate(`/accommodation/${item.id}`);
+    navigate(`/accommodation/${item.property_id}`);
   };
 
   return (
@@ -34,7 +34,7 @@ const PropertyBox: React.FC<PropertyComponentProps> = ({
       sm={itemsPerRow?.md || 6}
       md={itemsPerRow?.md || 4}
       lg={itemsPerRow?.lg || 3}
-      key={item.id}
+      key={item.property_id}
     >
       <StyledBox onClick={handleOpenPropertyInfo}>
         <Image src={imageSrc} alt={item.name} />

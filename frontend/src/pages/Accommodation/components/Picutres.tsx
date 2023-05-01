@@ -10,28 +10,30 @@ const Picutres: React.FC<Props> = ({ property }) => {
   return (
     <Grid container spacing={1} marginTop={2}>
       <Grid item xs={12} md={6}>
-        <Image src={`https://source.unsplash.com/random/?city,night`} />
+        <Image
+          src={`https://source.unsplash.com/random/?accommodation,${property.name}`}
+        />
       </Grid>
       <Grid item xs={12} md={6}>
         <Grid container spacing={1}>
           <Grid item xs={12} md={6}>
             <SmallImage
-              src={`https://source.unsplash.com/random/?city,night`}
+              src={`https://source.unsplash.com/random/?accommodation,${property.name}`}
             />
           </Grid>
           <Grid item xs={12} md={6}>
             <SmallImage
-              src={`https://source.unsplash.com/random/?city,night`}
+              src={`https://source.unsplash.com/random/?accommodation,${property.name}`}
             />
           </Grid>
           <Grid item xs={12} md={6}>
             <SmallImage
-              src={`https://source.unsplash.com/random/?city,night`}
+              src={`https://source.unsplash.com/random/?accommodation,${property.name}`}
             />
           </Grid>
           <Grid item xs={12} md={6}>
             <SmallImage
-              src={`https://source.unsplash.com/random/?city,night`}
+              src={`https://source.unsplash.com/random/?accommodation,${property.name}`}
             />
           </Grid>
         </Grid>

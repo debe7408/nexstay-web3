@@ -8,16 +8,17 @@ import { checkIfUserExist } from "../utils/userHelpers";
 const propertyRoutes = express.Router();
 
 propertyRoutes.get("/getProperties", async (req, res) => {
-  const response = await queryDb("SELECT * FROM properties");
+  const response = await queryDb("SELECT * FROM user_properties");
   return res.status(200).json(response);
 });
 
 propertyRoutes.get("/getProperties/:propertyId", async (req, res) => {
   const propertyId = req.params.propertyId;
 
-  const response = await queryDb("SELECT * FROM properties WHERE id = ?", [
-    propertyId,
-  ]);
+  const response = await queryDb(
+    "SELECT * FROM user_properties WHERE user_properties.property_id = ?",
+    [propertyId]
+  );
 
   if (response.length === 0) {
     return res.status(404).json("Property not found");
@@ -40,7 +41,7 @@ propertyRoutes.get("/getPropertiesByOwner", verifyToken, async (req, res) => {
   if (!user) return res.status(404).json("User not found");
 
   const response = await queryDb(
-    "SELECT * FROM properties WHERE owner_id = ?",
+    "SELECT * FROM user_properties WHERE user_properties.owner_id = ?",
     [userId]
   );
 
@@ -107,27 +108,55 @@ propertyRoutes.post(
   }
 );
 
-propertyRoutes.delete("/deleteProperty", verifyToken, async (req, res) => {
-  const { property_id } = req.body;
-  const userId = req.body.id;
-  const publicAddress = req.body.publicAddress;
-  const user = await checkIfUserExist(publicAddress);
+propertyRoutes.delete(
+  "/deleteProperty/:propertyId",
+  verifyToken,
+  async (req, res) => {
+    console.log("Labas");
+    const propertyId = req.params.propertyId;
+    const userId = req.body.id;
+    const publicAddress = req.body.publicAddress;
+    const user = await checkIfUserExist(publicAddress);
 
-  if (!user) return res.status(404).json("User not found");
-  if (!property_id) return res.status(400).json("Missing property id");
+    if (!user) return res.status(404).json("User not found");
+    if (!propertyId) return res.status(400).json("Missing property id");
 
-  const sqlQuery = `DELETE FROM properties WHERE id = ? AND owner_id = ?`;
+    const sqlQuery = `DELETE FROM properties WHERE id = ? AND owner_id = ?`;
 
-  await queryDb(sqlQuery, [property_id, userId])
-    .catch((err) => {
-      return res.status(500).json("Internal server error");
-    })
-    .then((result) => {
-      if (result.affectedRows === 0) {
-        return res.status(400).json("Property not found");
-      }
-      return res.status(200).json("Property deleted");
-    });
-});
+    await queryDb(sqlQuery, [propertyId, userId])
+      .catch((err) => {
+        return res.status(500).json("Internal server error");
+      })
+      .then((result) => {
+        if (result.affectedRows === 0) {
+          return res.status(400).json("Property not found");
+        }
+        return res.status(200).json("Property deleted");
+      });
+  }
+);
+
+// propertyRoutes.post("/bookmark/:propertyId", verifyToken, async (req, res) => {
+//   const propertyId = req.params.propertyId;
+//   const userId = req.body.id;
+//   const publicAddress = req.body.publicAddress;
+
+//   const user = await checkIfUserExist(publicAddress);
+//   if (!user) return res.status(404).json("User not found");
+
+//   const sqlQuery = `INSERT INTO saved_properties (user_id, property_id) VALUES (?, ?)`;
+
+//   await queryDb(sqlQuery, [userId, propertyId])
+//     .catch((err) => {
+//       console.log(err);
+//       return res.status(500).json("Internal server error");
+//     })
+//     .then((result) => {
+//       if (result.affectedRows === 0) {
+//         return res.status(400).json("Property not found");
+//       }
+//       return res.status(200).json("Property bookmarked");
+//     });
+// });
 
 export default propertyRoutes;

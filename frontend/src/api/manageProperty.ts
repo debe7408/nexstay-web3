@@ -27,3 +27,30 @@ export const addProperty = async (
     message: "Property added!",
   };
 };
+
+export const deleteProperty = async (
+  propertyId: number
+): Promise<BaseError> => {
+  try {
+    const response = await axiosClient.delete(
+      `/properties/deleteProperty/${propertyId}`
+    );
+
+    return {
+      hasError: false,
+      message: response.data.message,
+    };
+  } catch (error) {
+    const requestError = error as AxiosError;
+    if (!requestError.response) {
+      return {
+        hasError: true,
+        message: "Internal error. Please try again later",
+      };
+    }
+    return {
+      hasError: true,
+      message: requestError.response.data as string,
+    };
+  }
+};

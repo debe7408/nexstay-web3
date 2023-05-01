@@ -13,7 +13,7 @@ export type User = {
 };
 
 export type Property = {
-  id: number;
+  property_id: number;
   owner_id: number;
   name: string;
   type: string;

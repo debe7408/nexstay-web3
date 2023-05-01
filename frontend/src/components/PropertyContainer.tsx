@@ -22,8 +22,8 @@ const PropertyContainer: React.FC<PropertyContainerProps> = ({
       {properties.map((item) => (
         <PropertyBox
           item={item}
-          imageSrc={`https://source.unsplash.com/random/?city,night,${item.id}`}
-          key={item.id}
+          imageSrc={`https://source.unsplash.com/random/?,${item.name}`}
+          key={item.property_id}
           itemsPerRow={itemsPerRow}
         ></PropertyBox>
       ))}

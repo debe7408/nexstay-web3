@@ -3,12 +3,21 @@ import { Grid, Typography } from "@mui/material";
 import { Property } from "../../../types/property";
 import SaveIcon from "@mui/icons-material/FavoriteBorder";
 import ShareIcon from "@mui/icons-material/IosShare";
+import DeleteIcon from "@mui/icons-material/DeleteOutline";
 
 interface Props {
   property: Property;
+  editor: boolean;
+  handleDelete: () => void;
+  handleCopy: () => void;
 }
 
-const Header: React.FC<Props> = ({ property }) => {
+const Header: React.FC<Props> = ({
+  property,
+  editor,
+  handleDelete,
+  handleCopy,
+}) => {
   return (
     <Grid container spacing={1}>
       <Grid item xs={12}>
@@ -34,11 +43,17 @@ const Header: React.FC<Props> = ({ property }) => {
             }}
           >
             <SubtitleBox>
+              {editor && (
+                <IconBox color="red" onClick={handleDelete}>
+                  <DeleteIcon />
+                  <Subtitle>Delete</Subtitle>
+                </IconBox>
+              )}
               <IconBox>
                 <SaveIcon />
                 <Subtitle>Save</Subtitle>
               </IconBox>
-              <IconBox>
+              <IconBox onClick={handleCopy}>
                 <ShareIcon />
                 <Subtitle>Share</Subtitle>
               </IconBox>
@@ -69,10 +84,12 @@ const SubtitleBox = styled.div`
   gap: 10px;
 `;
 
-const IconBox = styled.div`
+const IconBox = styled.div<{ color?: string }>`
   display: flex;
   flex-direction: row;
+  color: ${({ color }) => color && color};
   align-items: center;
   justify-content: flex-start;
   gap: 5px;
+  cursor: pointer;
 `;

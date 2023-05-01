@@ -5,7 +5,7 @@ import ContactInfoComponent from "./ContactInfo/ContactInfo";
 import PropertyInfoComponent from "./PropertyInfo/PropertyInfo";
 import ReviewInfoComponent from "./ReviewInfo/ReviewInfoComponent";
 import { PropertyForm, PropertyInfoForm } from "../../types/property";
-import { addProperty } from "../../api/addProperty";
+import { addProperty } from "../../api/manageProperty";
 import { useSnackbar } from "notistack";
 
 const steps = [

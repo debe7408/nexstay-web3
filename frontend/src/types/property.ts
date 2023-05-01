@@ -23,8 +23,11 @@ export interface Property {
   guests: number;
   bathrooms: number;
   booking_status: boolean;
-  id?: number;
-  owner_id?: number;
+  property_id: number;
+  owner_id: number;
+  owner_firstName: string;
+  owner_lastName: string;
+  owner_email: string;
 }
 
 export interface PropertyForm extends PropertyInfoForm {

@@ -24,7 +24,9 @@ const BasicInfo: React.FC<Props> = ({ property }) => {
   return (
     <Grid container>
       <Grid item xs={12} md={6}>
-        <Typography variant="h6">{`Entire ${property.type} hosed by Deividas`}</Typography>
+        <Typography variant="h6">
+          {`Entire ${property.type} hosed by ${property.owner_firstName} ${property.owner_lastName}`}
+        </Typography>
         <Typography variant="body1">
           {` ${property.guests} Guests · ${property.beds} Beds · ${property.bathrooms} Bathrooms`}
         </Typography>
