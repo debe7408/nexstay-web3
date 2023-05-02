@@ -135,7 +135,7 @@ const MenuItemsLoggedIn = (props: MenuItemsProps) => {
         Profile
       </MenuItem>
       <MenuItem component={Link} to="/host/information" onClick={props.onClick}>
-        Become a Host
+        Add property
       </MenuItem>
       <hr></hr>
       <MenuItem onClick={props.onLogOut}>Sign out</MenuItem>
