@@ -62,7 +62,6 @@ const ReviewInfoComponent: React.FC<Props> = ({
           }}
         >
           <SectionTitle title="Review info..." />
-          <ReviewTable data={propertyData} />
           <SectionTitle title="Final touches!" />
           <ReviewInfoForm register={register} errors={errors} />
 
