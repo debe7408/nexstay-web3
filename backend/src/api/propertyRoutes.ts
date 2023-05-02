@@ -154,8 +154,6 @@ propertyRoutes.post("/bookmark/:propertyId", verifyToken, async (req, res) => {
   const bookmarked = await checkIfPropertyBookmarked(userId, propertyId);
   if (bookmarked) return res.status(400).json("Property already bookmarked");
 
-  console.log(bookmarked);
-
   const sqlQuery = `INSERT INTO saved_properties (user_id, property_id) VALUES (?, ?)`;
 
   await queryDb(sqlQuery, [userId, propertyId])

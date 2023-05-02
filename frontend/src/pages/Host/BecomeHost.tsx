@@ -51,7 +51,7 @@ const BecomeHostComponent: React.FC<Props> = ({
                   color: { xs: `${themes.dark.dark_accent}`, md: "black" },
                 }}
               >
-                Becoming a host has never been easier...
+                Creating a listing has never been easier...
               </Typography>
             </StyledBox>
           </Grid>

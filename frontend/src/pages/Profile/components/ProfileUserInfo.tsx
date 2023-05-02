@@ -27,39 +27,38 @@ const ProfileUserInfo: React.FC<Props> = ({ user, bookmarkedProperties }) => {
         <Grid item xs={12} sm={8}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
-              <Typography variant="h5">Manage your listings</Typography>
+              <Typography variant="h5">
+                {`Manage your listings [ ${
+                  user.ownedProperties?.length || 0
+                } ]`}
+              </Typography>
               <Divider />
             </Grid>
             <Grid item xs={12}>
-              {user.ownedProperties ? (
+              {user.ownedProperties && (
                 <PropertyContainer
                   properties={user.ownedProperties}
                   itemsPerRow={{ md: 12, lg: 6 }}
                 ></PropertyContainer>
-              ) : (
-                <Typography variant="h3">
-                  You don't have any properties yet
-                </Typography>
               )}
             </Grid>
             <Grid item xs={12}>
-              <Typography variant="h5">Manage your bookings</Typography>
+              <Typography variant="h5">Manage your bookings [ 0 ]</Typography>
               <Divider />
             </Grid>
             <Grid item xs={12}>
-              <Typography variant="h5">Manage your favorited</Typography>
+              <Typography variant="h5">{`Manage your favorited [ ${
+                bookmarkedProperties?.length || 0
+              } ]`}</Typography>
+
               <Divider />
             </Grid>
             <Grid item xs={12}>
-              {bookmarkedProperties ? (
+              {bookmarkedProperties && (
                 <PropertyContainer
                   properties={bookmarkedProperties}
                   itemsPerRow={{ md: 12, lg: 6 }}
                 ></PropertyContainer>
-              ) : (
-                <Typography variant="h3">
-                  You don't have any properties yet
-                </Typography>
               )}
             </Grid>
           </Grid>
