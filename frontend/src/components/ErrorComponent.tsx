@@ -1,6 +1,10 @@
 import { Typography } from "@mui/material";
 
-const ErrorComponent: React.FC = () => {
+interface Props {
+  message?: string;
+}
+
+const ErrorComponent: React.FC<Props> = ({ message }) => {
   return (
     <Typography
       variant="subtitle1"
@@ -13,7 +17,7 @@ const ErrorComponent: React.FC = () => {
         borderBottom: "1px solid red",
       }}
     >
-      This field is required
+      {message ? message : "This field is required"}
     </Typography>
   );
 };

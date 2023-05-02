@@ -52,5 +52,5 @@ export interface PropertyInfoForm {
   };
   amenities: string[];
   safety_amenities: string[];
-  pictures?: {};
+  pictures: FileList;
 }

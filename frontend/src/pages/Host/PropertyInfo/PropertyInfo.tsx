@@ -44,6 +44,14 @@ const PropertyInfoComponent: React.FC<Props> = ({
           beds: yup.number().required(),
           bathrooms: yup.number().required(),
         }),
+        pictures: yup
+          .mixed()
+          .test(
+            "fileList",
+            "Please upload at least one image file",
+            (value) => value instanceof FileList && value.length > 0
+          )
+          .required(),
       })
     ),
   });
@@ -65,7 +73,7 @@ const PropertyInfoComponent: React.FC<Props> = ({
         <PropertyLocation register={register} errors={errors} />
         <SizingInfo register={register} errors={errors} />
         <AmenitiesInfo setValue={setValue} />
-        <PictureUpload />
+        <PictureUpload errors={errors} register={register} />
         <StepperNavigation
           activeStep={activeStep}
           steps={steps}

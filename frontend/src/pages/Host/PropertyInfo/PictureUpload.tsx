@@ -2,18 +2,17 @@ import { Grid, Box, Typography } from "@mui/material";
 import SectionTitle from "../../../components/SectionTitle";
 import styled from "styled-components";
 import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
-import { useRef, useState } from "react";
-interface Props {}
+import { useState } from "react";
+import { FieldErrors, FieldError, UseFormRegister } from "react-hook-form";
+import { PropertyInfoForm } from "../../../types/property";
+import FileUpload from "../../../components/FileUpload";
+interface Props {
+  register: UseFormRegister<PropertyInfoForm>;
+  errors: FieldErrors<PropertyInfoForm>;
+}
 
-const PictureUpload: React.FC<Props> = () => {
+const PictureUpload: React.FC<Props> = ({ errors, register }) => {
   const [files, setFiles] = useState<FileList>();
-  const fileInputRef = useRef<HTMLInputElement>(null);
-
-  const handleFileClick = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.click();
-    }
-  };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
@@ -35,34 +34,31 @@ const PictureUpload: React.FC<Props> = () => {
       }}
     >
       <SectionTitle title="Upload pictures of your place" />
-      <StyledBox onClick={handleFileClick}>
+      <StyledBox errors={errors.pictures}>
         <StyledIcon />
         <Typography variant="body1">Upload your pictures here</Typography>
-        <Box sx={{ display: "flex", alignItems: "center", gap: "10px" }}>
-          <input
-            ref={fileInputRef}
-            hidden
-            accept="image/*"
-            multiple
-            type="file"
-            onChange={handleFileChange}
-          />
-          <Typography variant="subtitle2">
-            {files ? `Selected Files: ${files.length}` : "Choose a file"}
-          </Typography>
-        </Box>
+        <Box sx={{ display: "flex", alignItems: "center", gap: "10px" }}></Box>
+        <FileUpload
+          {...register("pictures")}
+          onChange={handleFileChange}
+        ></FileUpload>
       </StyledBox>
     </Grid>
   );
 };
 
-const StyledBox = styled(Box)({
+interface CustomBoxProps {
+  errors?: FieldError;
+}
+
+const StyledBox = styled(Box)<CustomBoxProps>(({ errors }) => ({
   display: "flex",
   width: "100%",
   justifyContent: "center",
   alignItems: "center",
   flexDirection: "column",
   backgroundColor: "#ffff",
+  border: errors ? "3px solid red" : "",
   borderRadius: "16px",
   boxShadow: "0px 4px 30px rgba(0, 0, 0, 0.08)",
   padding: "30px",
@@ -70,7 +66,7 @@ const StyledBox = styled(Box)({
   "&:hover": {
     backgroundColor: "#F5F5F5",
   },
-});
+}));
 
 const StyledIcon = styled(AddAPhotoIcon)({
   fontSize: "64px",
