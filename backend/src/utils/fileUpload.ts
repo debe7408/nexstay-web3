@@ -48,4 +48,24 @@ export const saveImagePathInDb = async (
   };
 };
 
+export const saveAvatarPathInDb = async (
+  user_id: number,
+  file: Express.Multer.File
+) => {
+  const sql = "INSERT INTO user_avatars (user_id, avatar_path) VALUES (?, ?)";
+
+  await queryDb(sql, [user_id, file.filename]).catch((err) => {
+    console.log(err);
+    return {
+      success: false,
+      message: "Failed to save image path in database",
+    };
+  });
+
+  return {
+    success: true,
+    message: "Successfully saved image path in database",
+  };
+};
+
 export default upload;
