@@ -72,7 +72,6 @@ propertyRoutes.post(
       price,
       amenities,
       safety_amenities,
-      pictures,
       size,
       booking_status,
     } = req.body;
@@ -86,9 +85,9 @@ propertyRoutes.post(
     const user = await checkIfUserExist(publicAddress);
     if (!user) return res.status(404).json("User not found");
 
-    const sqlQuery = `INSERT INTO properties (owner_id, name, description, type, country, city, address, price, amenities, safety_amenities, beds, guests, bathrooms, pictures, booking_status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+    const sqlQuery = `INSERT INTO properties (owner_id, name, description, type, country, city, address, price, amenities, safety_amenities, beds, guests, bathrooms, booking_status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
-    await queryDb(sqlQuery, [
+    const { insertId } = await queryDb(sqlQuery, [
       userId,
       name,
       description,
@@ -102,11 +101,12 @@ propertyRoutes.post(
       beds,
       guests,
       bathrooms,
-      JSON.stringify(pictures),
       booking_status,
     ]).catch((err) => {
       console.log(err);
-      return res.status(500).json("Internal server error");
+      return res
+        .status(500)
+        .json("Internal server error. Failed to add property");
     });
 
     return res.status(200).json("Property added");

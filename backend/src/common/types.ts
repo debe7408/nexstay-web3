@@ -24,7 +24,6 @@ export type Property = {
   price: number;
   amenities: string;
   safety_amenities: string;
-  pictures: string;
   beds: number;
   bathrooms: number;
   guests: number;
