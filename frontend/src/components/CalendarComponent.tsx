@@ -1,8 +1,9 @@
 import Calendar from "react-calendar";
 import { Value } from "react-calendar/dist/cjs/shared/types";
 import styled from "styled-components";
-import "react-calendar/dist/Calendar.css";
 import { DateRange } from "../types/dates";
+import { colors } from "../constants/colors";
+import "react-calendar/dist/Calendar.css";
 
 interface Props {
   unavailableDates: DateRange[];
@@ -65,10 +66,9 @@ export default CalendarComponent;
 
 const StyledCalendarWrapper = styled.div`
   .react-calendar {
-    background: white;
-    border: 1px solid #eee;
+    background: ${colors.white};
+    border: 1px solid ${colors.navyBlue};
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    max-width: 350px;
     margin: 0 auto;
   }
 
@@ -76,25 +76,31 @@ const StyledCalendarWrapper = styled.div`
     text-transform: uppercase;
     font-size: 12px;
     font-weight: bold;
-    color: #666;
+    color: ${colors.navyBlue};
   }
 
   .react-calendar__month-view__days__day--weekend {
-    color: red;
+    color: ${colors.red};
   }
 
   .react-calendar__tile--now {
     background: #f5f5f5;
-    color: #333;
+    text-decoration: underline;
+  }
+
+  .react-calendar__tile--active:enabled:hover,
+  .react-calendar__tile--active:enabled:focus {
+    background: ${colors.navyBlue};
+    color: ${colors.white};
   }
 
   .react-calendar__tile--active {
-    background: #1e90ff;
-    color: white;
+    background: ${colors.navyBlue};
+    color: ${colors.white};
   }
 
   .react-calendar__tile--hasActive {
-    background: #e6f7ff;
+    background: ${colors.navyBlue};
   }
 
   .react-calendar__navigation button {
@@ -104,7 +110,11 @@ const StyledCalendarWrapper = styled.div`
     box-shadow: none;
     font-size: 20px;
     font-weight: bold;
+    color: ${colors.navyBlue};
+  }
 
-    color: #1e90ff;
+  .react-calendar__tile:disabled {
+    background: ${colors.lightGrey};
+    text-decoration: line-through;
   }
 `;
