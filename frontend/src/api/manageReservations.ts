@@ -8,7 +8,7 @@ type UnavailableDatesData = { data?: DateRange[]; error?: string };
 type ReservationResponseData = { message: string; error?: boolean };
 
 export const getUnavailableDates = async (
-  propertyId: string
+  propertyId: string | number
 ): Promise<UnavailableDatesData> => {
   try {
     const response = await axiosClient.get<GetUnavailableDatesResponse>(
