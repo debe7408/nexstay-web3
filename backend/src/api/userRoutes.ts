@@ -10,6 +10,7 @@ import {
   checkIfUserExist,
   checkIfUserHasProperties,
 } from "../utils/userHelpers";
+import { getUserReservations } from "../utils/propertyHelpers";
 
 const userRoutes = express.Router();
 
@@ -105,6 +106,22 @@ userRoutes.get("/users", verifyToken, async (req, res) => {
   }
 
   return res.send(user);
+});
+
+userRoutes.get("/users/reservations", verifyToken, async (req, res) => {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty())
+    return res.status(400).json({ errors: errors.array() });
+
+  const publicAddress = req.body.publicAddress;
+  const user = await checkIfUserExist(publicAddress.toLowerCase());
+
+  if (!user) return res.status(404).send("User not found");
+
+  const reservations = await getUserReservations(user.id);
+
+  return res.send(reservations);
 });
 
 export default userRoutes;

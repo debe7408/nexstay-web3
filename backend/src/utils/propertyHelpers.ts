@@ -6,6 +6,16 @@ type Dates = {
   end_date: Date | string;
 };
 
+type Reservation = {
+  id: number;
+  property_id: string;
+  user_id: number;
+  start_date: Date | string;
+  end_date: Date | string;
+  status: string;
+  booking_time: Date | string;
+};
+
 export const checkIfPropertyExists = async (
   propertyId: string
 ): Promise<boolean> => {
@@ -55,7 +65,7 @@ export const getPropertyAvailability = async (
 
   const sql = `SELECT COUNT(*) as count FROM reservations WHERE 
     property_id = ?
-    AND status = 'active'
+    AND (status = 'confirmed' OR status = 'pending_payment' OR status = 'completed')
     AND (
       (start_date BETWEEN ? AND ?)
       OR (end_date BETWEEN ? AND ?)
@@ -101,10 +111,17 @@ export const reserveProperty = async (
 export const getUnavailableDates = async (
   propertyId: string
 ): Promise<Dates[]> => {
-  const sql =
-    "SELECT start_date, end_date FROM reservations WHERE status = 'active' AND property_id = ?";
+  const sql = `SELECT start_date, end_date FROM reservations 
+    WHERE (status = 'confirmed' OR status = 'pending_payment' OR status = 'completed') 
+    AND property_id = ?`;
 
   const unavailableDates = await queryDb(sql, [propertyId]);
 
   return unavailableDates;
+};
+
+export const getUserReservations = async (userId: number) => {
+  const sql = "SELECT * FROM reservations WHERE user_id = ?";
+  const reservations: Reservation[] = await queryDb(sql, [userId]);
+  return reservations;
 };

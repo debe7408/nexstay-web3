@@ -304,7 +304,7 @@ propertyRoutes.post(
     if (reserve.affectedRows <= 0)
       return res.status(500).json("Internal server error");
 
-    return res.status(200).json("Property reserved");
+    return res.status(200).json("Property reserved. Payment pending...");
   }
 );
 
