@@ -1,15 +1,19 @@
-import { Routes, Route, useLocation, Navigate } from "react-router-dom";
+import React, { Suspense, lazy } from "react";
+import { Routes, Route, useLocation } from "react-router-dom";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
-import HomePage from "../pages/Home/Home";
-import ProfilePage from "../pages/Profile/Profile";
-import HostLandingPage from "../pages/Host/HostLandingPage";
-import HostForm from "../pages/Host/HostingForm";
-import UnauthorizedPage from "../pages/UnauthorizedPage";
-import AccommodationPage from "../pages/Accommodation/AccommodationPage";
-import NotFound from "../pages/InvalidPage";
-import ReservationPage from "../pages/Reservation/ReservationPage";
 import { useAppSelector } from "../app/hooks";
 import { selectAuthToken } from "../app/loginSlice";
+
+const Home = lazy(() => import("../pages/Home/Home"));
+const Profile = lazy(() => import("../pages/Profile/Profile"));
+const HostLanding = lazy(() => import("../pages/Host/HostLandingPage"));
+const HostForm = lazy(() => import("../pages/Host/HostingForm"));
+const UnauthorizedPage = lazy(() => import("../pages/UnauthorizedPage"));
+const Accommodation = lazy(
+  () => import("../pages/Accommodation/AccommodationPage")
+);
+const NotFound = lazy(() => import("../pages/InvalidPage"));
+const Reservation = lazy(() => import("../pages/Reservation/ReservationPage"));
 
 const Main = () => {
   const location = useLocation();
@@ -18,27 +22,29 @@ const Main = () => {
   return (
     <TransitionGroup component={null}>
       <CSSTransition key={location.key} classNames="fade" timeout={300}>
-        <Routes location={location}>
-          <Route path="/" element={<HomePage />} />
-          <Route
-            path="/myProfile"
-            element={loginState ? <ProfilePage /> : <UnauthorizedPage />}
-          />
-          <Route
-            path="/host/information"
-            element={loginState ? <HostLandingPage /> : <UnauthorizedPage />}
-          />
-          <Route
-            path="/host/start-hosting"
-            element={loginState ? <HostForm /> : <UnauthorizedPage />}
-          />
-          <Route path="/accommodation/:id" element={<AccommodationPage />} />
-          <Route
-            path="/accommodation/reserve/:id"
-            element={loginState ? <ReservationPage /> : <UnauthorizedPage />}
-          />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <Suspense fallback={<div>Loading...</div>}>
+          <Routes location={location}>
+            <Route path="/" element={<Home />} />
+            <Route
+              path="/myProfile"
+              element={loginState ? <Profile /> : <UnauthorizedPage />}
+            />
+            <Route
+              path="/host/information"
+              element={loginState ? <HostLanding /> : <UnauthorizedPage />}
+            />
+            <Route
+              path="/host/start-hosting"
+              element={loginState ? <HostForm /> : <UnauthorizedPage />}
+            />
+            <Route path="/accommodation/:id" element={<Accommodation />} />
+            <Route
+              path="/accommodation/reserve/:id"
+              element={loginState ? <Reservation /> : <UnauthorizedPage />}
+            />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Suspense>
       </CSSTransition>
     </TransitionGroup>
   );
