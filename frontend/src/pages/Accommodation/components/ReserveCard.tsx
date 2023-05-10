@@ -2,12 +2,19 @@ import { Button, Typography, Skeleton, Grid } from "@mui/material";
 import { Property } from "../../../types/property";
 import styled from "styled-components";
 import { themes } from "../../../constants/colors";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   property: Property;
 }
 
 const ReserveCard: React.FC<Props> = ({ property }) => {
+  const navigate = useNavigate();
+
+  const handleOpenReservation = () => {
+    navigate(`/accommodation/reserve/${property.id || property.property_id}`);
+  };
+
   return (
     <CustomCard container spacing={1}>
       <Grid item xs={12}>
@@ -15,7 +22,12 @@ const ReserveCard: React.FC<Props> = ({ property }) => {
       </Grid>
 
       <Grid item xs={12}>
-        <Button variant="contained" color="primary" fullWidth>
+        <Button
+          variant="contained"
+          color="primary"
+          fullWidth
+          onClick={handleOpenReservation}
+        >
           Reserve
         </Button>
       </Grid>
