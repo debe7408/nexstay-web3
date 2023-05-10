@@ -15,6 +15,10 @@ export const userUpdateContactInfo = [
   check("email", "Please include a valid email").isEmail(),
   check("age", "Age has to be between 20 and 90").isInt({ min: 20, max: 90 }),
 ];
+export const reserveValidationRequest = [
+  check("checkIn", "Please include a check in date").not().isEmpty().isDate(),
+  check("checkOut", "Please include a check out date").not().isEmpty().isDate(),
+];
 
 export const addPropertyValidation = [
   check("name", "Property has to have a name").not().isEmpty(),

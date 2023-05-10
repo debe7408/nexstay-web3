@@ -36,13 +36,13 @@ export const verifyToken = (
     // Check if authorization header is present
     const authHeader = req.headers.authorization;
     if (!authHeader) {
-      return res.status(401).send("Authorization header not found!");
+      return res.status(401).send("Action needs authorization!");
     }
 
     // Check if authorization header included token
     const token = authHeader.split(" ")[1];
     if (!token) {
-      return res.status(401).send("Authorization header is empty!");
+      return res.status(401).send("Action needs authroization!");
     }
 
     const payload = jwt.verify(token, process.env.JWT_SECRET as string, {

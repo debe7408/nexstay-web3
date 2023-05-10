@@ -1,4 +1,10 @@
 import { queryDb } from "../databaseConnection";
+import { formatDateForMySQL } from "./formattingHelpers";
+
+type Dates = {
+  start_date: Date | string;
+  end_date: Date | string;
+};
 
 export const checkIfPropertyExists = async (
   propertyId: string
@@ -30,12 +36,75 @@ export const checkIfPropertyBookmarked = async (
 
 export const getBookmaredProperties = async (userId: number) => {
   const sql = `
-    SELECT properties.*
-    FROM properties
+    SELECT properties.* FROM properties
     JOIN saved_properties ON properties.id = saved_properties.property_id
     WHERE saved_properties.user_id = ?;
   `;
 
   const properties = await queryDb(sql, [userId]);
   return properties;
+};
+
+export const getPropertyAvailability = async (
+  propertyId: string,
+  start_date: Date | string,
+  end_date: Date | string
+) => {
+  start_date = formatDateForMySQL(start_date);
+  end_date = formatDateForMySQL(end_date);
+
+  const sql = `SELECT COUNT(*) as count FROM reservations WHERE 
+    property_id = ?
+    AND status = 'active'
+    AND (
+      (start_date BETWEEN ? AND ?)
+      OR (end_date BETWEEN ? AND ?)
+      OR (? BETWEEN start_date AND end_date)
+      OR (? BETWEEN start_date AND end_date)
+    );
+  `;
+
+  const availability = await queryDb(sql, [
+    propertyId,
+    start_date,
+    end_date,
+    start_date,
+    end_date,
+    start_date,
+    end_date,
+  ]);
+
+  return availability[0].count === 0 ? true : false;
+};
+
+export const reserveProperty = async (
+  propertyId: string,
+  userId: number,
+  start_date: Date | string,
+  end_date: Date | string
+) => {
+  start_date = formatDateForMySQL(start_date);
+  end_date = formatDateForMySQL(end_date);
+
+  const sql = `INSERT INTO reservations (user_id, property_id, start_date, end_date) VALUES (?, ?, ?, ?)`;
+
+  const reservation = await queryDb(sql, [
+    userId,
+    propertyId,
+    start_date,
+    end_date,
+  ]);
+
+  return reservation;
+};
+
+export const getUnavailableDates = async (
+  propertyId: string
+): Promise<Dates[]> => {
+  const sql =
+    "SELECT start_date, end_date FROM reservations WHERE status = 'active' AND property_id = ?";
+
+  const unavailableDates = await queryDb(sql, [propertyId]);
+
+  return unavailableDates;
 };

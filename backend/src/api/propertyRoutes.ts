@@ -1,5 +1,8 @@
 import express, { Request, Response } from "express";
-import { addPropertyValidation } from "../utils/validationSchemas";
+import {
+  addPropertyValidation,
+  reserveValidationRequest,
+} from "../utils/validationSchemas";
 import { queryDb } from "../databaseConnection";
 import { validationResult } from "express-validator";
 import { verifyToken } from "../utils/tokenHelpers";
@@ -8,6 +11,9 @@ import {
   checkIfPropertyExists,
   checkIfPropertyBookmarked,
   getBookmaredProperties,
+  getPropertyAvailability,
+  reserveProperty,
+  getUnavailableDates,
 } from "../utils/propertyHelpers";
 
 const propertyRoutes = express.Router();
@@ -224,5 +230,82 @@ propertyRoutes.get("/bookmark/:propertyId", verifyToken, async (req, res) => {
   const response = await checkIfPropertyBookmarked(userId, propertyId);
   return res.status(200).json(Boolean(response));
 });
+
+// TODO: Remove this if not need in the future
+propertyRoutes.get(
+  "/reserve/:propertyId",
+  reserveValidationRequest,
+  async (req: Request, res: Response) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const propertyId = req.params.propertyId;
+    const { checkIn, checkOut } = req.body;
+
+    const response = await getPropertyAvailability(
+      propertyId,
+      checkIn,
+      checkOut
+    );
+    return res.status(200).json(response);
+  }
+);
+
+propertyRoutes.get(
+  "/availability/:propertyId",
+  async (req: Request, res: Response) => {
+    const propertyId = req.params.propertyId;
+
+    const unavailableDates = await getUnavailableDates(propertyId);
+
+    return res.status(200).json(unavailableDates);
+  }
+);
+
+propertyRoutes.post(
+  "/reserve/:propertyId",
+  reserveValidationRequest,
+  verifyToken,
+  async (req: Request, res: Response) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const propertyId = req.params.propertyId;
+    const { checkIn, checkOut, publicAddress } = req.body;
+    const userId = req.body.id;
+
+    const user = await checkIfUserExist(publicAddress);
+    if (!user) return res.status(404).json("User not found");
+
+    const property = await checkIfPropertyExists(propertyId);
+    if (!property) return res.status(404).json("Property not found");
+
+    const availability = await getPropertyAvailability(
+      propertyId,
+      checkIn,
+      checkOut
+    );
+
+    if (!availability)
+      return res.status(400).json("Property not available during these dates");
+
+    const reserve = await reserveProperty(
+      propertyId,
+      userId,
+      checkIn,
+      checkOut
+    );
+    if (reserve.affectedRows <= 0)
+      return res.status(500).json("Internal server error");
+
+    return res.status(200).json("Property reserved");
+  }
+);
 
 export default propertyRoutes;
