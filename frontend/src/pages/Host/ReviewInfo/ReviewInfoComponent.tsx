@@ -1,7 +1,6 @@
 import { Container, Grid } from "@mui/material";
 import StepperNavigation from "../components/StepperNavigation";
 import SectionTitle from "../../../components/SectionTitle";
-import ReviewTable from "../../../components/ReviewTable";
 import ReviewInfoForm from "./ReviewInfoForm";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
