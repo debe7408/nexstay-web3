@@ -1,0 +1,114 @@
+import React, { useCallback, useEffect, useState } from "react";
+import {
+  Box,
+  TextField,
+  Grid,
+  Typography,
+  Container,
+  styled,
+} from "@mui/material";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { Reservation } from "../../../types/reservation";
+import ReservationsTable from "../../../components/ReservationTable";
+import CustomButton from "../../../components/CustomButton";
+import { getUsersReservations } from "../../../api/manageReservations";
+import { Dayjs } from "dayjs";
+
+const ManageReservationsPage: React.FC = () => {
+  const [reservations, setReservations] = useState<Reservation[]>([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [bookingDate, setBookingDate] = useState<Dayjs | null>();
+
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const fetchReservations = useCallback(async () => {
+    const response = await getUsersReservations();
+    if (!response.data || response.error) {
+      console.log(response.error);
+      return;
+    }
+
+    setReservations(response.data);
+  }, []);
+
+  useEffect(() => {
+    fetchReservations();
+  }, [fetchReservations]);
+
+  const filteredReservations = reservations.filter(
+    (reservation) =>
+      reservation.id
+        .toString()
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase()) ||
+      (reservation.status.toLowerCase().includes(searchTerm.toLowerCase()) &&
+        (!bookingDate ||
+          new Date(reservation.booking_time).toDateString() ===
+            bookingDate.toDate().toDateString()))
+  );
+
+  const handleAddReservation = () => {
+    // Logic for adding a new reservation goes here
+  };
+
+  return (
+    <StyledContainer maxWidth="lg">
+      <Grid container justifyContent="space-between" alignItems="center">
+        <Grid item>
+          <Typography variant="h4" component="h1">
+            Manage Your Reservations
+          </Typography>
+        </Grid>
+        <Grid item>
+          <CustomButton
+            variant="contained"
+            color="primary"
+            onClick={handleAddReservation}
+          >
+            Add Reservation
+          </CustomButton>
+        </Grid>
+      </Grid>
+
+      <Grid item>
+        <Grid container spacing={2}>
+          <Grid item xs={12} md={6}>
+            <Box mt={2} mb={2}>
+              <TextField
+                label="Search by Reservation ID or Status"
+                variant="outlined"
+                fullWidth
+                value={searchTerm}
+                onChange={handleSearch}
+              />
+            </Box>
+          </Grid>
+          <Grid item xs={6}>
+            <Box mt={2} mb={2}>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DatePicker
+                  label="Filter by Booking Date"
+                  value={bookingDate}
+                  onChange={(newDate) => setBookingDate(newDate)}
+                />
+              </LocalizationProvider>
+            </Box>
+          </Grid>
+        </Grid>
+      </Grid>
+
+      <ReservationsTable reservations={filteredReservations} />
+    </StyledContainer>
+  );
+};
+
+export default ManageReservationsPage;
+
+const StyledContainer = styled(Container)`
+  margin-top: 50px;
+  margin-bottom: 50px;
+`;

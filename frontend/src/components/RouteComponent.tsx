@@ -13,6 +13,9 @@ const Accommodation = lazy(
   () => import("../pages/Accommodation/AccommodationPage")
 );
 const NotFound = lazy(() => import("../pages/InvalidPage"));
+const ManageReservations = lazy(
+  () => import("../pages/Profile/ManageReservations/ManageReservations")
+);
 
 const Main = () => {
   const location = useLocation();
@@ -27,6 +30,12 @@ const Main = () => {
             <Route
               path="/myProfile"
               element={loginState ? <Profile /> : <UnauthorizedPage />}
+            />
+            <Route
+              path="/myProfile/manage-reservations"
+              element={
+                loginState ? <ManageReservations /> : <UnauthorizedPage />
+              }
             />
             <Route
               path="/host/information"

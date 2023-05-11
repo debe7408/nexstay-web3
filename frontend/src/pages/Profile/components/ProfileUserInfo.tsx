@@ -1,9 +1,10 @@
-import { Typography, Grid, Container } from "@mui/material";
+import { Typography, Grid, Container, Button } from "@mui/material";
 import { User } from "../../../types/user";
 import PropertyContainer from "../../../components/PropertyContainer";
 import Divider from "../../../components/DividerComponent";
 import EditProfileForm from "./EditProfileForm";
 import { Property } from "../../../types/property";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   user: User;
@@ -11,6 +12,12 @@ interface Props {
 }
 
 const ProfileUserInfo: React.FC<Props> = ({ user, bookmarkedProperties }) => {
+  const navigate = useNavigate();
+
+  const openManageReservations = () => {
+    navigate("/myProfile/manage-reservations");
+  };
+
   return (
     <Container>
       <Grid container spacing={2}>
@@ -21,6 +28,17 @@ const ProfileUserInfo: React.FC<Props> = ({ user, bookmarkedProperties }) => {
             </Grid>
             <Grid item xs={12}>
               <EditProfileForm user={user} />
+            </Grid>
+            <Grid item xs={12}>
+              <Button
+                fullWidth
+                variant="outlined"
+                onClick={openManageReservations}
+              >
+                <Typography variant="body1">
+                  Manage your reservations
+                </Typography>
+              </Button>
             </Grid>
           </Grid>
         </Grid>
@@ -41,10 +59,6 @@ const ProfileUserInfo: React.FC<Props> = ({ user, bookmarkedProperties }) => {
                   itemsPerRow={{ md: 12, lg: 6 }}
                 ></PropertyContainer>
               )}
-            </Grid>
-            <Grid item xs={12}>
-              <Typography variant="h5">Manage your bookings [ 0 ]</Typography>
-              <Divider />
             </Grid>
             <Grid item xs={12}>
               <Typography variant="h5">{`Manage your favorited [ ${
