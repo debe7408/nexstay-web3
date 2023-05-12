@@ -14,7 +14,7 @@ import { Reservation } from "../../../types/reservation";
 import ReservationsTable from "../../../components/ReservationTable";
 import CustomButton from "../../../components/CustomButton";
 import { getUsersReservations } from "../../../api/manageReservations";
-import { Dayjs } from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 
 const ManageReservationsPage: React.FC = () => {
   const [reservations, setReservations] = useState<Reservation[]>([]);
@@ -39,17 +39,22 @@ const ManageReservationsPage: React.FC = () => {
     fetchReservations();
   }, [fetchReservations]);
 
-  const filteredReservations = reservations.filter(
-    (reservation) =>
+  const filteredReservations = reservations.filter((reservation) => {
+    const searchTermMatch =
       reservation.id
         .toString()
         .toLowerCase()
         .includes(searchTerm.toLowerCase()) ||
-      (reservation.status.toLowerCase().includes(searchTerm.toLowerCase()) &&
-        (!bookingDate ||
-          new Date(reservation.booking_time).toDateString() ===
-            bookingDate.toDate().toDateString()))
-  );
+      reservation.status.toLowerCase().includes(searchTerm.toLowerCase());
+
+    const bookingDateMatch =
+      !bookingDate ||
+      dayjs(reservation.booking_time)
+        .startOf("day")
+        .isSame(bookingDate.startOf("day"));
+
+    return searchTermMatch && bookingDateMatch;
+  });
 
   const handleAddReservation = () => {
     // Logic for adding a new reservation goes here

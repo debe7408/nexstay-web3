@@ -4,6 +4,8 @@ import Table from "../components/Table";
 import { Reservation } from "../types/reservation";
 import { formatDate } from "../helperFunctions/formatDate";
 import CustomButton from "./CustomButton";
+import Timer from "./Timer";
+import dayjs from "dayjs";
 
 interface ReservationsTableProps {
   reservations: Reservation[];
@@ -38,7 +40,14 @@ const ReservationsTable: React.FC<ReservationsTableProps> = ({
               <td>#{reservation.id}</td>
               <td>{formatDate(reservation.start_date)}</td>
               <td>{formatDate(reservation.end_date)}</td>
-              <td>{reservation.status.toUpperCase()}</td>
+              <td>
+                <Timer
+                  deadline={dayjs(reservation.booking_time)
+                    .add(30, "minute")
+                    .toDate()}
+                  label={reservation.status.toLocaleUpperCase()}
+                />
+              </td>
               <td>{formatDate(reservation.booking_time)}</td>
               <td>
                 <CustomButton variant="contained" color="primary">

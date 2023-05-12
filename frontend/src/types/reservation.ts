@@ -4,6 +4,14 @@ export type Reservation = {
   user_id: number;
   start_date: Date | string;
   end_date: Date | string;
-  status: string;
+  status: ReservationStatus;
   booking_time: Date | string;
 };
+
+enum ReservationStatus {
+  PENDING = "pending_payment",
+  CONFIRMED = "confirmed",
+  COMPLETED = "completed",
+  EXPIRED = "expired",
+  CANCELED = "canceled",
+}
