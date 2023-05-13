@@ -8,5 +8,5 @@ export interface ContactInfo {
   firstName: string;
   lastName: string;
   email: string;
-  age: number;
+  age?: number;
 }

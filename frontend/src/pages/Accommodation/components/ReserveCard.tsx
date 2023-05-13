@@ -30,7 +30,7 @@ const ReserveCard: React.FC<Props> = ({ property }) => {
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
 
-  const [selectedDates, setSelectedDates] = useState<Value>(new Date());
+  const [selectedDates, setSelectedDates] = useState<Value>();
   const [unavailableDates, setUnavailableDates] = useState<DateRange[]>([]);
   const [selectedGuests, setSelectedGuests] = useState<number>(1);
   const [totalPrice, setTotalPrice] = useState<number>(0);

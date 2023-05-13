@@ -120,13 +120,6 @@ const AvatarGrid = styled(Grid)`
   justify-content: center;
 `;
 
-const StyledAvatar = styled(Avatar)`
-  width: 60px;
-  height: 60px;
-  border: 1px solid white;
-  box-shadow: 0 10px 8px rgba(0, 0, 0, 0.1);
-`;
-
 const ShowMore = styled.div`
   margin-top: 10px;
   font-weight: 5px;

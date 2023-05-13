@@ -1,12 +1,13 @@
 export const colors = {
   navyBlue: "#302F68",
-  lightGrey: "#F4F5F3",
+  lightGrey: "#C2BBBF",
   pink: "#D17C87",
   lavender: "#AB8DC3",
   purple: "#9668A7",
   white: "#FFFFFF",
   red: "#FF0000",
   green: "#00FF00",
+  pastelPurple: "#E7E5FA",
 };
 
 export const themes = {

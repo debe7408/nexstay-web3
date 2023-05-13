@@ -7,7 +7,7 @@ import "react-calendar/dist/Calendar.css";
 
 interface Props {
   unavailableDates: DateRange[];
-  value: Value;
+  value?: Value;
   onChange: (value: Value) => void;
 }
 

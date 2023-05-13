@@ -16,6 +16,7 @@ const NotFound = lazy(() => import("../pages/InvalidPage"));
 const ManageReservations = lazy(
   () => import("../pages/Profile/ManageReservations/ManageReservations")
 );
+const ManagePayment = lazy(() => import("../pages/Checkout/ManagePayment"));
 
 const Main = () => {
   const location = useLocation();
@@ -46,6 +47,10 @@ const Main = () => {
               element={loginState ? <HostForm /> : <UnauthorizedPage />}
             />
             <Route path="/accommodation/:id" element={<Accommodation />} />
+            <Route
+              path="/checkout/:id"
+              element={loginState ? <ManagePayment /> : <UnauthorizedPage />}
+            />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>
