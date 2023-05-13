@@ -23,6 +23,8 @@ In order to run this project, you will need to add the following environment var
 
 `REACT_APP_GOOGLE_MAPS_API_KEY` - google maps api key
 
+`REACT_APP_PAYMENT_CONTRACT_ADDRESS` - address of smart contract responsible for payments
+
 Here is an example of how the .env file should look like:
 
 ```bash
@@ -37,6 +39,10 @@ REACT_APP_BLOCK_EXPLORER="https://testnet.bscscan.com/"
 REACT_APP_BASE_API_URL="http://localhost:3001/api"
 
 REACT_APP_GOOGLE_MAPS_API_KEY="YOUR_API_KEY_HERE"
+
+# This can be either obtained from the main README.md or your own contract.
+# Main README.md file has working and already deployed contract.
+REACT_APP_PAYMENT_CONTRACT_ADDRESS="0xb7f415A4B3D88242fD145f675048AA3122fb3D0A"
 ```
 
 ## Run Locally
@@ -60,7 +66,7 @@ Go to the frontend folder
 Install required dependencies from package.json file
 
 ```bash
-  yarn install
+  yarn
 ```
 
 Start the development server (will start a local server on port 3000).
@@ -71,4 +77,4 @@ Start the development server (will start a local server on port 3000).
 
 ## Tech Stack
 
-**Client:** React, Redux, MaterialUI, Typescript
+**Client:** React, Redux, MaterialUI, Typescript, styled-components, ethers.js

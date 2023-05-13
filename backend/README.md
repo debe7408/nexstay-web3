@@ -1,13 +1,10 @@
-
 # Trip.io Backend
 
 This repository holds the backend part of the Trip.io system.
 
-
 ## Authors
 
 - Deividas Bendaravičius [@debe7408](https://www.github.com/debe7408)
-
 
 ## Environment Variables
 
@@ -41,9 +38,6 @@ DB_DATABASE=tripio
 JWT_SECRET="tripio-super-secret-key"
 ```
 
-
-
-
 ## Run Locally
 
 After setting up the environmental variables, you can go ahead and run your server by following the steps below.
@@ -56,7 +50,7 @@ Clone the repository by one of the following ways:
   gh repo clone debe7408/trip.io
 ```
 
-Go to the backend folder 
+Go to the backend folder
 
 ```bash
   cd tripio/backend
@@ -65,36 +59,33 @@ Go to the backend folder
 Install required dependencies from package.json file
 
 ```bash
-  yarn install
+  yarn
 ```
 
- This will run the development server locally on specified port
+This will run the development server locally on specified port
+
 ```bash
   yarn run dev
 ```
 
-
-
-
-
 ## Deployment
 
-#### The following scripts can be run to deploy your server for production. 
-
+#### The following scripts can be run to deploy your server for production.
 
 Compile all the TypeScript files to JavaScript and copy contents of the .env file
+
 ```bash
 yarn run build
 ```
+
 Start your production server. Changes to the code can not be made.
+
 ```bash
 yarn run start
 ```
 
-
-
-
 ## API Reference
+
 Once you have your local server running, the following API calls can be made using tools such as Postman.
 
 #### Register a new user
@@ -103,16 +94,15 @@ Once you have your local server running, the following API calls can be made usi
 POST /api/users/register
 ```
 
-| Parameter | Type     | Description                    |
-| :-------- | :------- | :-------------------------     |
-| `name` | `string` | **Required**. User name           |
-| `surname` | `string` | **Required**. User surname     |
-| `age` | `integer` | **Required**. User age            |
-| `email` | `string` | **Required**. User email         |
-| `password` | `string` | **Required**. User password   |
+| Parameter  | Type      | Description                 |
+| :--------- | :-------- | :-------------------------- |
+| `name`     | `string`  | **Required**. User name     |
+| `surname`  | `string`  | **Required**. User surname  |
+| `age`      | `integer` | **Required**. User age      |
+| `email`    | `string`  | **Required**. User email    |
+| `password` | `string`  | **Required**. User password |
 
 Returns JWT auth token.
-
 
 #### Login with existing user
 
@@ -120,13 +110,12 @@ Returns JWT auth token.
 POST /api/users/login
 ```
 
-| Parameter | Type     | Description                    |
-| :-------- | :------- | :-------------------------     |
-| `email` | `string` | **Required**. User email         |
-| `password` | `string` | **Required**. User password   |
+| Parameter  | Type     | Description                 |
+| :--------- | :------- | :-------------------------- |
+| `email`    | `string` | **Required**. User email    |
+| `password` | `string` | **Required**. User password |
 
 Returns new JWT auth token.
-
 
 #### Get specific user information
 
@@ -134,11 +123,9 @@ Returns new JWT auth token.
 GET /api/users/getUserInfo
 ```
 
-
-| Header | Type     | Description                    |
-| :-------- | :------- | :-------------------------     |
-| `Authorization ` | `Bearer token` | **Required** JWT token         |
-
+| Header           | Type           | Description            |
+| :--------------- | :------------- | :--------------------- |
+| `Authorization ` | `Bearer token` | **Required** JWT token |
 
 #### Get a list of all properties
 
@@ -152,39 +139,36 @@ GET /api/properties/getProperties
 POST /api/properties/addProperty
 ```
 
-| Parameter | Type     | Description                    |
-| :-------- | :------- | :-------------------------     |
-| `name` | `string` | **Required**. Property name          |
-| `property_type` | `string` | **Required**. Property type     |
-| `price` | `float` | **Required**. Booking price         |
-| `country` | `string` | **Required**. Country location   |
-| `city` | `string` | **Required**. City location         |
-| `address` | `string` | **Required**. Address location   |
-| `amenities` | `json` | **Required**. Available amenities   |
-| `pictures` | `json` | **Required**. Picture paths   |
-| `booking_status` | `boolean` | **Required**. Enabled/disabled   |
+| Parameter        | Type      | Description                       |
+| :--------------- | :-------- | :-------------------------------- |
+| `name`           | `string`  | **Required**. Property name       |
+| `property_type`  | `string`  | **Required**. Property type       |
+| `price`          | `float`   | **Required**. Booking price       |
+| `country`        | `string`  | **Required**. Country location    |
+| `city`           | `string`  | **Required**. City location       |
+| `address`        | `string`  | **Required**. Address location    |
+| `amenities`      | `json`    | **Required**. Available amenities |
+| `pictures`       | `json`    | **Required**. Picture paths       |
+| `booking_status` | `boolean` | **Required**. Enabled/disabled    |
 
-| Header | Type     | Description                    |
-| :-------- | :------- | :-------------------------     |
-| `Authorization ` | `Bearer token` | **Required** JWT token         |
+| Header           | Type           | Description            |
+| :--------------- | :------------- | :--------------------- |
+| `Authorization ` | `Bearer token` | **Required** JWT token |
 
 #### Delete property
 
 ```http
 DELETE /api/properties/addProperty
 ```
-| Parameter | Type     | Description                    |
-| :-------- | :------- | :-------------------------     |
-| `property_id` | `decimal` | **Required**. ID of the property         |
 
-| Header | Type     | Description                    |
-| :-------- | :------- | :-------------------------     |
-| `Authorization ` | `Bearer token` | **Required** JWT token         |
+| Parameter     | Type      | Description                      |
+| :------------ | :-------- | :------------------------------- |
+| `property_id` | `decimal` | **Required**. ID of the property |
 
-
-
+| Header           | Type           | Description            |
+| :--------------- | :------------- | :--------------------- |
+| `Authorization ` | `Bearer token` | **Required** JWT token |
 
 ## Tech Stack
 
 **Server:** Node.js, Express.js, Typescript
-
