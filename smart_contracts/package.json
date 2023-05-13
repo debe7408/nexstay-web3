@@ -1,0 +1,19 @@
+{
+  "name": "smart_contracts",
+  "version": "0.0.1",
+  "description": "Trip.io project's smart contracts",
+  "main": "index.js",
+  "repository": "https://github.com/debe7408/trip.io",
+  "author": "Deividas Bendaravicius",
+  "license": "MIT",
+  "private": false,
+  "devDependencies": {
+    "@openzeppelin/contracts": "^4.8.3",
+    "@truffle/hdwallet-provider": "^2.1.11",
+    "dotenv": "^16.0.3"
+  },
+  "dependencies": {
+    "ethers": "^6.3.0",
+    "truffle": "^5.9.0"
+  }
+}
