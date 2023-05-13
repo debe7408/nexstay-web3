@@ -68,10 +68,12 @@ To add a custom network for deploying your contracts, modify the following files
 module.exports = async function (deployer, network) {
   // Token address that is accepted as payment.
   const token = "PAYMENT_TOKEN_ADDRESS";
+  const feePercentage = "TRANSACTION_FEE_PERCENTAGE";
+
 
 
   if (network === "YOUR_NETWORK") {
-    await deployer.deploy(PropertyPayment, token);
+    await deployer.deploy(PropertyPayment, token,feePercentage);
   }
   ...
 };
@@ -103,6 +105,7 @@ This section lists all the interactions you can have with the contract.
 
 - **Function:** `pay(args)` - Initializes payment transaction.
 - **Expects:** `uint256: amount`
+- **Expects:** `address: receiver address`
 - **Emits:** `event: PaymentReceived`
 
 ### 2. Transfer Ownership
@@ -116,6 +119,13 @@ This section lists all the interactions you can have with the contract.
 - **Function:** `setTokenAddress(args)` - Changes token that is accepted as payment.
 - **Authorization:** Can only be called by the owner.
 - **Expects:** `address: newTokenAddress`
+
+### 4. Set Transaction Fee Percentage
+
+- **Function:** `setFeePercentage(args)` - Changes fee percentage that is associated with the contract.
+- **Authorization:** Can only be called by the owner.
+- **Expects:** `uint256: new fee percentage`
+- **Default:** `uint256: 5`
 
 ## Tech Stack
 
