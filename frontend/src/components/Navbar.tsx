@@ -5,7 +5,7 @@ import Logo from "../assets/logo.svg";
 import styled from "styled-components";
 import { themes } from "../constants/colors";
 import ProfileBadge from "./ProfileBadgeComponent";
-import SearchFieldComponent from "./SearchField";
+import NetworkChip from "./NetworkChip";
 
 const Navbar: React.FC = () => {
   return (
@@ -18,6 +18,7 @@ const Navbar: React.FC = () => {
         </Typography>
         <Typography variant="h6" style={{ flexGrow: 1 }}></Typography>
         <Typography variant="h6" style={{ flexGrow: 1 }}></Typography>
+        <NetworkChip />
         <ProfileBadge />
       </Toolbar>
     </StyledAppBar>

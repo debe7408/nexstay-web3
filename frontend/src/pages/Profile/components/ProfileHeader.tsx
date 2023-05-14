@@ -1,5 +1,6 @@
 import { Grid, Box } from "@mui/material";
 import ProfileAvatar from "../../../components/Avatar";
+import WalletChip from "../../../components/WalletChip";
 
 interface Props {
   bannerUrl: string;
@@ -25,9 +26,14 @@ const ProfileHeader: React.FC<Props> = ({ bannerUrl, userId }) => {
           position: "relative",
           left: "10%",
           top: { sm: "-80px", md: "-80px" },
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: "1rem",
         }}
       >
         <ProfileAvatar id={userId} customHeight="8rem" customWidth="8rem" />
+        <WalletChip />
       </Box>
     </Grid>
   );
