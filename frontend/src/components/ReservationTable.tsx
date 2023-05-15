@@ -20,6 +20,10 @@ const ReservationsTable: React.FC<ReservationsTableProps> = ({
     navigate(`/accommodation/${propertyId}`);
   };
 
+  const openReservation = (reservationId: number) => {
+    navigate(`/checkout/${reservationId}`);
+  };
+
   return (
     <>
       <Table>
@@ -50,7 +54,11 @@ const ReservationsTable: React.FC<ReservationsTableProps> = ({
               </td>
               <td>{formatDate(reservation.booking_time)}</td>
               <td>
-                <CustomButton variant="contained" color="primary">
+                <CustomButton
+                  variant="contained"
+                  color="primary"
+                  onClick={() => openReservation(reservation.id)}
+                >
                   Edit
                 </CustomButton>
               </td>

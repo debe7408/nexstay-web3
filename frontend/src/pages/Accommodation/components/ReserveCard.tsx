@@ -68,15 +68,19 @@ const ReserveCard: React.FC<Props> = ({ property }) => {
     const startDate = formatDate(selectedDates[0]!);
     const endDate = formatDate(selectedDates[1]!);
 
-    const response = await reserveDates(
+    const { message, error, reservationId } = await reserveDates(
       property.property_id,
       startDate,
       endDate
     );
 
-    enqueueSnackbar(response.message, {
-      variant: response.error ? "error" : "success",
+    enqueueSnackbar(message, {
+      variant: error ? "error" : "success",
     });
+
+    if (reservationId) {
+      navigate(`/checkout/${reservationId}`);
+    }
   };
 
   useEffect(() => {

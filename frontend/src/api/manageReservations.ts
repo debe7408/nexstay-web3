@@ -6,11 +6,21 @@ import { Reservation } from "../types/reservation";
 type ReservedDates = { start_date: string; end_date: string };
 type GetUnavailableDatesResponse = ReservedDates[];
 type UnavailableDatesData = { data?: DateRange[]; error?: string };
-type ReservationResponseData = { message: string; error?: boolean };
+type PostReserveResponse = { message: string; reservation_id?: string };
+type ReservationResponseData = {
+  message: string;
+  reservationId?: string;
+  error?: boolean;
+};
 type GetUserResrvationsResponse = Reservation[];
-type ReservatioData = {
+type ReservatiosData = {
   message: string;
   data?: Reservation[];
+  error?: boolean;
+};
+type SingleReservationData = {
+  message: string;
+  data?: Reservation;
   error?: boolean;
 };
 
@@ -46,14 +56,17 @@ export const reserveDates = async (
   endDate: string
 ): Promise<ReservationResponseData> => {
   try {
-    const response = await axiosClient.post(
+    const response = await axiosClient.post<PostReserveResponse>(
       `/properties/reserve/${propertyId}`,
       {
         checkIn: startDate,
         checkOut: endDate,
       }
     );
-    return { message: response.data };
+    return {
+      message: response.data.message,
+      reservationId: response.data.reservation_id,
+    };
   } catch (error) {
     if (axios.isAxiosError(error)) {
       return { message: error.response?.data, error: true };
@@ -62,12 +75,29 @@ export const reserveDates = async (
   }
 };
 
-export const getUsersReservations = async (): Promise<ReservatioData> => {
+export const getUsersReservations = async (): Promise<ReservatiosData> => {
   try {
     const response = await axiosClient.get<GetUserResrvationsResponse>(
       `/usersRoute/users/reservations`
     );
 
+    return {
+      message: "Information fetched successfully",
+      data: response.data,
+    };
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      return { message: error.message };
+    }
+    return { message: "An unexpected error occurred", error: true };
+  }
+};
+
+export const getReservation = async (
+  id: string
+): Promise<SingleReservationData> => {
+  try {
+    const response = await axiosClient.get<Reservation>(`/reservations/${id}`);
     return {
       message: "Information fetched successfully",
       data: response.data,

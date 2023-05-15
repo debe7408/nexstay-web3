@@ -9,9 +9,10 @@ dayjs.extend(duration);
 interface Props {
   deadline: string | Date;
   label?: string;
+  primary?: boolean;
 }
 
-const Timer: React.FC<Props> = ({ deadline, label }) => {
+const Timer: React.FC<Props> = ({ deadline, label, primary }) => {
   const [remainingTime, setRemainingTime] = useState<number>(0);
   const deadlineTime = useMemo(() => dayjs(deadline), [deadline]);
 
@@ -51,9 +52,11 @@ const Timer: React.FC<Props> = ({ deadline, label }) => {
         justifyContent: "center",
         paddingTop: 1,
         paddingBottom: 1,
-        backgroundColor: colors.pink,
+        backgroundColor: primary ? colors.navyBlue : colors.pink,
         borderRadius: 1,
         boxShadow: 1,
+        paddingLeft: 1,
+        paddingRight: 1,
       }}
     >
       <Typography variant="body1" component="h1" color={colors.white}>

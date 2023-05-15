@@ -8,7 +8,7 @@ export type Reservation = {
   booking_time: Date | string;
 };
 
-enum ReservationStatus {
+export enum ReservationStatus {
   PENDING = "pending_payment",
   CONFIRMED = "confirmed",
   COMPLETED = "completed",

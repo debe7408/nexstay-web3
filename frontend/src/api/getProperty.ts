@@ -26,7 +26,7 @@ export const getAllProperties = async (): Promise<PropertyInfo> => {
 };
 
 export const getProperty = async (
-  propertyId: string
+  propertyId: string | number
 ): Promise<SinglePropertyInfo> => {
   try {
     const response = await axiosClient.get(
