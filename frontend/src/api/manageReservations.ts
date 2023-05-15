@@ -7,6 +7,11 @@ type ReservedDates = { start_date: string; end_date: string };
 type GetUnavailableDatesResponse = ReservedDates[];
 type UnavailableDatesData = { data?: DateRange[]; error?: string };
 type PostReserveResponse = { message: string; reservation_id?: string };
+type PostConfirmReserveResponse = { message: string };
+type PostConfirmReserveData = {
+  message: string;
+  error?: boolean;
+};
 type ReservationResponseData = {
   message: string;
   reservationId?: string;
@@ -44,7 +49,6 @@ export const getUnavailableDates = async (
     if (axios.isAxiosError(error)) {
       return { error: error.message };
     } else {
-      console.log("unexpected error: ", error);
       return { error: "An unexpected error occurred" };
     }
   }
@@ -105,6 +109,28 @@ export const getReservation = async (
   } catch (error) {
     if (axios.isAxiosError(error)) {
       return { message: error.message };
+    }
+    return { message: "An unexpected error occurred", error: true };
+  }
+};
+
+export const confirmReservation = async (
+  reservation_id: string,
+  hash: string
+): Promise<PostConfirmReserveData> => {
+  try {
+    const response = await axiosClient.post<PostConfirmReserveResponse>(
+      `/reservations/confirm/${reservation_id}`,
+      {
+        hash: hash,
+      }
+    );
+    return {
+      message: response.data.message,
+    };
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      return { message: error.response?.data.message, error: true };
     }
     return { message: "An unexpected error occurred", error: true };
   }
