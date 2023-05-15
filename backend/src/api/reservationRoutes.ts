@@ -18,7 +18,7 @@ const reservationRoutes = express.Router();
  * Confirm reservation after payment is received
  */
 reservationRoutes.post(
-  "/complete/:reservationId",
+  "/confirm/:reservationId",
   verifyToken,
   reservationCompleteRequest,
   async (req: Request, res: Response) => {
@@ -32,19 +32,27 @@ reservationRoutes.post(
     const publicAddress = req.body.publicAddress;
 
     const user = await checkIfUserExist(publicAddress);
-    if (!user) return res.status(404).json("User not found");
+    if (!user)
+      return res.status(404).json({
+        message: "User not found",
+      });
 
     const reservation = await checkIfReservationBelongsToUser(
       reservationId,
       user.id
     );
 
-    if (!reservation) return res.status(404).json("Reservation not found");
+    if (!reservation)
+      return res.status(404).json({
+        message: "Reservation not found",
+      });
 
     const reservationStatus = await getReservationStatus(reservationId);
 
     if (reservationStatus !== ReservationStatus.PENDING)
-      return res.status(400).json("Reservation is not pending");
+      return res.status(400).json({
+        message: "Reservation is not pending",
+      });
 
     const saveTransaction = await storeTransaction({
       reservationId,
@@ -53,16 +61,23 @@ reservationRoutes.post(
     });
 
     if (!saveTransaction)
-      return res.status(400).json("Transaction could not be saved");
+      return res.status(400).json({
+        message: "Transaction not saved",
+      });
 
     const confirmed = await changeReservationStatus(
       reservationId,
       ReservationStatus.CONFIRMED
     );
 
-    if (!confirmed) return res.status(400).json("Reservation not confirmed");
+    if (!confirmed)
+      return res.status(400).json({
+        message: "Reservation coud not be confirmed",
+      });
 
-    return res.status(200).json("Reservation confirmed");
+    return res.status(200).json({
+      message: "Reservation confirmed",
+    });
   }
 );
 
