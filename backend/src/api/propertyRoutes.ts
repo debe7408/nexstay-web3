@@ -11,10 +11,12 @@ import {
   checkIfPropertyExists,
   checkIfPropertyBookmarked,
   getBookmaredProperties,
-  getPropertyAvailability,
-  reserveProperty,
-  getUnavailableDates,
 } from "../utils/propertyHelpers";
+import {
+  reserveProperty,
+  getPropertyAvailability,
+  getUnavailableDates,
+} from "../utils/reservationHelpers";
 
 const propertyRoutes = express.Router();
 
@@ -295,16 +297,18 @@ propertyRoutes.post(
     if (!availability)
       return res.status(400).json("Property not available during these dates");
 
-    const reserve = await reserveProperty(
+    const reservationId = await reserveProperty(
       propertyId,
       userId,
       checkIn,
       checkOut
     );
-    if (reserve.affectedRows <= 0)
-      return res.status(500).json("Internal server error");
+    if (!reservationId) return res.status(500).json("Internal server error");
 
-    return res.status(200).json("Property reserved. Payment pending...");
+    return res.status(200).json({
+      message: "Property reserved. Payment pending...",
+      reservation_id: reservationId,
+    });
   }
 );
 

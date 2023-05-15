@@ -10,7 +10,7 @@ import {
   checkIfUserExist,
   checkIfUserHasProperties,
 } from "../utils/userHelpers";
-import { getUserReservations } from "../utils/propertyHelpers";
+import { getUserReservations } from "../utils/reservationHelpers";
 
 const userRoutes = express.Router();
 

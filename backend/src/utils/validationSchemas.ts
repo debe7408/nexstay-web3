@@ -19,6 +19,13 @@ export const reserveValidationRequest = [
   check("checkIn", "Please include a check in date").not().isEmpty().isDate(),
   check("checkOut", "Please include a check out date").not().isEmpty().isDate(),
 ];
+export const reservationCompleteRequest = [
+  check("hash", "Please include a valid ETH transaction hash")
+    .isString()
+    .not()
+    .isEmpty()
+    .isLength({ min: 66, max: 66 }),
+];
 
 export const addPropertyValidation = [
   check("name", "Property has to have a name").not().isEmpty(),
