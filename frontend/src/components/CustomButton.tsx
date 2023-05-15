@@ -40,10 +40,16 @@ declare module "@mui/material/Button" {
 }
 
 const CustomButton = ({ loading, children, ...props }: CustomButtonProps) => {
+  const spinnerColor = props.color === "primary" ? "secondary" : "primary";
+
   return (
     <ThemeProvider theme={theme}>
       <Button {...props}>
-        {loading ? <CircularProgress size={24} color="primary" /> : children}
+        {loading ? (
+          <CircularProgress size={24} color={spinnerColor} />
+        ) : (
+          children
+        )}
       </Button>
     </ThemeProvider>
   );
