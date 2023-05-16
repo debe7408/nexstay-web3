@@ -44,6 +44,7 @@ const Timer: React.FC<Props> = ({ deadline, label, primary }) => {
     return () => clearInterval(interval);
   }, [getRemainingTime]);
 
+  // TODO - better styling
   return (
     <Box
       sx={{
@@ -60,7 +61,7 @@ const Timer: React.FC<Props> = ({ deadline, label, primary }) => {
       }}
     >
       <Typography variant="body1" component="h1" color={colors.white}>
-        {label} {formatTime()}
+        {label} {label === "PENDING_PAYMENT" && formatTime()}
       </Typography>
     </Box>
   );
