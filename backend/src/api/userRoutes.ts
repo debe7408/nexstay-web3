@@ -87,7 +87,7 @@ userRoutes.post(
           newUser.type
         );
         return res.send({
-          message: "New user added",
+          message: "Welcome! You are now logged in.",
           token,
           user: newUser,
         });
@@ -96,7 +96,7 @@ userRoutes.post(
       const token = signToken(publicAddressLowercased, user.id, user.type);
 
       return res.status(200).send({
-        message: "Existing user found",
+        message: "Welcome Back! You are now logged in.",
         token,
         user,
       });
