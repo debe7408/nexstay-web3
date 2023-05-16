@@ -7,6 +7,9 @@ import ReviewInfoComponent from "./ReviewInfo/ReviewInfoComponent";
 import { PropertyForm, PropertyInfoForm } from "../../types/property";
 import { addProperty } from "../../api/manageProperty";
 import { useSnackbar } from "notistack";
+import { useNavigate } from "react-router-dom";
+import { fetchAndUpdateUserInfo } from "../../app/loginSlice";
+import { useAppDispatch } from "../../app/hooks";
 
 const steps = [
   "Start of a journey",
@@ -17,6 +20,8 @@ const steps = [
 
 const HostingFormComponent = () => {
   const { enqueueSnackbar } = useSnackbar();
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const [activeStep, setActiveStep] = useState(0);
   const [propertyData, setPropertyData] = useState({} as PropertyInfoForm);
 
@@ -31,6 +36,9 @@ const HostingFormComponent = () => {
       return;
     }
     enqueueSnackbar(message, { variant: "success" });
+
+    dispatch(fetchAndUpdateUserInfo());
+    navigate("/myProfile");
     return;
   };
 

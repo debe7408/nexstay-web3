@@ -11,6 +11,10 @@ import { ContactInfo } from "../../../types/contactInfo";
 import ContactInfoForm from "../../Host/ContactInfo/ContactInfoForm";
 import Divider from "../../../components/DividerComponent";
 import { ReservationStatus } from "../../../types/reservation";
+import { useAppSelector, useAppDispatch } from "../../../app/hooks";
+import { fetchAndUpdateUserInfo, selectUser } from "../../../app/loginSlice";
+import { updateContactInfo } from "../../../api/updateContactInfo";
+import { useSnackbar } from "notistack";
 
 interface Props {
   propertyInfo: Property;
@@ -25,6 +29,9 @@ const PaymentDetailsContainer: React.FC<Props> = ({
   loading,
   status,
 }) => {
+  const { enqueueSnackbar } = useSnackbar();
+  const user = useAppSelector(selectUser);
+  const dispatch = useAppDispatch();
   const subtotalToolTip = "Subtotal is the price of the property";
   const platformFeeToolTip = "Platform fee is 5% of the subtotal";
   const getButtonText = () => {
@@ -48,11 +55,19 @@ const PaymentDetailsContainer: React.FC<Props> = ({
   const platformFeeAmount = subtotalAmount * 0.05;
   const totalAmount = subtotalAmount + platformFeeAmount;
 
+  const initialState: ContactInfo = {
+    firstName: user?.firstName || "",
+    lastName: user?.lastName || "",
+    email: user?.email || "",
+    age: user?.age || undefined,
+  };
+
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isDirty },
   } = useForm<ContactInfo>({
+    defaultValues: initialState,
     resolver: yupResolver(
       yup.object().shape({
         firstName: yup.string().required().min(2),
@@ -61,6 +76,31 @@ const PaymentDetailsContainer: React.FC<Props> = ({
         age: yup.number().required().min(20).max(90),
       })
     ),
+  });
+
+  const onSubmit = handleSubmit(async (formData, event) => {
+    if (!isDirty) {
+      enqueueSnackbar("There were no changes.", {
+        variant: "info",
+      });
+      handlePayment();
+      return;
+    }
+
+    const { hasError } = await updateContactInfo(formData);
+
+    if (!hasError) {
+      enqueueSnackbar("Contact information updated", {
+        variant: "success",
+      });
+      dispatch(fetchAndUpdateUserInfo());
+
+      handlePayment();
+    } else {
+      enqueueSnackbar("Contact could not be updated", {
+        variant: "error",
+      });
+    }
   });
 
   return (
@@ -96,7 +136,7 @@ const PaymentDetailsContainer: React.FC<Props> = ({
       <CustomButton
         variant="contained"
         color="primary"
-        onClick={handleSubmit(handlePayment)}
+        onClick={onSubmit}
         loading={loading}
         disabled={status !== ReservationStatus.PENDING}
       >

@@ -7,6 +7,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { ContactInfo } from "../../../types/contactInfo";
 import { updateContactInfo } from "../../../api/updateContactInfo";
 import { useSnackbar } from "notistack";
+import { fetchAndUpdateUserInfo } from "../../../app/loginSlice";
+import { useAppDispatch } from "../../../app/hooks";
 
 interface Props {
   user: User;
@@ -14,14 +16,23 @@ interface Props {
 
 const EditProfileForm: React.FC<Props> = ({ user }) => {
   const [editable, setEditable] = useState(false);
+  const dispatch = useAppDispatch();
   const { enqueueSnackbar } = useSnackbar();
+
+  const initialState: ContactInfo = {
+    firstName: user.firstName || "",
+    lastName: user.lastName || "",
+    email: user.email || "",
+    age: user.age || undefined,
+  };
 
   const {
     register,
     handleSubmit,
     reset,
-    formState: { errors },
+    formState: { errors, isDirty },
   } = useForm<ContactInfo>({
+    defaultValues: initialState,
     resolver: yupResolver(
       yup.object().shape({
         firstName: yup.string().required().min(2),
@@ -42,12 +53,21 @@ const EditProfileForm: React.FC<Props> = ({ user }) => {
   };
 
   const onSubmit = handleSubmit(async (formData) => {
+    if (!isDirty) {
+      enqueueSnackbar("There were no changes.", {
+        variant: "info",
+      });
+      setEditable(false);
+      return;
+    }
+
     const { hasError } = await updateContactInfo(formData);
 
     if (!hasError) {
       enqueueSnackbar("Contact information updated", {
         variant: "success",
       });
+      dispatch(fetchAndUpdateUserInfo());
     } else {
       enqueueSnackbar("There was something wrong with new information.", {
         variant: "error",
@@ -65,7 +85,6 @@ const EditProfileForm: React.FC<Props> = ({ user }) => {
             fullWidth
             label="First name"
             variant="outlined"
-            defaultValue={user.firstName}
             disabled={!editable}
             {...register("firstName")}
             {...(errors.firstName && {
@@ -79,7 +98,6 @@ const EditProfileForm: React.FC<Props> = ({ user }) => {
             fullWidth
             label="Last name"
             variant="outlined"
-            defaultValue={user.lastName}
             disabled={!editable}
             {...register("lastName")}
             {...(errors.lastName && {
@@ -94,7 +112,6 @@ const EditProfileForm: React.FC<Props> = ({ user }) => {
             fullWidth
             label="Email"
             variant="outlined"
-            defaultValue={user.email}
             disabled={!editable}
             {...register("email")}
             {...(errors.email && {
@@ -109,7 +126,6 @@ const EditProfileForm: React.FC<Props> = ({ user }) => {
             fullWidth
             label="Age"
             variant="outlined"
-            defaultValue={user.age}
             disabled={!editable}
             {...register("age")}
             {...(errors.age && {

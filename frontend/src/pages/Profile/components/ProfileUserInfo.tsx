@@ -18,13 +18,17 @@ const ProfileUserInfo: React.FC<Props> = ({ user, bookmarkedProperties }) => {
     navigate("/myProfile/manage-reservations");
   };
 
+  const greetingMessage = user.firstName
+    ? `Welcome back, ${user.firstName}!`
+    : "Welcome back!";
+
   return (
     <Container>
       <Grid container spacing={2}>
         <Grid item xs={12} sm={4}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
-              <Typography variant="h3">{`Welcome back, ${user.firstName}!`}</Typography>
+              <Typography variant="h3">{greetingMessage}</Typography>
             </Grid>
             <Grid item xs={12}>
               <EditProfileForm user={user} />

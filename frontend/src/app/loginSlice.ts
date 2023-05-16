@@ -1,6 +1,7 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "./store";
 import { User } from "../types/user";
+import { getSingleUserInfo } from "../api/getUserInfo";
 
 interface LoginState {
   loggedIn: boolean;
@@ -29,13 +30,31 @@ export const loginSlice = createSlice({
       state.user = action.payload.user;
     },
     logout: () => initialState,
+    updateFullUserInfo: (state, action: PayloadAction<User>) => {
+      state.user = action.payload;
+    },
   },
 });
 
-export const { login, logout } = loginSlice.actions;
+export const fetchAndUpdateUserInfo = createAsyncThunk<
+  void,
+  void,
+  { state: RootState }
+>("login/fetchAndUpdateUserInfo", async (_, { getState, dispatch }) => {
+  const userId = selectUserId(getState());
+  if (!userId) {
+    return;
+  }
+
+  const { hasError, user: updatedUser } = await getSingleUserInfo();
+  if (!hasError && updatedUser) dispatch(updateFullUserInfo(updatedUser));
+});
+
+export const { login, logout, updateFullUserInfo } = loginSlice.actions;
 
 export const selectLoginState = (state: RootState) => state.login.loggedIn;
 export const selectAuthToken = (state: RootState) => state.login.token;
 export const selectUserId = (state: RootState) => state.login.user?.id;
+export const selectUser = (state: RootState) => state.login.user;
 
 export default loginSlice.reducer;

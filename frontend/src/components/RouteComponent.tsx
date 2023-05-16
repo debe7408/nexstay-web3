@@ -1,9 +1,9 @@
-import React, { Suspense, lazy } from "react";
+import { Suspense, lazy } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { useAppSelector } from "../app/hooks";
 import { selectAuthToken } from "../app/loginSlice";
-
+import SuspensePage from "../pages/SuspensePage";
 const Home = lazy(() => import("../pages/Home/Home"));
 const Profile = lazy(() => import("../pages/Profile/Profile"));
 const HostLanding = lazy(() => import("../pages/Host/HostLandingPage"));
@@ -25,7 +25,7 @@ const Main = () => {
   return (
     <TransitionGroup component={null}>
       <CSSTransition key={location.key} classNames="fade" timeout={300}>
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<SuspensePage />}>
           <Routes location={location}>
             <Route path="/" element={<Home />} />
             <Route
