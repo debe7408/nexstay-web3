@@ -1,10 +1,10 @@
-import { AxiosError } from "axios";
 import axiosClient from "../axios/axiosClient";
+import { User } from "../types/user";
 
 type RequestResponse = {
   message: string;
   token: string;
-  user_id: number;
+  user: User;
 };
 export const loginUser = async (publicAddress?: string) => {
   try {
@@ -15,21 +15,14 @@ export const loginUser = async (publicAddress?: string) => {
       }
     );
     return {
-      hasError: false,
+      message: response.data.message,
       token: response.data.token,
-      userId: response.data.user_id,
+      user: response.data.user,
     };
   } catch (error) {
-    const requestError = error as AxiosError;
-    if (!requestError.response) {
-      return {
-        hasError: true,
-        message: "Internal error. Please try again later",
-      };
-    }
     return {
       hasError: true,
-      message: requestError.response.data as string,
+      message: "Internal Server Error. Please try again later.",
     };
   }
 };

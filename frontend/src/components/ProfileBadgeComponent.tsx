@@ -34,25 +34,19 @@ const ProfileBadge = () => {
   const handleLogIn = async () => {
     const signerAddress = await connectWeb3auth(web3auth);
 
-    const { hasError, message, token, userId } = await loginUser(signerAddress);
+    const { hasError, message, token, user } = await loginUser(signerAddress);
 
     if (hasError || !token) {
-      if (message) {
-        enqueueSnackbar(message, {
-          variant: "error",
-        });
-      } else {
-        enqueueSnackbar("Internal error. Please try again later.", {
-          variant: "error",
-        });
-      }
+      enqueueSnackbar(message, {
+        variant: "error",
+      });
       return;
     }
 
-    enqueueSnackbar("Login successful.", {
+    enqueueSnackbar(message, {
       variant: "success",
     });
-    dispatch(login({ token, userId }));
+    dispatch(login({ token, user }));
     handleOnClose();
   };
 

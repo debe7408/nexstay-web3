@@ -21,9 +21,6 @@ export const initWeb3Auth = async () => {
       web3AuthNetwork: "testnet",
     });
 
-    /**
-     * TODO remove this when web3auth session is stored for seamless login
-     **/
     web3auth.clearCache();
 
     await web3auth.initModal();
