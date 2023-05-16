@@ -1,13 +1,56 @@
 import { Property, User } from "../common/types";
 import { queryDb } from "../databaseConnection";
 
-/**
- * Checks if the user exist in database.
- *
- * @param {string} publicAddress - Public ETH wallet address of the user
- * @returns {User} User object or undefined if user does not exist
- *
- */
+export const createUser = async (publicAddress: string): Promise<number> => {
+  const sql = `INSERT INTO users (publicAddress) VALUES (?)`;
+  const { insertId } = await queryDb(sql, [publicAddress]);
+
+  return insertId;
+};
+
+export const getUserType = async (
+  userId: number
+): Promise<string | undefined> => {
+  const sql = `SELECT type FROM users WHERE id = ? LIMIT 1`;
+  const response = await queryDb(sql, [userId]);
+  if (response.length === 0) {
+    return;
+  }
+  return response[0].type;
+};
+
+export const getUserInfo = async (
+  userId: number
+): Promise<User | undefined> => {
+  const sql = `SELECT * FROM users WHERE id = ? LIMIT 1`;
+  const response = await queryDb(sql, [userId]);
+  if (response.length === 0) {
+    return;
+  }
+  return response[0];
+};
+
+export const updateUserInfo = async (
+  publicAddress: string,
+  firstName: string,
+  lastName: string,
+  email: string,
+  age: number
+) => {
+  const sql = `UPDATE users SET firstName = ?, lastName = ?, email = ?, age = ? WHERE publicAddress = ?`;
+  const response = await queryDb(sql, [
+    firstName,
+    lastName,
+    email,
+    age,
+    publicAddress,
+  ]);
+
+  if (!response || response.affectedRows === 0) {
+    return false;
+  }
+  return true;
+};
 
 export const checkIfUserExist = async (
   publicAddress: string

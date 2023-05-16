@@ -8,9 +8,9 @@ import { Response, Request, NextFunction } from "express";
  * @param id The id of the user.
  * @returns A signed JWT token as string.
  */
-export const signToken = (key: string, id: number) => {
+export const signToken = (key: string, id: number, type: string) => {
   return jwt.sign(
-    { id: id, publicAddress: key },
+    { id: id, publicAddress: key, userType: type },
     process.env.JWT_SECRET as string,
     {
       expiresIn: "1d",
@@ -59,6 +59,7 @@ export const verifyToken = (
 
     req.body.publicAddress = payload.publicAddress;
     req.body.id = payload.id;
+    req.body.userType = payload.userType;
     next();
   } catch (error) {
     const httpError = error as HttpError;

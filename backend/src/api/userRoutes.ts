@@ -9,6 +9,9 @@ import { signToken, verifyToken } from "../utils/tokenHelpers";
 import {
   checkIfUserExist,
   checkIfUserHasProperties,
+  createUser,
+  getUserInfo,
+  updateUserInfo,
 } from "../utils/userHelpers";
 import { getUserReservations } from "../utils/reservationHelpers";
 
@@ -37,14 +40,16 @@ userRoutes.post(
 
       if (!user) return res.status(404).send("User not found");
 
-      const updateSql = `UPDATE users SET firstName = ?, lastName = ?, email = ?, age = ? WHERE publicAddress = ?`;
-      await queryDb(updateSql, [
+      const updated = await updateUserInfo(
+        publicAddressLowercased,
         firstName,
         lastName,
         email,
-        age,
-        publicAddressLowercased,
-      ]);
+        age
+      );
+
+      if (!updated)
+        return res.status(500).send({ message: "Could not update user." });
 
       return res.send({ message: "User updated" });
     } catch (error) {
@@ -70,22 +75,31 @@ userRoutes.post(
       const user = await checkIfUserExist(publicAddressLowercased);
 
       if (!user) {
-        const insertSql = `INSERT INTO users (publicAddress) VALUES (?)`;
-        const { insertId } = await queryDb(insertSql, [
+        const insertId = await createUser(publicAddressLowercased);
+
+        const newUser = await getUserInfo(insertId);
+
+        if (!newUser) return res.status(404).send("User not found");
+
+        const token = signToken(
           publicAddressLowercased,
-        ]);
-        const token = signToken(publicAddressLowercased, insertId);
+          insertId,
+          newUser.type
+        );
         return res.send({
           message: "New user added",
           token,
-          user_id: insertId,
+          user: newUser,
         });
       }
-      const token = signToken(publicAddressLowercased, user.id);
 
-      return res
-        .status(200)
-        .send({ message: "Existing user found", token, user_id: user.id });
+      const token = signToken(publicAddressLowercased, user.id, user.type);
+
+      return res.status(200).send({
+        message: "Existing user found",
+        token,
+        user,
+      });
     } catch (error) {
       console.error(error);
       res.status(500).send("Internal server error");
