@@ -5,9 +5,10 @@ import { ContactInfo } from "../../../types/contactInfo";
 interface Props {
   register: UseFormRegister<ContactInfo>;
   errors: FieldErrors<ContactInfo>;
+  disabled?: boolean;
 }
 
-const ContactInfoForm: React.FC<Props> = ({ register, errors }) => {
+const ContactInfoForm: React.FC<Props> = ({ register, errors, disabled }) => {
   return (
     <Box
       sx={{
@@ -30,6 +31,7 @@ const ContactInfoForm: React.FC<Props> = ({ register, errors }) => {
         variant="outlined"
         {...register("firstName")}
         error={errors.firstName ? true : false}
+        disabled={disabled}
       />
 
       <TextField
@@ -40,6 +42,7 @@ const ContactInfoForm: React.FC<Props> = ({ register, errors }) => {
         variant="outlined"
         {...register("lastName")}
         error={errors.lastName ? true : false}
+        disabled={disabled}
       />
 
       <TextField
@@ -51,6 +54,7 @@ const ContactInfoForm: React.FC<Props> = ({ register, errors }) => {
         variant="outlined"
         {...register("age")}
         error={errors.age ? true : false}
+        disabled={disabled}
       />
 
       <TextField
@@ -70,6 +74,7 @@ const ContactInfoForm: React.FC<Props> = ({ register, errors }) => {
         variant="outlined"
         {...register("email")}
         error={errors.email ? true : false}
+        disabled={disabled}
       ></TextField>
     </Box>
   );

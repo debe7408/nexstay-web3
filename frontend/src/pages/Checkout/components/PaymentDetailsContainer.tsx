@@ -10,48 +10,48 @@ import { Property } from "../../../types/property";
 import { ContactInfo } from "../../../types/contactInfo";
 import ContactInfoForm from "../../Host/ContactInfo/ContactInfoForm";
 import Divider from "../../../components/DividerComponent";
-import { ReservationStatus } from "../../../types/reservation";
+import { Reservation, ReservationStatus } from "../../../types/reservation";
 import { useAppSelector, useAppDispatch } from "../../../app/hooks";
 import { fetchAndUpdateUserInfo, selectUser } from "../../../app/loginSlice";
 import { updateContactInfo } from "../../../api/updateContactInfo";
 import { useSnackbar } from "notistack";
+import { calculateDayDifference } from "../../../helperFunctions/dateFunctions";
 
 interface Props {
   propertyInfo: Property;
   handlePayment: () => void;
   loading: boolean;
-  status: ReservationStatus;
+  reservationInfo: Reservation;
 }
 
 const PaymentDetailsContainer: React.FC<Props> = ({
   handlePayment,
   propertyInfo,
   loading,
-  status,
+  reservationInfo,
 }) => {
   const { enqueueSnackbar } = useSnackbar();
   const user = useAppSelector(selectUser);
   const dispatch = useAppDispatch();
-  const subtotalToolTip = "Subtotal is the price of the property";
-  const platformFeeToolTip = "Platform fee is 5% of the subtotal";
-  const getButtonText = () => {
-    switch (status) {
-      case ReservationStatus.PENDING:
-        return "Make Payment";
-      case ReservationStatus.CONFIRMED:
-        return "Reservation Confirmed";
-      case ReservationStatus.CANCELED:
-        return "Cancelled";
-      case ReservationStatus.COMPLETED:
-        return "Completed";
-      case ReservationStatus.EXPIRED:
-        return "Expired";
-      default:
-        return "Pay";
-    }
+
+  const totalNights = calculateDayDifference(
+    reservationInfo.end_date,
+    reservationInfo.start_date
+  );
+
+  const subtotalToolTip =
+    "Subtotal is the price of the property times the number of nights.";
+  const platformFeeToolTip = "Platform fee is 5% of the subtotal amount.";
+
+  const buttonTexts = {
+    [ReservationStatus.PENDING]: "Make Payment",
+    [ReservationStatus.CONFIRMED]: "Reservation Confirmed",
+    [ReservationStatus.CANCELED]: "Cancelled",
+    [ReservationStatus.COMPLETED]: "Completed",
+    [ReservationStatus.EXPIRED]: "Expired",
   };
 
-  const subtotalAmount = Number(propertyInfo.price);
+  const subtotalAmount = Number(propertyInfo.price) * Number(totalNights);
   const platformFeeAmount = Number((subtotalAmount * 0.05).toFixed(2));
   const totalAmount = subtotalAmount + platformFeeAmount;
 
@@ -107,7 +107,11 @@ const PaymentDetailsContainer: React.FC<Props> = ({
     <Container>
       <Typography variant="h6">Contact details</Typography>
 
-      <ContactInfoForm register={register} errors={errors} />
+      <ContactInfoForm
+        register={register}
+        errors={errors}
+        disabled={reservationInfo.status !== ReservationStatus.PENDING}
+      />
 
       <BottomContainer>
         <Typography variant="h6">Transaction details</Typography>
@@ -115,7 +119,9 @@ const PaymentDetailsContainer: React.FC<Props> = ({
           <RowLabel>
             Subtotal: <ToolTipIcon title={subtotalToolTip} />
           </RowLabel>
-          <RowText>${subtotalAmount}</RowText>
+          <RowText>
+            ${`${propertyInfo.price} x ${totalNights} = $${subtotalAmount}`}
+          </RowText>
         </Row>
 
         <Row>
@@ -138,9 +144,9 @@ const PaymentDetailsContainer: React.FC<Props> = ({
         color="primary"
         onClick={onSubmit}
         loading={loading}
-        disabled={status !== ReservationStatus.PENDING}
+        disabled={reservationInfo.status !== ReservationStatus.PENDING}
       >
-        {getButtonText()}
+        {buttonTexts[reservationInfo.status]}
       </CustomButton>
     </Container>
   );

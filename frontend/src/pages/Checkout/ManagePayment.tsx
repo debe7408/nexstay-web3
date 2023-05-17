@@ -1,4 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
+import { useSnackbar } from "notistack";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { colors } from "../../constants/colors";
 import {
@@ -19,9 +21,9 @@ import { getProperty } from "../../api/getProperty";
 import { Property } from "../../types/property";
 import PaymentDetailsContainer from "./components/PaymentDetailsContainer";
 import ReservationDetailsContainer from "./components/ReservationDetailsContainer";
-import { useSnackbar } from "notistack";
-import { useNavigate } from "react-router-dom";
+import PaymentInfoAlert from "../../components/PaymentInfoAlert";
 import { Transaction } from "../../types/transaction";
+import { calculateDayDifference } from "../../helperFunctions/dateFunctions";
 
 const ManagePayment: React.FC = () => {
   const { enqueueSnackbar } = useSnackbar();
@@ -59,8 +61,8 @@ const ManagePayment: React.FC = () => {
   const fetchTransaction = useCallback(async () => {
     if (
       !reservationData ||
-      reservationData.status !==
-        (ReservationStatus.CONFIRMED || ReservationStatus.COMPLETED)
+      (reservationData.status !== ReservationStatus.CONFIRMED &&
+        reservationData.status !== ReservationStatus.COMPLETED)
     ) {
       return;
     }
@@ -87,8 +89,17 @@ const ManagePayment: React.FC = () => {
   }, [fetchTransaction]);
 
   const handlePayment = async () => {
-    if (!propertyInfo) return;
-    const totalAmount = (Number(propertyInfo?.price) * 1.05).toFixed(4);
+    if (!propertyInfo || !reservationData) return;
+    const totalNights = calculateDayDifference(
+      reservationData.end_date,
+      reservationData.start_date
+    );
+
+    const totalAmount = (
+      Number(propertyInfo?.price) *
+      1.05 *
+      totalNights
+    ).toFixed(4);
     if (!provider) return;
     setLoading(true);
 
@@ -140,16 +151,22 @@ const ManagePayment: React.FC = () => {
 
   return reservationData && propertyInfo ? (
     <Container>
-      <PaymentDetailsContainer
-        propertyInfo={propertyInfo}
-        handlePayment={handlePayment}
-        loading={loading}
-        status={reservationData.status}
-      />
-      <ReservationDetailsContainer
-        reservationInfo={reservationData}
-        transactionInfo={transactionInfo}
-      />
+      <Header>
+        <PaymentInfoAlert status={reservationData.status} />
+      </Header>
+      <Wrapper>
+        <PaymentDetailsContainer
+          propertyInfo={propertyInfo}
+          reservationInfo={reservationData}
+          handlePayment={handlePayment}
+          loading={loading}
+        />
+        <ReservationDetailsContainer
+          reservationInfo={reservationData}
+          transactionInfo={transactionInfo}
+        />
+      </Wrapper>
+      <Wrapper>Labas</Wrapper>
     </Container>
   ) : (
     <DataNotFound />
@@ -158,15 +175,30 @@ const ManagePayment: React.FC = () => {
 
 export default ManagePayment;
 
-const Container = styled.div`
+const Header = styled.div`
+  display: flex;
+  margin-top: 2%;
+  justify-content: center;
+  align-items: center;
+  margin-left: 10%;
+  margin-right: 10%;
+`;
+
+const Wrapper = styled.div`
   display: flex;
   flex-direction: row;
   margin-top: 2%;
-  margin-bottom: 2%;
   margin-left: 10%;
   margin-right: 10%;
   gap: 20px;
   padding: 20px;
   background-color: ${colors.white};
   border-radius: 10px;
+`;
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 100%;
 `;
