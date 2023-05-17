@@ -6,7 +6,7 @@ import AddressChip from "../../../components/AddressChip";
 import { Reservation } from "../../../types/reservation";
 import Timer from "../../../components/Timer";
 import dayjs from "dayjs";
-import { formatDate } from "../../../helperFunctions/formatDate";
+import { formatDate } from "../../../helperFunctions/dateFunctions";
 import { Transaction } from "../../../types/transaction";
 
 interface Props {

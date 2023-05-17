@@ -20,7 +20,7 @@ import { themes } from "../../../constants/colors";
 import Divider from "../../../components/DividerComponent";
 import CustomButton from "../../../components/CustomButton";
 import { useSnackbar } from "notistack";
-import { formatDate } from "../../../helperFunctions/formatDate";
+import { formatDate } from "../../../helperFunctions/dateFunctions";
 
 interface Props {
   property: Property;

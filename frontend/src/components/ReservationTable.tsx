@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import Table from "../components/Table";
 import { Reservation } from "../types/reservation";
-import { formatDate } from "../helperFunctions/formatDate";
+import { formatDate } from "../helperFunctions/dateFunctions";
 import CustomButton from "./CustomButton";
 import Timer from "./Timer";
 import dayjs from "dayjs";
