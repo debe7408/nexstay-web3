@@ -4,7 +4,7 @@ type Transaction = {
   reservationId: string;
   userId: number;
   hash: string;
-  payment_time: Date;
+  payment_time?: Date;
 };
 
 export const storeTransaction = async (transaction: Transaction) => {
