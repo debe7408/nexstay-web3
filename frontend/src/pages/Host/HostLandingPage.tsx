@@ -96,7 +96,9 @@ const HostFAQ = () => {
           </Grid>
           <Grid item xs={12}>
             <StyledBox>
-              <Typography variant="overline">Read to become a host?</Typography>
+              <Typography variant="overline">
+                Ready to become a host?
+              </Typography>
               <Button
                 variant="contained"
                 sx={{
