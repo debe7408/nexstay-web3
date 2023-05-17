@@ -51,8 +51,8 @@ const PaymentDetailsContainer: React.FC<Props> = ({
     }
   };
 
-  const subtotalAmount = propertyInfo.price;
-  const platformFeeAmount = subtotalAmount * 0.05;
+  const subtotalAmount = Number(propertyInfo.price);
+  const platformFeeAmount = Number((subtotalAmount * 0.05).toFixed(2));
   const totalAmount = subtotalAmount + platformFeeAmount;
 
   const initialState: ContactInfo = {

@@ -7,12 +7,17 @@ import { Reservation } from "../../../types/reservation";
 import Timer from "../../../components/Timer";
 import dayjs from "dayjs";
 import { formatDate } from "../../../helperFunctions/formatDate";
+import { Transaction } from "../../../types/transaction";
 
 interface Props {
   reservationInfo: Reservation;
+  transactionInfo?: Transaction;
 }
 
-const ReservationDetailsContainer: React.FC<Props> = ({ reservationInfo }) => {
+const ReservationDetailsContainer: React.FC<Props> = ({
+  reservationInfo,
+  transactionInfo,
+}) => {
   return (
     <Container>
       <Typography variant="h6">Reservation Details</Typography>
@@ -36,27 +41,43 @@ const ReservationDetailsContainer: React.FC<Props> = ({ reservationInfo }) => {
           .toDate()}
         label={reservationInfo.status.toLocaleUpperCase()}
       />
-      <BottomContainer>
-        <Typography variant="h6">Transaction Process</Typography>
-        <Divider />
-        <Row>
-          <RowLabel>1. Update Contact Information</RowLabel>
-        </Row>
-        <Divider />
-        <Row>
-          2. Approve spending allowance
-          <AddressChip
-            address={process.env.REACT_APP_USDT_TOKEN_ADDRESS as string}
-          />
-        </Row>
-        <Divider />
-        <Row>
-          <RowLabel>3. Approve payment transaction</RowLabel>
-          <AddressChip
-            address={process.env.REACT_APP_PAYMENT_CONTRACT_ADDRESS as string}
-          />
-        </Row>
-      </BottomContainer>
+      {transactionInfo ? (
+        <BottomContainer>
+          <Typography variant="h6">Transaction Information</Typography>
+          <Divider />
+          <Row>
+            View your transaction
+            <AddressChip address={transactionInfo.hash} transaction />
+          </Row>
+          <Divider />
+          <Row>
+            <RowLabel>Transaction completed on</RowLabel>
+            <RowText>{formatDate(transactionInfo.payment_time)}</RowText>
+          </Row>
+        </BottomContainer>
+      ) : (
+        <BottomContainer>
+          <Typography variant="h6">Transaction Process</Typography>
+          <Divider />
+          <Row>
+            <RowLabel>1. Update Contact Information</RowLabel>
+          </Row>
+          <Divider />
+          <Row>
+            2. Approve spending allowance
+            <AddressChip
+              address={process.env.REACT_APP_USDT_TOKEN_ADDRESS as string}
+            />
+          </Row>
+          <Divider />
+          <Row>
+            <RowLabel>3. Approve payment transaction</RowLabel>
+            <AddressChip
+              address={process.env.REACT_APP_PAYMENT_CONTRACT_ADDRESS as string}
+            />
+          </Row>
+        </BottomContainer>
+      )}
     </Container>
   );
 };

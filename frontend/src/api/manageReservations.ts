@@ -2,6 +2,7 @@ import axios from "axios";
 import axiosClient from "../axios/axiosClient";
 import { DateRange } from "../types/dates";
 import { Reservation } from "../types/reservation";
+import { Transaction } from "../types/transaction";
 
 type ReservedDates = { start_date: string; end_date: string };
 type GetUnavailableDatesResponse = ReservedDates[];
@@ -127,6 +128,36 @@ export const confirmReservation = async (
     );
     return {
       message: response.data.message,
+    };
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      return { message: error.response?.data.message, error: true };
+    }
+    return { message: "An unexpected error occurred", error: true };
+  }
+};
+
+type TransactionRequestResponse = {
+  message: string;
+  transaction: Transaction;
+};
+
+type TransactionInfoResponse = {
+  message: string;
+  transaction?: Transaction;
+  error?: boolean;
+};
+
+export const getTransactionInfo = async (
+  reservation_id: string
+): Promise<TransactionInfoResponse> => {
+  try {
+    const response = await axiosClient.get<TransactionRequestResponse>(
+      `/transactions/${reservation_id}`
+    );
+    return {
+      message: response.data.message,
+      transaction: response.data.transaction,
     };
   } catch (error) {
     if (axios.isAxiosError(error)) {

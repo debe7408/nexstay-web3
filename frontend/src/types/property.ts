@@ -26,6 +26,7 @@ export interface Property {
   property_id: number;
   id?: number;
   owner_id: number;
+  owner_publicAddress: string;
   owner_firstName: string;
   owner_lastName: string;
   owner_email: string;

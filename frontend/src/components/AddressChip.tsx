@@ -4,10 +4,14 @@ import formatAddress from "../helperFunctions/formatAddress";
 
 interface Props {
   address: string;
+  transaction?: boolean;
 }
-const AddressChip: React.FC<Props> = ({ address }) => {
+const AddressChip: React.FC<Props> = ({ address, transaction }) => {
   const addresLink =
-    process.env.REACT_APP_BLOCK_EXPLORER + "address/" + address;
+    process.env.REACT_APP_BLOCK_EXPLORER +
+    (transaction ? "tx/" : "address/") +
+    address;
+  const label = transaction ? "Transaction: " : "Contract: ";
 
   return (
     <Chip
@@ -15,7 +19,7 @@ const AddressChip: React.FC<Props> = ({ address }) => {
       variant="filled"
       size="small"
       icon={<LaunchIcon />}
-      label={"Contract: " + formatAddress(address)}
+      label={label + formatAddress(address)}
       onClick={() => window.open(addresLink, "_blank")}
     />
   );

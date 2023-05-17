@@ -10,8 +10,9 @@ import { web3Selectors } from "../../app/web3Slice";
 import {
   confirmReservation,
   getReservation,
+  getTransactionInfo,
 } from "../../api/manageReservations";
-import { Reservation } from "../../types/reservation";
+import { Reservation, ReservationStatus } from "../../types/reservation";
 import { useParams } from "react-router-dom";
 import DataNotFound from "../DataNotFound";
 import { getProperty } from "../../api/getProperty";
@@ -20,8 +21,7 @@ import PaymentDetailsContainer from "./components/PaymentDetailsContainer";
 import ReservationDetailsContainer from "./components/ReservationDetailsContainer";
 import { useSnackbar } from "notistack";
 import { useNavigate } from "react-router-dom";
-
-const propertyOwnerAddress = "0xd83bF311d2e0036C3D0432DBab8664Cf062B836f";
+import { Transaction } from "../../types/transaction";
 
 const ManagePayment: React.FC = () => {
   const { enqueueSnackbar } = useSnackbar();
@@ -30,6 +30,7 @@ const ManagePayment: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [reservationData, setReservationData] = useState<Reservation>();
   const [propertyInfo, setPropertyInfo] = useState<Property>();
+  const [transactionInfo, setTransactionInfo] = useState<Transaction>();
   const { id: reservationId } = useParams();
 
   const fetchReservationData = useCallback(async () => {
@@ -55,6 +56,24 @@ const ManagePayment: React.FC = () => {
     setPropertyInfo(property);
   }, [reservationData]);
 
+  const fetchTransaction = useCallback(async () => {
+    if (
+      !reservationData ||
+      reservationData.status !==
+        (ReservationStatus.CONFIRMED || ReservationStatus.COMPLETED)
+    ) {
+      return;
+    }
+
+    const { error, transaction } = await getTransactionInfo(reservationId!);
+
+    if (error || !transaction) {
+      return;
+    }
+
+    setTransactionInfo(transaction);
+  }, [reservationData, reservationId]);
+
   useEffect(() => {
     fetchReservationData();
   }, [fetchReservationData]);
@@ -63,50 +82,50 @@ const ManagePayment: React.FC = () => {
     fetchedProperty();
   }, [fetchedProperty]);
 
+  useEffect(() => {
+    fetchTransaction();
+  }, [fetchTransaction]);
+
   const handlePayment = async () => {
     if (!propertyInfo) return;
-    const totalAmount = Number(propertyInfo?.price) * 1.05;
+    const totalAmount = (Number(propertyInfo?.price) * 1.05).toFixed(4);
     if (!provider) return;
     setLoading(true);
 
     const approveResponse = await approvalTransaction(provider, totalAmount);
 
-    if (!approveResponse.txReceipt || approveResponse.error) {
+    if (!approveResponse.hash || approveResponse.error) {
       enqueueSnackbar(approveResponse.error, { variant: "error" });
       setLoading(false);
       return;
     }
 
-    const { blockHash } = approveResponse.txReceipt;
-
-    enqueueSnackbar(`Approvall sucessfull. Transaction hash: ${blockHash}`, {
-      variant: "success",
-    });
-
-    const response = await paymentTransaction(
-      provider,
-      totalAmount,
-      propertyOwnerAddress
-    );
-
-    if (!response.txReceipt || response.error) {
-      enqueueSnackbar(response.error, { variant: "error" });
-      setLoading(false);
-      return;
-    }
-
-    const { blockHash: paymentBlockHash } = response.txReceipt;
-
     enqueueSnackbar(
-      `Payment sucessfull. Transaction hash: ${paymentBlockHash}`,
+      `Approvall sucessfull. Transaction hash: ${approveResponse.hash}`,
       {
         variant: "success",
       }
     );
 
+    const response = await paymentTransaction(
+      provider,
+      totalAmount,
+      propertyInfo?.owner_publicAddress
+    );
+
+    if (!response.hash || response.error) {
+      enqueueSnackbar(response.error, { variant: "error" });
+      setLoading(false);
+      return;
+    }
+
+    enqueueSnackbar(`Payment sucessfull. Transaction hash: ${response.hash}`, {
+      variant: "success",
+    });
+
     const confirmResponse = await confirmReservation(
       reservationId!,
-      paymentBlockHash
+      response.hash
     );
 
     enqueueSnackbar(confirmResponse.message, {
@@ -127,7 +146,10 @@ const ManagePayment: React.FC = () => {
         loading={loading}
         status={reservationData.status}
       />
-      <ReservationDetailsContainer reservationInfo={reservationData} />
+      <ReservationDetailsContainer
+        reservationInfo={reservationData}
+        transactionInfo={transactionInfo}
+      />
     </Container>
   ) : (
     <DataNotFound />

@@ -9,19 +9,19 @@ const contractAddress = process.env
 const tokenAddress = process.env.REACT_APP_USDT_TOKEN_ADDRESS as string;
 
 interface TransactionResponse {
-  txReceipt: ContractReceipt | undefined;
+  hash?: string;
   error?: string;
 }
 
 export const paymentTransaction = async (
   provider: Web3Provider,
-  amount: string | number,
+  amount: string,
   receiver: string
 ): Promise<TransactionResponse> => {
   try {
     const signer = provider.getSigner();
 
-    const weiAmount = ethers.utils.parseUnits(amount.toString(), "ether");
+    const weiAmount = ethers.utils.parseUnits(amount, "ether");
 
     const contract = new ethers.Contract(
       contractAddress,
@@ -34,12 +34,13 @@ export const paymentTransaction = async (
       receiver
     );
 
-    const txReceipt = await txResponse.wait();
+    await txResponse.wait();
 
-    return { txReceipt };
+    return { hash: txResponse.hash };
   } catch (error) {
+    // For advanced users, display the full error reason in the console
+    console.log(error);
     return {
-      txReceipt: undefined,
       error:
         "Payment transaction failed. Either you rejected the transaction or the approved amount is not the same.",
     };
@@ -52,7 +53,6 @@ export const approvalTransaction = async (
 ): Promise<TransactionResponse> => {
   try {
     const signer = provider.getSigner();
-    const signerAddress = await signer.getAddress();
 
     const weiAmount = ethers.utils.parseUnits(amount.toString(), "ether");
 
@@ -62,12 +62,13 @@ export const approvalTransaction = async (
       contractAddress,
       weiAmount
     );
-    const txReceipt = await txResponse.wait();
+    await txResponse.wait();
 
-    return { txReceipt };
+    return { hash: txResponse.hash };
   } catch (error) {
+    // For advanced users, display the full error reason in the console
+    console.log(error);
     return {
-      txReceipt: undefined,
       error:
         "Approval failed. Either you rejected the transaction or you don't have enough balance",
     };
