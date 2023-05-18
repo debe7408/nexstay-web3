@@ -8,12 +8,9 @@ type RequestResponse = {
 };
 export const loginUser = async (publicAddress?: string) => {
   try {
-    const response = await axiosClient.post<RequestResponse>(
-      "/usersRoute/users",
-      {
-        publicAddress: publicAddress,
-      }
-    );
+    const response = await axiosClient.post<RequestResponse>("/users/", {
+      publicAddress: publicAddress,
+    });
     return {
       message: response.data.message,
       token: response.data.token,

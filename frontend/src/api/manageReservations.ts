@@ -83,7 +83,7 @@ export const reserveDates = async (
 export const getUsersReservations = async (): Promise<ReservatiosData> => {
   try {
     const response = await axiosClient.get<GetUserResrvationsResponse>(
-      `/usersRoute/users/reservations`
+      `/users/reservations`
     );
 
     return {

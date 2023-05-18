@@ -17,11 +17,14 @@ import { getUserReservations } from "../utils/reservationHelpers";
 
 const userRoutes = express.Router();
 
-userRoutes.get("/allUsers", async (req, res) => {
+userRoutes.get("/all", async (req, res) => {
   const response = await queryDb("SELECT * FROM users");
   return res.json(response);
 });
 
+/**
+ * Endpoint for updating user contact info.
+ */
 userRoutes.post(
   "/updateContactInfo",
   userUpdateContactInfo,
@@ -59,8 +62,11 @@ userRoutes.post(
   }
 );
 
+/**
+ * Endpoint for creating a new user or logging in an existing user.
+ */
 userRoutes.post(
-  "/users",
+  "/",
   usersPostValidation,
   async (req: Request, res: Response) => {
     const errors = validationResult(req);
@@ -107,7 +113,10 @@ userRoutes.post(
   }
 );
 
-userRoutes.get("/users", verifyToken, async (req, res) => {
+/**
+ * Endpoint for getting single user info.
+ */
+userRoutes.get("/", verifyToken, async (req, res) => {
   const publicAddress = req.body.publicAddress;
   const user = await checkIfUserExist(publicAddress.toLowerCase());
 
@@ -122,7 +131,10 @@ userRoutes.get("/users", verifyToken, async (req, res) => {
   return res.send(user);
 });
 
-userRoutes.get("/users/reservations", verifyToken, async (req, res) => {
+/**
+ * Endpoint for getting user reservations.
+ */
+userRoutes.get("/reservations", verifyToken, async (req, res) => {
   const errors = validationResult(req);
 
   if (!errors.isEmpty())

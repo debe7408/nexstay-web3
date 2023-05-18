@@ -7,7 +7,7 @@ export const updateContactInfo = async (
   contactInfo: ContactInfo
 ): Promise<BaseError> => {
   try {
-    await axiosClient.post("/usersRoute/updateContactInfo", contactInfo);
+    await axiosClient.post("/users/updateContactInfo", contactInfo);
   } catch (error) {
     const requestError = error as AxiosError;
     if (!requestError.response) {
