@@ -9,6 +9,11 @@ export const usersPostValidation = [
     .matches(/^0x[a-fA-F0-9]{40}$/g),
 ];
 
+export const reviewPostValidationRequest = [
+  check("rating", "Please include a valid rating").isInt({ min: 1, max: 5 }),
+  check("comment", "Please include a valid comment").isString().notEmpty(),
+];
+
 export const userUpdateContactInfo = [
   check("firstName", "Please include a valid first name").not().isEmpty(),
   check("lastName", "Please include a valid last name").not().isEmpty(),
