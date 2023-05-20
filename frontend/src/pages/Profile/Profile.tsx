@@ -10,26 +10,8 @@ import ProfileUserInfo from "./components/ProfileUserInfo";
 import { Property } from "../../types/property";
 
 const Profile = () => {
-  const [bookmarked, setBookmarked] = useState<Property[]>([]);
   const userInfo = useAppSelector(selectUser);
   const { enqueueSnackbar } = useSnackbar();
-
-  const fetchBookmarked = useCallback(async () => {
-    const { error, message, properties } = await getBookmarkedProperties();
-
-    if (error || !properties) {
-      enqueueSnackbar(message, {
-        variant: "error",
-      });
-      return;
-    }
-
-    setBookmarked(properties);
-  }, [userInfo]);
-
-  useEffect(() => {
-    fetchBookmarked();
-  }, [userInfo]);
 
   return (
     <StyledContainer maxWidth="xl">
@@ -39,7 +21,7 @@ const Profile = () => {
             bannerUrl={`https://source.unsplash.com/random/?profile,color,user,${userInfo.id}`}
             userId={userInfo.id}
           />
-          <ProfileUserInfo user={userInfo} bookmarkedProperties={bookmarked} />
+          <ProfileUserInfo user={userInfo} />
         </>
       )}
     </StyledContainer>

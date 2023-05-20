@@ -6,13 +6,13 @@ import EditProfileForm from "./EditProfileForm";
 import { useNavigate } from "react-router-dom";
 import Listings from "./Listings";
 import { Property } from "../../../types/property";
+import Bookmarks from "./Bookmarks";
 
 interface Props {
   user: User;
-  bookmarkedProperties?: Property[];
 }
 
-const ProfileUserInfo: React.FC<Props> = ({ user, bookmarkedProperties }) => {
+const ProfileUserInfo: React.FC<Props> = ({ user }) => {
   const navigate = useNavigate();
 
   const openManageReservations = () => {
@@ -25,7 +25,7 @@ const ProfileUserInfo: React.FC<Props> = ({ user, bookmarkedProperties }) => {
 
   return (
     <Container>
-      <Grid container spacing={2}>
+      <Grid container spacing={4}>
         <Grid item xs={12} sm={4}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
@@ -50,21 +50,7 @@ const ProfileUserInfo: React.FC<Props> = ({ user, bookmarkedProperties }) => {
         <Grid item xs={12} sm={8}>
           <Grid container spacing={2}>
             <Listings userID={user.id} />
-            <Grid item xs={12}>
-              <Typography variant="h5">{`Manage your favorited [ ${
-                bookmarkedProperties?.length || 0
-              } ]`}</Typography>
-
-              <Divider />
-            </Grid>
-            <Grid item xs={12}>
-              {bookmarkedProperties && (
-                <PropertyContainer
-                  properties={bookmarkedProperties}
-                  itemsPerRow={{ md: 12, lg: 6 }}
-                ></PropertyContainer>
-              )}
-            </Grid>
+            <Bookmarks userID={user.id} />
           </Grid>
         </Grid>
       </Grid>
