@@ -31,7 +31,7 @@ const statusAlerts = {
   },
   [ReservationStatus.COMPLETED]: {
     title: "Completed!",
-    body: "We hope you enjoyed your stay! Please leave a review for the host at the bottom of this page.",
+    body: "We hope you enjoyed your stay! Please leave a review for the host to help them improve.",
     severity: "success",
   },
   [ReservationStatus.EXPIRED]: {

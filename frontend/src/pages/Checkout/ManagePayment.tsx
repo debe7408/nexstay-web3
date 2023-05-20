@@ -24,6 +24,7 @@ import ReservationDetailsContainer from "./components/ReservationDetailsContaine
 import PaymentInfoAlert from "../../components/PaymentInfoAlert";
 import { Transaction } from "../../types/transaction";
 import { calculateDayDifference } from "../../helperFunctions/dateFunctions";
+import LeaveReviewContainer from "./components/LeaveReviewContainer";
 
 const ManagePayment: React.FC = () => {
   const { enqueueSnackbar } = useSnackbar();
@@ -154,6 +155,11 @@ const ManagePayment: React.FC = () => {
       <Header>
         <PaymentInfoAlert status={reservationData.status} />
       </Header>
+      {reservationData.status === ReservationStatus.COMPLETED && (
+        <Wrapper>
+          <LeaveReviewContainer reservationId={reservationId!} />
+        </Wrapper>
+      )}
       <Wrapper>
         <PaymentDetailsContainer
           propertyInfo={propertyInfo}
@@ -166,7 +172,6 @@ const ManagePayment: React.FC = () => {
           transactionInfo={transactionInfo}
         />
       </Wrapper>
-      <Wrapper>Labas</Wrapper>
     </Container>
   ) : (
     <DataNotFound />

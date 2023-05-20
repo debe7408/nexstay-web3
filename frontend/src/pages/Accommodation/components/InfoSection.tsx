@@ -56,7 +56,12 @@ const Description: React.FC<Props> = ({ property }) => {
     <Grid container>
       <Grid item xs={12}>
         <Typography variant="h6">About this place</Typography>
-        <Typography variant="body1">
+        <Typography
+          variant="body1"
+          sx={{
+            wordWrap: "break-word",
+          }}
+        >
           {truncated && property.description
             ? property.description.substring(0, 200)
             : property.description}
