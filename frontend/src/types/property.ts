@@ -1,16 +1,8 @@
-import { BaseError } from "./baseError";
-
-export interface PropertyInfo extends BaseError {
-  properties?: Property[];
-}
-
-export interface SinglePropertyInfo extends BaseError {
-  property?: Property;
-}
-
 export interface Property {
-  name: string;
+  id: number;
+  owner_id: number;
   description: string;
+  name: string;
   type: string;
   country: string;
   city: string;
@@ -18,18 +10,17 @@ export interface Property {
   price: number;
   amenities: string[];
   safety_amenities: string[];
-  pictures: {};
-  beds: number;
-  guests: number;
-  bathrooms: number;
   booking_status: boolean;
-  property_id: number;
-  id?: number;
-  owner_id: number;
-  owner_publicAddress: string;
-  owner_firstName: string;
-  owner_lastName: string;
-  owner_email: string;
+  bathrooms: number;
+  guests: number;
+  beds: number;
+}
+
+export interface PropertyWithOwner extends Property {
+  ownerAddress: string;
+  ownerEmail: string;
+  ownerFirstName: string;
+  ownerLastName: string;
 }
 
 export interface PropertyForm extends PropertyInfoForm {

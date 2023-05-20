@@ -1,12 +1,12 @@
 import { Grid, Typography, Avatar } from "@mui/material";
 import ProfileAvatar from "../../../components/Avatar";
-import { Property } from "../../../types/property";
 import styled from "styled-components";
 import { useState } from "react";
 import Divider from "../../../components/DividerComponent";
+import { PropertyWithOwner } from "../../../types/property";
 
 interface Props {
-  property: Property;
+  property: PropertyWithOwner;
 }
 
 const InfoSection: React.FC<Props> = ({ property }) => {
@@ -26,7 +26,7 @@ const BasicInfo: React.FC<Props> = ({ property }) => {
     <Grid container>
       <Grid item xs={12} md={6}>
         <Typography variant="h6">
-          {`Entire ${property.type} hosed by ${property.owner_firstName} ${property.owner_lastName}`}
+          {`Entire ${property.type} hosed by ${property.ownerFirstName} ${property.ownerLastName}`}
         </Typography>
         <Typography variant="body1">
           {` ${property.guests} Guests · ${property.beds} Beds · ${property.bathrooms} Bathrooms`}
@@ -95,7 +95,7 @@ const AmentiyInfo: React.FC<Props> = ({ property }) => {
         <Grid container spacing={2}>
           <Grid item xs={12} md={6}>
             <Typography variant="overline">Basic amenities</Typography>
-            {property.amenities?.map((amenity) => {
+            {property.amenities.map((amenity) => {
               return (
                 <Typography key={amenity} variant="body1">
                   · {amenity}

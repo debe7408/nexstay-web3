@@ -67,7 +67,6 @@ export const addPropertyValidation = [
   check("amenities", "Property has to have amenities").isArray(),
 
   check("safety_amenities", "Property has to have safety amenities").isArray(),
-  check("pictures", "Property has to have pictures"),
   check("booking_status", "Property has to have a booking status")
     .isBoolean()
     .not()

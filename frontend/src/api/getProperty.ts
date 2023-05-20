@@ -1,79 +1,83 @@
-import { AxiosError } from "axios";
+import { isAxiosError } from "axios";
 import axiosClient from "../axios/axiosClient";
-import { PropertyInfo, SinglePropertyInfo } from "../types/property";
+import { Property, PropertyWithOwner } from "../types/property";
 
-export const getAllProperties = async (): Promise<PropertyInfo> => {
+type ApiResponseAll = {
+  message: string;
+  properties?: Property[];
+};
+
+type ApiResponseSingle = {
+  message: string;
+  property?: PropertyWithOwner;
+};
+
+type AllPropertiesResponse = {
+  message: string;
+  properties?: Property[];
+  error?: boolean;
+};
+
+export const getAllProperties = async (): Promise<AllPropertiesResponse> => {
   try {
-    const response = await axiosClient.get("/properties/getProperties");
+    const response = await axiosClient.get<ApiResponseAll>("/properties/");
 
     return {
-      hasError: false,
-      properties: response.data,
+      message: response.data.message,
+      properties: response.data.properties,
     };
   } catch (error) {
-    const requestError = error as AxiosError;
-    if (!requestError.response) {
-      return {
-        hasError: true,
-        message: "Internal error. Please try again later",
-      };
+    if (isAxiosError(error)) {
+      return { message: error.response?.data.message, error: true };
     }
-    return {
-      hasError: true,
-      message: requestError.response.data as string,
-    };
+    return { message: "An unexpected error occurred", error: true };
   }
+};
+
+type SinglePropertiesResponse = {
+  message: string;
+  property?: PropertyWithOwner;
+  error?: boolean;
 };
 
 export const getProperty = async (
   propertyId: string | number
-): Promise<SinglePropertyInfo> => {
+): Promise<SinglePropertiesResponse> => {
   try {
-    const response = await axiosClient.get(
-      `/properties/getProperties/${propertyId}`
+    const response = await axiosClient.get<ApiResponseSingle>(
+      `/properties/${propertyId}`
     );
 
     return {
-      hasError: false,
-      property: response.data,
+      message: response.data.message,
+      property: response.data.property,
     };
   } catch (error) {
-    const requestError = error as AxiosError;
-    if (!requestError.response) {
-      return {
-        hasError: true,
-        message: "Internal error. Please try again later",
-      };
+    if (isAxiosError(error)) {
+      return { message: error.response?.data.message, error: true };
     }
-    return {
-      hasError: true,
-      message: requestError.response.data as string,
-    };
+    return { message: "An unexpected error occurred", error: true };
   }
 };
 
-export const getBookmarkedProperties = async (): Promise<PropertyInfo> => {
-  try {
-    const response = await axiosClient.get("/properties/bookmark");
+export const getBookmarkedProperties =
+  async (): Promise<AllPropertiesResponse> => {
+    try {
+      const response = await axiosClient.get<ApiResponseAll>(
+        "properties/bookmark/all/"
+      );
 
-    return {
-      hasError: false,
-      properties: response.data,
-    };
-  } catch (error) {
-    const requestError = error as AxiosError;
-    if (!requestError.response) {
       return {
-        hasError: true,
-        message: "Internal error. Please try again later",
+        message: response.data.message,
+        properties: response.data.properties,
       };
+    } catch (error) {
+      if (isAxiosError(error)) {
+        return { message: error.response?.data.message, error: true };
+      }
+      return { message: "An unexpected error occurred", error: true };
     }
-    return {
-      hasError: true,
-      message: requestError.response.data as string,
-    };
-  }
-};
+  };
 
 export const checkIfBookmarked = async (
   propertyId: number

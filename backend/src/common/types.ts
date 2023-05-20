@@ -12,20 +12,27 @@ export type User = {
   ownedProperties?: Property[];
 };
 
-export type Property = {
-  property_id: number;
+export interface Property {
+  id: number;
   owner_id: number;
+  description: string;
   name: string;
   type: string;
-  description: string;
-  city: string;
   country: string;
+  city: string;
   address: string;
   price: number;
   amenities: string;
   safety_amenities: string;
-  beds: number;
+  booking_status: boolean;
   bathrooms: number;
   guests: number;
-  booking_status: boolean;
-};
+  beds: number;
+}
+
+export interface PropertyWithOwner extends Property {
+  ownerAddress: string;
+  ownerEmail: string;
+  ownerFirstName: string;
+  ownerLastName: string;
+}

@@ -18,13 +18,13 @@ import { Reservation, ReservationStatus } from "../../types/reservation";
 import { useParams } from "react-router-dom";
 import DataNotFound from "../DataNotFound";
 import { getProperty } from "../../api/getProperty";
-import { Property } from "../../types/property";
 import PaymentDetailsContainer from "./components/PaymentDetailsContainer";
 import ReservationDetailsContainer from "./components/ReservationDetailsContainer";
 import PaymentInfoAlert from "../../components/PaymentInfoAlert";
 import { Transaction } from "../../types/transaction";
 import { calculateDayDifference } from "../../helperFunctions/dateFunctions";
 import LeaveReviewContainer from "./components/LeaveReviewContainer";
+import { PropertyWithOwner } from "../../types/property";
 
 const ManagePayment: React.FC = () => {
   const { enqueueSnackbar } = useSnackbar();
@@ -32,7 +32,7 @@ const ManagePayment: React.FC = () => {
   const { provider } = useAppSelector(web3Selectors);
   const [loading, setLoading] = useState(false);
   const [reservationData, setReservationData] = useState<Reservation>();
-  const [propertyInfo, setPropertyInfo] = useState<Property>();
+  const [propertyInfo, setPropertyInfo] = useState<PropertyWithOwner>();
   const [transactionInfo, setTransactionInfo] = useState<Transaction>();
   const { id: reservationId } = useParams();
 
@@ -48,11 +48,11 @@ const ManagePayment: React.FC = () => {
 
   const fetchedProperty = useCallback(async () => {
     if (!reservationData) return;
-    const { hasError, message, property } = await getProperty(
+    const { error, message, property } = await getProperty(
       reservationData.property_id!
     );
 
-    if (hasError || message || !property) {
+    if (error || !property) {
       return;
     }
 
@@ -122,7 +122,7 @@ const ManagePayment: React.FC = () => {
     const response = await paymentTransaction(
       provider,
       totalAmount,
-      propertyInfo?.owner_publicAddress
+      propertyInfo?.ownerAddress
     );
 
     if (!response.hash || response.error) {

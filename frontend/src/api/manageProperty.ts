@@ -7,7 +7,7 @@ export const addProperty = async (
   propertyData: PropertyForm
 ): Promise<BaseError> => {
   try {
-    await axiosClient.post("/properties/addProperty", propertyData);
+    await axiosClient.post("/properties/", propertyData);
   } catch (error) {
     const requestError = error as AxiosError;
     if (!requestError.response) {
@@ -32,9 +32,7 @@ export const deleteProperty = async (
   propertyId: number
 ): Promise<BaseError> => {
   try {
-    const response = await axiosClient.delete(
-      `/properties/deleteProperty/${propertyId}`
-    );
+    const response = await axiosClient.delete(`/properties/${propertyId}`);
 
     return {
       hasError: false,

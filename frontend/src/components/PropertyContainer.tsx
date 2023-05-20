@@ -1,7 +1,7 @@
 import React from "react";
 import { Grid } from "@mui/material";
-import { Property } from "../types/property";
 import PropertyBox from "./PropertyBox";
+import { Property } from "../types/property";
 
 interface PropertyContainerProps {
   properties: Property[];
@@ -23,7 +23,7 @@ const PropertyContainer: React.FC<PropertyContainerProps> = ({
         <PropertyBox
           item={item}
           imageSrc={`https://source.unsplash.com/random/?houses,accommodation,${item.country}`}
-          key={item.property_id || item.id}
+          key={item.id}
           itemsPerRow={itemsPerRow}
         ></PropertyBox>
       ))}

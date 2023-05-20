@@ -1,9 +1,9 @@
 import { Grid } from "@mui/material";
-import { Property } from "../../../types/property";
 import styled from "styled-components";
+import { PropertyWithOwner } from "../../../types/property";
 
 interface Props {
-  property: Property;
+  property: PropertyWithOwner;
 }
 
 const Picutres: React.FC<Props> = ({ property }) => {

@@ -6,7 +6,6 @@ import ToolTipIcon from "../../../components/ToolTipIcon";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { Property } from "../../../types/property";
 import { ContactInfo } from "../../../types/contactInfo";
 import ContactInfoForm from "../../Host/ContactInfo/ContactInfoForm";
 import Divider from "../../../components/DividerComponent";
@@ -16,9 +15,10 @@ import { fetchAndUpdateUserInfo, selectUser } from "../../../app/loginSlice";
 import { updateContactInfo } from "../../../api/updateContactInfo";
 import { useSnackbar } from "notistack";
 import { calculateDayDifference } from "../../../helperFunctions/dateFunctions";
+import { PropertyWithOwner } from "../../../types/property";
 
 interface Props {
-  propertyInfo: Property;
+  propertyInfo: PropertyWithOwner;
   handlePayment: () => void;
   loading: boolean;
   reservationInfo: Reservation;

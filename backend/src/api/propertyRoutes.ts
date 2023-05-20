@@ -11,6 +11,9 @@ import {
   checkIfPropertyExists,
   checkIfPropertyBookmarked,
   getBookmaredProperties,
+  getAllProperties,
+  getPropertyByID,
+  removeProperty,
 } from "../utils/propertyHelpers";
 import {
   reserveProperty,
@@ -20,49 +23,33 @@ import {
 
 const propertyRoutes = express.Router();
 
-propertyRoutes.get("/getProperties", async (req, res) => {
-  const response = await queryDb("SELECT * FROM user_properties");
-  return res.status(200).json(response);
+propertyRoutes.get("/", async (req, res) => {
+  const properties = await getAllProperties();
+  return res.status(200).json({
+    message: "Returned all properties",
+    properties,
+  });
 });
 
-propertyRoutes.get("/getProperties/:propertyId", async (req, res) => {
+propertyRoutes.get("/:propertyId", async (req, res) => {
   const propertyId = req.params.propertyId;
 
-  const response = await queryDb(
-    "SELECT * FROM user_properties WHERE user_properties.property_id = ?",
-    [propertyId]
-  );
+  const property = await getPropertyByID(propertyId);
 
-  if (response.length === 0) {
-    return res.status(404).json("Property not found");
+  if (!property) {
+    return res.status(404).json({
+      message: "Property not found",
+    });
   }
 
-  const amenities = JSON.parse(response[0].amenities);
-  const safetyAmenities = JSON.parse(response[0].safety_amenities);
-
-  response[0].amenities = amenities;
-  response[0].safety_amenities = safetyAmenities;
-
-  return res.status(200).json(response[0]);
-});
-
-propertyRoutes.get("/getPropertiesByOwner", verifyToken, async (req, res) => {
-  const userId = req.body.id;
-  const publicAddress = req.body.publicAddress;
-  const user = await checkIfUserExist(publicAddress);
-
-  if (!user) return res.status(404).json("User not found");
-
-  const response = await queryDb(
-    "SELECT * FROM user_properties WHERE user_properties.owner_id = ?",
-    [userId]
-  );
-
-  return res.status(200).json(response);
+  return res.status(200).send({
+    message: "Property found",
+    property,
+  });
 });
 
 propertyRoutes.post(
-  "/addProperty",
+  "/",
   addPropertyValidation,
   verifyToken,
   async (req: Request, res: Response) => {
@@ -71,6 +58,15 @@ propertyRoutes.post(
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
+
+    const userId = req.body.id;
+    const publicAddress = req.body.publicAddress;
+
+    const user = await checkIfUserExist(publicAddress);
+    if (!user)
+      return res.status(404).json({
+        message: "User not found",
+      });
 
     const {
       name,
@@ -86,12 +82,6 @@ propertyRoutes.post(
 
     const { country, city, address } = location;
     const { beds, bathrooms, guests } = size;
-
-    const userId = req.body.id;
-    const publicAddress = req.body.publicAddress;
-
-    const user = await checkIfUserExist(publicAddress);
-    if (!user) return res.status(404).json("User not found");
 
     const sqlQuery = `INSERT INTO properties (owner_id, name, description, type, country, city, address, price, amenities, safety_amenities, beds, guests, bathrooms, booking_status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
@@ -112,41 +102,39 @@ propertyRoutes.post(
       booking_status,
     ]).catch((err) => {
       console.log(err);
-      return res
-        .status(500)
-        .json("Internal server error. Failed to add property");
+      return res.status(500).send({
+        message: "Internal server error. Please try again later.",
+      });
     });
 
-    return res.status(200).json("Property added");
+    return res.status(200).send({
+      message: "Property added",
+    });
   }
 );
 
-propertyRoutes.delete(
-  "/deleteProperty/:propertyId",
-  verifyToken,
-  async (req, res) => {
-    const propertyId = req.params.propertyId;
-    const userId = req.body.id;
-    const publicAddress = req.body.publicAddress;
-    const user = await checkIfUserExist(publicAddress);
+propertyRoutes.delete("/:propertyId", verifyToken, async (req, res) => {
+  const propertyId = req.params.propertyId;
+  const userId = req.body.id;
+  const publicAddress = req.body.publicAddress;
+  const user = await checkIfUserExist(publicAddress);
 
-    if (!user) return res.status(404).json("User not found");
-    if (!propertyId) return res.status(400).json("Missing property id");
+  if (!user)
+    return res.status(404).json({
+      message: "User not found",
+    });
 
-    const sqlQuery = `DELETE FROM properties WHERE id = ? AND owner_id = ?`;
+  const response = await removeProperty(propertyId, userId);
 
-    await queryDb(sqlQuery, [propertyId, userId])
-      .catch((err) => {
-        return res.status(500).json("Internal server error");
-      })
-      .then((result) => {
-        if (result.affectedRows === 0) {
-          return res.status(400).json("Property not found");
-        }
-        return res.status(200).json("Property deleted");
-      });
-  }
-);
+  if (!response)
+    return res.status(400).send({
+      message: "Property not found",
+    });
+
+  return res.status(200).send({
+    message: "Property removed",
+  });
+});
 
 propertyRoutes.post("/bookmark/:propertyId", verifyToken, async (req, res) => {
   const propertyId = req.params.propertyId;
@@ -210,15 +198,21 @@ propertyRoutes.delete(
   }
 );
 
-propertyRoutes.get("/bookmark", verifyToken, async (req, res) => {
+propertyRoutes.get("/bookmark/all/", verifyToken, async (req, res) => {
   const userId = req.body.id;
   const publicAddress = req.body.publicAddress;
 
   const user = await checkIfUserExist(publicAddress);
-  if (!user) return res.status(404).json("User not found");
+  if (!user)
+    return res.status(404).json({
+      message: "User not found",
+    });
 
   const response = await getBookmaredProperties(userId);
-  return res.status(200).json(response);
+  return res.status(200).json({
+    message: "Bookmarked properties retrieved.",
+    properties: response,
+  });
 });
 
 propertyRoutes.get("/bookmark/:propertyId", verifyToken, async (req, res) => {

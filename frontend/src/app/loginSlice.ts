@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "./store";
 import { User } from "../types/user";
-import { getSingleUserInfo } from "../api/getUserInfo";
+import { getSingleUserInfo } from "../api/userAPI";
 
 interface LoginState {
   loggedIn: boolean;

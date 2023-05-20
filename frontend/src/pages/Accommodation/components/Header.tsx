@@ -1,13 +1,13 @@
 import styled from "styled-components";
 import { Grid, Typography } from "@mui/material";
-import { Property } from "../../../types/property";
 import SaveIcon from "@mui/icons-material/FavoriteBorder";
 import SaveIconFilled from "@mui/icons-material/Favorite";
 import ShareIcon from "@mui/icons-material/IosShare";
 import DeleteIcon from "@mui/icons-material/DeleteOutline";
+import { PropertyWithOwner } from "../../../types/property";
 
 interface Props {
-  property: Property;
+  property: PropertyWithOwner;
   editor: boolean;
   bookmarked: boolean;
   handleDelete: () => void;

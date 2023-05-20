@@ -14,6 +14,7 @@ import {
   updateUserInfo,
 } from "../utils/userHelpers";
 import { getUserReservations } from "../utils/reservationHelpers";
+import { getUsersProperties } from "../utils/propertyHelpers";
 
 const userRoutes = express.Router();
 
@@ -148,6 +149,26 @@ userRoutes.get("/reservations", verifyToken, async (req, res) => {
   const reservations = await getUserReservations(user.id);
 
   return res.send(reservations);
+});
+
+/**
+ * Endpoint for getting user properties.
+ */
+userRoutes.get("/properties", verifyToken, async (req, res) => {
+  const publicAddress = req.body.publicAddress;
+  const user = await checkIfUserExist(publicAddress.toLowerCase());
+
+  if (!user)
+    return res.status(404).send({
+      message: "User not found",
+    });
+
+  const properties = await getUsersProperties(user.id);
+
+  return res.send({
+    message: "User properties",
+    properties,
+  });
 });
 
 export default userRoutes;

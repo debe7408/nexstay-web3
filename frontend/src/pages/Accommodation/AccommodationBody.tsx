@@ -1,6 +1,5 @@
 import { Grid, Container } from "@mui/material";
 import { useState, useEffect } from "react";
-import { Property } from "../../types/property";
 import styled from "styled-components";
 import Header from "./components/Header";
 import Picutres from "./components/Picutres";
@@ -14,9 +13,10 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
 import { checkIfBookmarked } from "../../api/getProperty";
+import { PropertyWithOwner } from "../../types/property";
 
 interface Props {
-  property: Property;
+  property: PropertyWithOwner;
   editor: boolean;
 }
 
@@ -25,7 +25,7 @@ const AccommodationBody: React.FC<Props> = ({ property, editor }) => {
 
   useEffect(() => {
     const fetchIfBookmarked = async () => {
-      const bookmarked = await checkIfBookmarked(property.property_id);
+      const bookmarked = await checkIfBookmarked(property.id);
 
       setBookmarked(bookmarked);
     };
@@ -37,7 +37,7 @@ const AccommodationBody: React.FC<Props> = ({ property, editor }) => {
   const { enqueueSnackbar } = useSnackbar();
 
   const handleOnDelete = async () => {
-    const { hasError, message } = await deleteProperty(property.property_id);
+    const { hasError, message } = await deleteProperty(property.id);
 
     if (hasError && message) {
       enqueueSnackbar(message, {
@@ -54,7 +54,7 @@ const AccommodationBody: React.FC<Props> = ({ property, editor }) => {
 
   const handleOnCopy = () => {
     navigator.clipboard.writeText(
-      `${window.location.origin}/accommodation/${property.property_id}`
+      `${window.location.origin}/accommodation/${property.id}`
     );
     enqueueSnackbar("Link copied to clipboard!", {
       variant: "success",
@@ -62,7 +62,7 @@ const AccommodationBody: React.FC<Props> = ({ property, editor }) => {
   };
 
   const handleOnBookmark = async () => {
-    const { hasError, message } = await bookmakrProperty(property.property_id);
+    const { hasError, message } = await bookmakrProperty(property.id);
 
     if (hasError && message) {
       return enqueueSnackbar(message, {
@@ -77,7 +77,7 @@ const AccommodationBody: React.FC<Props> = ({ property, editor }) => {
     navigate("/myProfile");
   };
   const handleOnUnsave = async () => {
-    const { hasError, message } = await unsaveProperty(property.property_id);
+    const { hasError, message } = await unsaveProperty(property.id);
 
     if (hasError && message) {
       return enqueueSnackbar(message, {

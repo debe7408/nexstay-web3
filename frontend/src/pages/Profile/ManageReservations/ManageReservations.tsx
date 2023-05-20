@@ -15,8 +15,10 @@ import ReservationsTable from "../../../components/ReservationTable";
 import CustomButton from "../../../components/CustomButton";
 import { getUsersReservations } from "../../../api/manageReservations";
 import dayjs, { Dayjs } from "dayjs";
+import { useNavigate } from "react-router-dom";
 
 const ManageReservationsPage: React.FC = () => {
+  const navigate = useNavigate();
   const [reservations, setReservations] = useState<Reservation[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [bookingDate, setBookingDate] = useState<Dayjs | null>();
@@ -57,7 +59,7 @@ const ManageReservationsPage: React.FC = () => {
   });
 
   const handleAddReservation = () => {
-    // Logic for adding a new reservation goes here
+    navigate("/");
   };
 
   return (
@@ -74,7 +76,7 @@ const ManageReservationsPage: React.FC = () => {
             color="primary"
             onClick={handleAddReservation}
           >
-            Add Reservation
+            Start exploring!
           </CustomButton>
         </Grid>
       </Grid>

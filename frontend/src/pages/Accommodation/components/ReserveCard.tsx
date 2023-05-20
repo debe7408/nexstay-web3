@@ -13,7 +13,6 @@ import {
   getUnavailableDates,
   reserveDates,
 } from "../../../api/manageReservations";
-import { Property } from "../../../types/property";
 import { DateRange } from "../../../types/dates";
 import { Value } from "react-calendar/dist/cjs/shared/types";
 import { themes } from "../../../constants/colors";
@@ -21,9 +20,10 @@ import Divider from "../../../components/DividerComponent";
 import CustomButton from "../../../components/CustomButton";
 import { useSnackbar } from "notistack";
 import { formatDate } from "../../../helperFunctions/dateFunctions";
+import { PropertyWithOwner } from "../../../types/property";
 
 interface Props {
-  property: Property;
+  property: PropertyWithOwner;
 }
 
 const ReserveCard: React.FC<Props> = ({ property }) => {
@@ -49,14 +49,14 @@ const ReserveCard: React.FC<Props> = ({ property }) => {
   }, [selectedDates, property.price]);
 
   const fetchAvailability = useCallback(async () => {
-    const response = await getUnavailableDates(property.property_id);
+    const response = await getUnavailableDates(property.id);
     if (!response.data || response.error) {
       console.log(response.error);
       return;
     }
 
     setUnavailableDates(response.data);
-  }, [property.property_id]);
+  }, [property.id]);
 
   const handleSubmit = async () => {
     if (!Array.isArray(selectedDates)) {
@@ -69,7 +69,7 @@ const ReserveCard: React.FC<Props> = ({ property }) => {
     const endDate = formatDate(selectedDates[1]!);
 
     const { message, error, reservationId } = await reserveDates(
-      property.property_id,
+      property.id,
       startDate,
       endDate
     );

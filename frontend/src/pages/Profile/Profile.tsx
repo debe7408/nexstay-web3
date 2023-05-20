@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useSnackbar } from "notistack";
 import { getBookmarkedProperties } from "../../api/getProperty";
 import { Container } from "@mui/material";
@@ -14,21 +14,21 @@ const Profile = () => {
   const userInfo = useAppSelector(selectUser);
   const { enqueueSnackbar } = useSnackbar();
 
+  const fetchBookmarked = useCallback(async () => {
+    const { error, message, properties } = await getBookmarkedProperties();
+
+    if (error || !properties) {
+      enqueueSnackbar(message, {
+        variant: "error",
+      });
+      return;
+    }
+
+    setBookmarked(properties);
+  }, [userInfo]);
+
   useEffect(() => {
-    const fetchBookmarked = async () => {
-      const { hasError, message, properties } = await getBookmarkedProperties();
-
-      if (hasError || !properties) {
-        enqueueSnackbar(message, {
-          variant: "error",
-        });
-        return;
-      }
-
-      setBookmarked(properties);
-    };
-
-    userInfo && fetchBookmarked();
+    fetchBookmarked();
   }, [userInfo]);
 
   return (

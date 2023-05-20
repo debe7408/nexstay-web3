@@ -1,24 +1,24 @@
 import { useParams } from "react-router-dom";
 import { getProperty } from "../../api/getProperty";
 import { useEffect, useState } from "react";
-import { Property } from "../../types/property";
 import AccommodationBody from "./AccommodationBody";
 import { useAppSelector } from "../../app/hooks";
 import { selectUserId } from "../../app/loginSlice";
+import { PropertyWithOwner } from "../../types/property";
 
 const AccommodationPage = () => {
   const { id } = useParams();
-  const [propertyInfo, setPropertyInfo] = useState({} as Property);
+  const [propertyInfo, setPropertyInfo] = useState({} as PropertyWithOwner);
   const userId = useAppSelector(selectUserId);
   const [canEdit, setCanEdit] = useState(false);
 
   const [errorMessage, setErrorMessage] = useState("");
 
   const fetchedProperty = async () => {
-    const { hasError, message, property } = await getProperty(id!);
+    const { error, message, property } = await getProperty(id!);
 
-    if (hasError || message || !property) {
-      setErrorMessage(message!);
+    if (error || !property) {
+      setErrorMessage(message);
       return;
     }
 
