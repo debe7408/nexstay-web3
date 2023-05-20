@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
 import { checkIfBookmarked } from "../../api/getProperty";
 import { PropertyWithOwner } from "../../types/property";
+import ReportDialog from "./components/ReportDialog";
 
 interface Props {
   property: PropertyWithOwner;
@@ -22,6 +23,7 @@ interface Props {
 
 const AccommodationBody: React.FC<Props> = ({ property, editor }) => {
   const [bookmarked, setBookmarked] = useState(false);
+  const [openReportDialog, setOpenReportDialog] = useState(false);
 
   useEffect(() => {
     const fetchIfBookmarked = async () => {
@@ -92,6 +94,11 @@ const AccommodationBody: React.FC<Props> = ({ property, editor }) => {
     navigate("/myProfile");
   };
 
+  const handleReport = () => {
+    console.log("AsD");
+    setOpenReportDialog(true);
+  };
+
   return (
     <StyledContainer maxWidth="lg">
       <Header
@@ -99,6 +106,7 @@ const AccommodationBody: React.FC<Props> = ({ property, editor }) => {
         handleCopy={handleOnCopy}
         handleBookmark={handleOnBookmark}
         handleUnsave={handleOnUnsave}
+        handleReport={handleReport}
         bookmarked={bookmarked}
         editor={editor}
         property={property}
@@ -112,6 +120,11 @@ const AccommodationBody: React.FC<Props> = ({ property, editor }) => {
           <ReserveCard property={property} />
         </Grid>
       </Grid>
+      <ReportDialog
+        propertyId={property.id}
+        open={openReportDialog}
+        handleClose={() => setOpenReportDialog(false)}
+      />
     </StyledContainer>
   );
 };

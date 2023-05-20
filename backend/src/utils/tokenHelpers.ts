@@ -36,9 +36,9 @@ export const verifyToken = (
     // Check if authorization header is present
     const authHeader = req.headers.authorization;
     if (!authHeader) {
-      return res
-        .status(401)
-        .send("Action needs authorization! Make sure you're logged in.");
+      return res.status(401).send({
+        message: "Action needs authorization! Make sure you're logged in.",
+      });
     }
 
     // Check if authorization header included token

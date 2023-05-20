@@ -14,6 +14,10 @@ export const reviewPostValidationRequest = [
   check("comment", "Please include a valid comment").isString().notEmpty(),
 ];
 
+export const ticketPostValidationRequest = [
+  check("message", "Please include a valid message").isString().notEmpty(),
+];
+
 export const userUpdateContactInfo = [
   check("firstName", "Please include a valid first name").not().isEmpty(),
   check("lastName", "Please include a valid last name").not().isEmpty(),

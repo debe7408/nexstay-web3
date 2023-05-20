@@ -4,6 +4,7 @@ import SaveIcon from "@mui/icons-material/FavoriteBorder";
 import SaveIconFilled from "@mui/icons-material/Favorite";
 import ShareIcon from "@mui/icons-material/IosShare";
 import DeleteIcon from "@mui/icons-material/DeleteOutline";
+import ReportIcon from "@mui/icons-material/ReportGmailerrorred";
 import { PropertyWithOwner } from "../../../types/property";
 
 interface Props {
@@ -14,6 +15,7 @@ interface Props {
   handleCopy: () => void;
   handleBookmark: () => void;
   handleUnsave: () => void;
+  handleReport: () => void;
 }
 
 const Header: React.FC<Props> = ({
@@ -24,6 +26,7 @@ const Header: React.FC<Props> = ({
   handleCopy,
   handleBookmark,
   handleUnsave,
+  handleReport,
 }) => {
   return (
     <Grid container spacing={1}>
@@ -70,6 +73,10 @@ const Header: React.FC<Props> = ({
               <IconBox onClick={handleCopy}>
                 <ShareIcon />
                 <Subtitle>Share</Subtitle>
+              </IconBox>
+              <IconBox onClick={handleReport}>
+                <ReportIcon />
+                <Subtitle>Report</Subtitle>
               </IconBox>
             </SubtitleBox>
           </Grid>
