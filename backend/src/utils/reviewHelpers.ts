@@ -58,3 +58,14 @@ export const getReviewInfoByUserId = async (userId: number | string) => {
 
   return result as Review[];
 };
+
+export const getReviewInfoByReservationId = async (
+  reservationId: number | string
+) => {
+  const sql = "SELECT * FROM reviews WHERE reservation_id = ?";
+  const result = await queryDb(sql, [reservationId]);
+
+  if (result.length === 0) return false;
+
+  return result[0] as Review;
+};

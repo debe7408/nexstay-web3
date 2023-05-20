@@ -4,7 +4,10 @@ import { verifyToken } from "../utils/tokenHelpers";
 import { checkIfUserExist } from "../utils/userHelpers";
 import { reviewPostValidationRequest } from "../utils/validationSchemas";
 import { getReservationInfo } from "../utils/reservationHelpers";
-import { createReview } from "../utils/reviewHelpers";
+import {
+  createReview,
+  getReviewInfoByReservationId,
+} from "../utils/reviewHelpers";
 import {
   getReviewInfoByPropertyId,
   getReviewInfoByUserId,
@@ -120,5 +123,24 @@ reviewRoutes.get("/user/:userId", async (req: Request, res: Response) => {
     reviews,
   });
 });
+
+/**
+ * Get specific review by reservation id
+ */
+reviewRoutes.get(
+  "/reservation/:reservationId",
+  async (req: Request, res: Response) => {
+    const reservationId = req.params.reservationId;
+    const review = await getReviewInfoByReservationId(reservationId);
+    if (!review)
+      return res.status(404).json({
+        message: "Review was not found.",
+      });
+    return res.status(200).json({
+      message: "Existing review found.",
+      review,
+    });
+  }
+);
 
 export default reviewRoutes;
