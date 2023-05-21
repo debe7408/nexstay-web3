@@ -18,6 +18,9 @@ const ProfileUserInfo: React.FC<Props> = ({ user }) => {
   const openManageReservations = () => {
     navigate("/myProfile/manage-reservations");
   };
+  const openManageTickets = () => {
+    navigate("/myProfile/manage-tickets");
+  };
 
   const greetingMessage = user.firstName
     ? `Welcome back, ${user.firstName}!`
@@ -43,6 +46,11 @@ const ProfileUserInfo: React.FC<Props> = ({ user }) => {
                 <Typography variant="body1">
                   Manage your reservations
                 </Typography>
+              </Button>
+            </Grid>
+            <Grid item xs={12}>
+              <Button fullWidth variant="outlined" onClick={openManageTickets}>
+                <Typography variant="body1">Manage your tickets</Typography>
               </Button>
             </Grid>
           </Grid>

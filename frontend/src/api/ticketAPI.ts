@@ -29,3 +29,31 @@ export const postTicket = async (
     return { message: "An unexpected error occurred", error: true };
   }
 };
+
+type ApiGetTicketsResponse = {
+  tickets: Ticket[];
+  message: string;
+};
+
+type GetTicketsResponse = {
+  message: string;
+  error?: boolean;
+  tickets?: Ticket[];
+};
+
+export const getUserTickets = async (): Promise<GetTicketsResponse> => {
+  try {
+    const response = await axiosClient.get<ApiGetTicketsResponse>(
+      `/tickets/user`
+    );
+    return {
+      tickets: response.data.tickets,
+      message: response.data.message,
+    };
+  } catch (error) {
+    if (isAxiosError(error)) {
+      return { message: error.response?.data.message, error: true };
+    }
+    return { message: "An unexpected error occurred", error: true };
+  }
+};

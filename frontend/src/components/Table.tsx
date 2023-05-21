@@ -10,6 +10,7 @@ const StyledTable = styled.table`
     border: 1px solid #ddd;
     padding: 8px;
     text-align: left;
+    word-wrap: break-word;
   }
 
   th {

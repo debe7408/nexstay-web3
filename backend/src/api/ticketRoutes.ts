@@ -9,6 +9,7 @@ import {
   createTicket,
   getTicketById,
   getTicketsByPropertyId,
+  getTicketsByUserId,
 } from "../utils/ticketHelpers";
 
 const ticketRoutes = express.Router();
@@ -66,8 +67,25 @@ ticketRoutes.post(
 /**
  * Gets all tickets for a property
  */
+ticketRoutes.get("/user", verifyToken, async (req: Request, res: Response) => {
+  const userId = req.body.id;
+
+  const tickets = await getTicketsByUserId(userId);
+  if (!tickets)
+    return res.status(404).json({
+      message: "User does not have any tickets.",
+    });
+  return res.status(200).json({
+    message: "Tickets found successfully",
+    tickets: tickets,
+  });
+});
+
+/**
+ * Gets all tickets for a user
+ */
 ticketRoutes.get(
-  "/property/:propertyId",
+  "/user/:userID",
   verifyToken,
   async (req: Request, res: Response) => {
     const propertyId = req.params.propertyId;

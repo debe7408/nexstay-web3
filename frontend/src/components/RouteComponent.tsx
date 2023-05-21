@@ -16,6 +16,11 @@ const NotFound = lazy(() => import("../pages/InvalidPage"));
 const ManageReservations = lazy(
   () => import("../pages/Profile/ManageReservations/ManageReservations")
 );
+
+const ManageTickets = lazy(
+  () => import("../pages/Profile/ManageTickets/ManageTickets")
+);
+
 const ManagePayment = lazy(() => import("../pages/Checkout/ManagePayment"));
 
 const Main = () => {
@@ -37,6 +42,10 @@ const Main = () => {
               element={
                 loginState ? <ManageReservations /> : <UnauthorizedPage />
               }
+            />
+            <Route
+              path="/myProfile/manage-tickets"
+              element={loginState ? <ManageTickets /> : <UnauthorizedPage />}
             />
             <Route
               path="/host/information"

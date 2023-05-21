@@ -9,6 +9,7 @@ import { loginUser } from "../api/loginUser";
 import { useSnackbar } from "notistack";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import ProfileAvatar from "./Avatar";
+import { colors } from "../constants/colors";
 
 const ProfileBadge = () => {
   const { enqueueSnackbar } = useSnackbar();
@@ -52,33 +53,35 @@ const ProfileBadge = () => {
 
   return (
     <>
-      <IconButton size="small" onClick={handleOnExpand}>
-        <Badge
-          color={loggedIn ? "success" : "error"}
-          variant="dot"
-          sx={{
-            "& .MuiBadge-badge": {
-              width: 10,
-              height: 10,
-              borderRadius: "50%",
-              border: `2px solid white`,
-            },
-          }}
-          overlap="circular"
-          anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-        >
-          {user ? (
-            <ProfileAvatar id={user.id} />
-          ) : (
-            <AccountCircleIcon
-              sx={{
-                width: "3rem",
-                height: "3rem",
-              }}
-            />
-          )}
-        </Badge>
-      </IconButton>
+      <Badge
+        color={loggedIn ? "success" : "error"}
+        variant="dot"
+        sx={{
+          cursor: "pointer",
+          paddingLeft: "0.5rem",
+          "& .MuiBadge-badge": {
+            width: 10,
+            height: 10,
+            borderRadius: "50%",
+            border: `2px solid white`,
+          },
+        }}
+        overlap="circular"
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+        onClick={handleOnExpand}
+      >
+        {user ? (
+          <ProfileAvatar id={user.id} />
+        ) : (
+          <AccountCircleIcon
+            sx={{
+              width: "3rem",
+              height: "3rem",
+              color: colors.navyBlue,
+            }}
+          />
+        )}
+      </Badge>
 
       <Menu
         open={Boolean(anchorEl)}
@@ -139,6 +142,13 @@ const MenuItemsLoggedIn = (props: MenuItemsProps) => {
         Add property
       </MenuItem>
       <hr></hr>
+      <MenuItem
+        component={Link}
+        to="/myProfile/manage-tickets"
+        onClick={props.onClick}
+      >
+        Tickets
+      </MenuItem>
       <MenuItem onClick={props.onLogOut}>Sign out</MenuItem>
     </>
   );
