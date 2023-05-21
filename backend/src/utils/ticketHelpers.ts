@@ -5,9 +5,17 @@ export type Tickets = {
   property_id: string;
   user_id: number;
   message: string;
+  status: TicketStatus;
+  resolution: string;
   created_at: Date;
   updated_at: Date;
 };
+
+enum TicketStatus {
+  OPEN = "OPEN",
+  CLOSED = "CLOSED",
+  RESOLVED = "RESOLVED",
+}
 
 export const checkIfTicketPending = async (
   userId: number | string,
