@@ -10,6 +10,7 @@ import { useSnackbar } from "notistack";
 import { useNavigate } from "react-router-dom";
 import { fetchAndUpdateUserInfo } from "../../app/loginSlice";
 import { useAppDispatch } from "../../app/hooks";
+import { uploadPropertyPictures } from "../../api/manageFileUpload";
 
 const steps = [
   "Start of a journey",
@@ -30,12 +31,23 @@ const HostingFormComponent = () => {
   };
 
   const handleFinalSubmit = async (data: PropertyForm) => {
-    const { hasError, message } = await addProperty(data);
-    if (hasError) {
+    const { message, propertyId, error } = await addProperty(data);
+    if (error || !propertyId) {
       enqueueSnackbar(message, { variant: "error" });
       return;
     }
+
     enqueueSnackbar(message, { variant: "success" });
+
+    const { success, message: imageUploadMessage } =
+      await uploadPropertyPictures(propertyId, data.pictures);
+
+    if (!success) {
+      enqueueSnackbar(imageUploadMessage, { variant: "error" });
+      return;
+    }
+
+    enqueueSnackbar(imageUploadMessage, { variant: "success" });
 
     dispatch(fetchAndUpdateUserInfo());
     navigate("/myProfile");

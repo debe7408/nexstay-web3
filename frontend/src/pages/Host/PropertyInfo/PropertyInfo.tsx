@@ -49,7 +49,7 @@ const PropertyInfoComponent: React.FC<Props> = ({
           .test(
             "fileList",
             "Please upload at least one image file",
-            (value) => value instanceof FileList && value.length > 0
+            (value) => value instanceof FileList && value.length == 5
           )
           .required(),
       })

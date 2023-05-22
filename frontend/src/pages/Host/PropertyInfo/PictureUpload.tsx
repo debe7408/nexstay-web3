@@ -37,6 +37,7 @@ const PictureUpload: React.FC<Props> = ({ errors, register }) => {
       <StyledBox errors={errors.pictures}>
         <StyledIcon />
         <Typography variant="body1">Upload your pictures here</Typography>
+        <Typography variant="subtitle2">Please select 5 pictures</Typography>
         <Box sx={{ display: "flex", alignItems: "center", gap: "10px" }}></Box>
         <FileUpload
           {...register("pictures")}

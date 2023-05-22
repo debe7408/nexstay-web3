@@ -1,31 +1,37 @@
-import { AxiosError } from "axios";
+import { AxiosError, isAxiosError } from "axios";
 import axiosClient from "../axios/axiosClient";
 import { PropertyForm } from "../types/property";
 import { BaseError } from "../types/baseError";
 
+type ApiResponsePostProperty = {
+  message: string;
+  propertyId?: number;
+};
+
+type ResponseAddProperty = {
+  message: string;
+  error?: boolean;
+  propertyId?: number;
+};
+
 export const addProperty = async (
   propertyData: PropertyForm
-): Promise<BaseError> => {
+): Promise<ResponseAddProperty> => {
   try {
-    await axiosClient.post("/properties/", propertyData);
-  } catch (error) {
-    const requestError = error as AxiosError;
-    if (!requestError.response) {
-      return {
-        hasError: true,
-        message: "Internal error. Please try again later",
-      };
-    }
+    const response = await axiosClient.post<ApiResponsePostProperty>(
+      "/properties/",
+      propertyData
+    );
     return {
-      hasError: true,
-      message: "Could not add property. Please check your data and try again",
+      message: response.data.message,
+      propertyId: response.data.propertyId,
     };
+  } catch (error) {
+    if (isAxiosError(error)) {
+      return { message: error.response?.data.message, error: true };
+    }
+    return { message: "An unexpected error occurred", error: true };
   }
-
-  return {
-    hasError: false,
-    message: "Property added!",
-  };
 };
 
 export const deleteProperty = async (

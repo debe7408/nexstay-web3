@@ -1,7 +1,4 @@
-import { NextFunction, Request, Response } from "express";
 import { check } from "express-validator";
-import { HttpError } from "../http-error";
-import * as jose from "jose";
 
 export const usersPostValidation = [
   check("publicAddress", "Please include a valid ETH public wallet address")
@@ -69,59 +66,9 @@ export const addPropertyValidation = [
     .not()
     .isEmpty(),
   check("amenities", "Property has to have amenities").isArray(),
-
   check("safety_amenities", "Property has to have safety amenities").isArray(),
   check("booking_status", "Property has to have a booking status")
     .isBoolean()
     .not()
     .isEmpty(),
 ];
-
-/**
- * Not functional as of yet. Considering removing this
- */
-export const jwtVerification = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  const idToken = req.headers.authorization?.split(" ")[1];
-  const publicAddress = req.body.publicAddress;
-  const adapter = req.body.adapter;
-
-  const jwksUrl =
-    adapter === "openlogin"
-      ? "https://api.openlogin.com/jwks"
-      : "https://authjs.web3auth.io/jwks";
-
-  if (!idToken || !publicAddress) {
-    return res.status(400).json({ name: "Invalid token provided." });
-  }
-
-  try {
-    // Get the JWK set used to sign the JWT issued by Web3Auth
-    const jwks = jose.createRemoteJWKSet(new URL(jwksUrl));
-
-    // Verify the JWT using Web3Auth's JWKS
-    const jwtDecoded = await jose.jwtVerify(idToken, jwks, {
-      algorithms: ["ES256"],
-    });
-
-    // Extract public_key or public_address from the payload
-    const publicAddressFromJWT =
-      adapter === "openlogin"
-        ? (jwtDecoded.payload as any).wallets[0].public_key
-        : (jwtDecoded.payload as any).wallets[0].address;
-
-    // check if the public address from the JWT matches the public address from the request
-    if (publicAddressFromJWT === publicAddress.toLowerCase()) {
-      next();
-    } else {
-      return res.status(400).json({ response: "Verification Failed" });
-    }
-  } catch (error) {
-    const httpError = error as HttpError;
-
-    return res.status(401).send(httpError.message);
-  }
-};

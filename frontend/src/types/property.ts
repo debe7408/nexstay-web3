@@ -14,6 +14,7 @@ export interface Property {
   bathrooms: number;
   guests: number;
   beds: number;
+  picture_paths: string[];
 }
 
 export interface PropertyWithOwner extends Property {

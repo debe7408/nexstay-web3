@@ -6,7 +6,6 @@ import { Property } from "../types/property";
 
 interface PropertyComponentProps {
   item: Property;
-  imageSrc: string;
   handleClick?: () => void;
   itemsPerRow?: {
     xs?: number;
@@ -18,7 +17,6 @@ interface PropertyComponentProps {
 
 const PropertyBox: React.FC<PropertyComponentProps> = ({
   item,
-  imageSrc,
   itemsPerRow,
 }) => {
   const navigate = useNavigate();
@@ -26,6 +24,8 @@ const PropertyBox: React.FC<PropertyComponentProps> = ({
   const handleOpenPropertyInfo = () => {
     navigate(`/accommodation/${item.id}`);
   };
+
+  const imageSrc = `${process.env.REACT_APP_BASE_API_URL}/images/${item.picture_paths[0]}`;
 
   return (
     <Grid

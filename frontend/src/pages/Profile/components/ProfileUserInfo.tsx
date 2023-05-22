@@ -1,11 +1,8 @@
 import { Typography, Grid, Container, Button } from "@mui/material";
 import { User } from "../../../types/user";
-import PropertyContainer from "../../../components/PropertyContainer";
-import Divider from "../../../components/DividerComponent";
 import EditProfileForm from "./EditProfileForm";
 import { useNavigate } from "react-router-dom";
 import Listings from "./Listings";
-import { Property } from "../../../types/property";
 import Bookmarks from "./Bookmarks";
 
 interface Props {

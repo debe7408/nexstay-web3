@@ -19,14 +19,14 @@ const PropertyContainer: React.FC<PropertyContainerProps> = ({
 }) => {
   return (
     <Grid container spacing={2}>
-      {properties.map((item) => (
-        <PropertyBox
-          item={item}
-          imageSrc={`https://source.unsplash.com/random/?houses,accommodation,${item.country}`}
-          key={item.id}
-          itemsPerRow={itemsPerRow}
-        ></PropertyBox>
-      ))}
+      {properties &&
+        properties.map((item) => (
+          <PropertyBox
+            item={item}
+            key={item.id}
+            itemsPerRow={itemsPerRow}
+          ></PropertyBox>
+        ))}
     </Grid>
   );
 };

@@ -25,6 +25,13 @@ const propertyRoutes = express.Router();
 
 propertyRoutes.get("/", async (req, res) => {
   const properties = await getAllProperties();
+
+  if (!properties) {
+    return res.status(404).json({
+      message: "No properties found",
+    });
+  }
+
   return res.status(200).json({
     message: "Returned all properties",
     properties,
@@ -109,6 +116,7 @@ propertyRoutes.post(
 
     return res.status(200).send({
       message: "Property added",
+      propertyId: insertId,
     });
   }
 );

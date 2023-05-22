@@ -31,64 +31,109 @@ export const checkIfPropertyBookmarked = async (
 
 export const getBookmaredProperties = async (userId: number) => {
   const sql = `
-    SELECT properties.* FROM properties
-    JOIN saved_properties ON properties.id = saved_properties.property_id
+    SELECT properties_with_pictures.* FROM properties_with_pictures
+    JOIN saved_properties ON properties_with_pictures.id = saved_properties.property_id
     WHERE saved_properties.user_id = ?;
   `;
 
-  const properties: Property[] = await queryDb(sql, [userId]);
-  return properties;
+  const response = await queryDb(sql, [userId]);
+
+  if (response.length === 0) {
+    return false;
+  }
+
+  response.forEach((property: any) => {
+    property.amenities = JSON.parse(property.amenities);
+    property.safety_amenities = JSON.parse(property.safety_amenities);
+    property.picture_paths = property.picture_paths
+      ? property.picture_paths.split(",")
+      : [];
+  });
+
+  return response as Property[];
 };
 
 export const getAllProperties = async () => {
-  const sql = "SELECT * FROM properties";
+  const sql = `SELECT * FROM properties_with_pictures`;
 
-  const properties: Property[] = await queryDb(sql);
+  const response = await queryDb(sql);
 
-  return properties;
+  if (response.length === 0) {
+    return false;
+  }
+
+  response.forEach((property: any) => {
+    property.amenities = JSON.parse(property.amenities);
+    property.safety_amenities = JSON.parse(property.safety_amenities);
+    property.picture_paths = property.picture_paths
+      ? property.picture_paths.split(",")
+      : [];
+  });
+
+  return response as Property[];
 };
 
 export const getAllPropertiesWithOwner = async () => {
   const sql = `
     SELECT
-      properties.*,
+    properties_with_pictures.*,
       users.publicAddress AS ownerAddress,
       users.email as ownerEmail,
       users.firstName as ownerFirstName,
       users.lastName as ownerLastName
-    FROM properties
-    JOIN users ON properties.owner_id = users.id
+    FROM properties_with_pictures
+    JOIN users ON properties_with_pictures.owner_id = users.id
   `;
-  const properties: PropertyWithOwner[] = await queryDb(sql);
+  const response = await queryDb(sql);
 
-  properties.forEach((property: PropertyWithOwner) => {
+  if (response.length === 0) {
+    return false;
+  }
+
+  response.forEach((property: any) => {
     property.amenities = JSON.parse(property.amenities);
     property.safety_amenities = JSON.parse(property.safety_amenities);
+    property.picture_paths = property.picture_paths
+      ? property.picture_paths.split(",")
+      : [];
   });
 
-  return properties;
+  return response as PropertyWithOwner[];
 };
 
 export const getUsersProperties = async (userId: number) => {
-  const sql = "SELECT * FROM properties WHERE owner_id = ?";
+  const sql = "SELECT * FROM properties_with_pictures WHERE owner_id = ?";
 
-  const properties: Property[] = await queryDb(sql, [userId]);
-  return properties;
+  const response = await queryDb(sql, [userId]);
+
+  if (response.length === 0) {
+    return false;
+  }
+
+  response.forEach((property: any) => {
+    property.amenities = JSON.parse(property.amenities);
+    property.safety_amenities = JSON.parse(property.safety_amenities);
+    property.picture_paths = property.picture_paths
+      ? property.picture_paths.split(",")
+      : [];
+  });
+
+  return response as Property[];
 };
 
 export const getPropertyByID = async (propertyId: string) => {
   const sql = `
     SELECT 
-      properties.*, 
+      properties_with_pictures.*, 
       users.publicAddress AS ownerAddress, 
       users.email as ownerEmail, 
       users.firstName as ownerFirstName, 
       users.lastName as ownerLastName 
-    FROM properties 
-    JOIN users ON properties.owner_id = users.id 
-    WHERE properties.id = ?`;
+    FROM properties_with_pictures 
+    JOIN users ON properties_with_pictures.owner_id = users.id 
+    WHERE properties_with_pictures.id = ?`;
 
-  const response: PropertyWithOwner[] = await queryDb(sql, [propertyId]);
+  const response = await queryDb(sql, [propertyId]);
 
   if (response.length === 0) {
     return null;
@@ -96,6 +141,7 @@ export const getPropertyByID = async (propertyId: string) => {
 
   response[0].amenities = JSON.parse(response[0].amenities);
   response[0].safety_amenities = JSON.parse(response[0].safety_amenities);
+  response[0].picture_paths = response[0].picture_paths.split(",");
 
   return response[0];
 };
