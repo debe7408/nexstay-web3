@@ -69,3 +69,9 @@ export const verifyToken = (
     return res.status(401).send("Invalid Token!");
   }
 };
+export const verifyType = (req: Request, res: Response, next: NextFunction) => {
+  if (req.body.userType !== "admin") {
+    return res.status(401).send("You are not authorized to access this!");
+  }
+  next();
+};

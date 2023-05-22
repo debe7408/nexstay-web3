@@ -148,3 +148,15 @@ export const getReservationStatus = async (
   );
   return reservation[0].status;
 };
+
+export const getAllReservations = async () => {
+  const sql = "SELECT * FROM reservations";
+
+  const reservations: Reservation[] = await queryDb(sql);
+
+  if (reservations.length === 0) {
+    return false;
+  }
+
+  return reservations;
+};

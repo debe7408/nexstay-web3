@@ -83,3 +83,13 @@ export const checkIfUserHasProperties = async (
 
   return response;
 };
+
+export const getAllUsers = async () => {
+  const sql = "SELECT * FROM users";
+  const response: User[] = await queryDb(sql);
+  if (response.length === 0) {
+    return false;
+  }
+
+  return response;
+};

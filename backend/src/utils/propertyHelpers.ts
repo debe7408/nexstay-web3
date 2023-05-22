@@ -48,6 +48,27 @@ export const getAllProperties = async () => {
   return properties;
 };
 
+export const getAllPropertiesWithOwner = async () => {
+  const sql = `
+    SELECT
+      properties.*,
+      users.publicAddress AS ownerAddress,
+      users.email as ownerEmail,
+      users.firstName as ownerFirstName,
+      users.lastName as ownerLastName
+    FROM properties
+    JOIN users ON properties.owner_id = users.id
+  `;
+  const properties: PropertyWithOwner[] = await queryDb(sql);
+
+  properties.forEach((property: PropertyWithOwner) => {
+    property.amenities = JSON.parse(property.amenities);
+    property.safety_amenities = JSON.parse(property.safety_amenities);
+  });
+
+  return properties;
+};
+
 export const getUsersProperties = async (userId: number) => {
   const sql = "SELECT * FROM properties WHERE owner_id = ?";
 
