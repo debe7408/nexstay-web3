@@ -1,11 +1,11 @@
 export type Ticket = {
   id: number;
-  property_id: string;
+  property_id: string | number;
   user_id: number;
   message: string;
   status: TicketStatus;
-  created_at: Date;
-  updated_at: Date;
+  created_at: string | Date;
+  updated_at: string | Date;
   resolution?: string;
 };
 

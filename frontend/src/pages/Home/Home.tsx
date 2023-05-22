@@ -1,5 +1,5 @@
 import Container from "@mui/material/Container";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import PropertyContainer from "../../components/PropertyContainer";
 import { getAllProperties } from "../../api/getProperty";
 import SearchFieldComponent from "../../components/SearchField";
@@ -10,18 +10,18 @@ const Home = () => {
   const [properties, setProperties] = useState<Property[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
 
-  useEffect(() => {
-    fetchedProperties();
-  }, []);
-
-  const fetchedProperties = async () => {
+  const fetchedProperties = useCallback(async () => {
     const { message, properties, error } = await getAllProperties();
     if (error || !properties) {
       console.log(message);
       return;
     }
     setProperties(properties);
-  };
+  }, [properties]);
+
+  useEffect(() => {
+    fetchedProperties();
+  }, []);
 
   return (
     <Container>

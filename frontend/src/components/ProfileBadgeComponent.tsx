@@ -10,6 +10,7 @@ import { useSnackbar } from "notistack";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import ProfileAvatar from "./Avatar";
 import { colors } from "../constants/colors";
+import { User, UserType } from "../types/user";
 
 const ProfileBadge = () => {
   const { enqueueSnackbar } = useSnackbar();
@@ -94,6 +95,7 @@ const ProfileBadge = () => {
               handleOnClose();
             }}
             onLogOut={handleLogOut}
+            user={user}
           />
         ) : (
           <MenuItemsLoggedOut
@@ -112,6 +114,7 @@ interface MenuItemsProps {
   onClick: () => void;
   onLogOut?: () => void;
   onLogin?: () => void;
+  user?: User;
 }
 
 const MenuItemsLoggedOut = (props: MenuItemsProps) => {
@@ -142,6 +145,16 @@ const MenuItemsLoggedIn = (props: MenuItemsProps) => {
         Add property
       </MenuItem>
       <hr></hr>
+      {props.user?.type === UserType.ADMIN && (
+        <MenuItem
+          component={Link}
+          to="/admin/dashboard"
+          onClick={props.onClick}
+        >
+          Admin dashboard
+        </MenuItem>
+      )}
+
       <MenuItem
         component={Link}
         to="/myProfile/manage-tickets"

@@ -1,9 +1,10 @@
-import { Suspense, lazy } from "react";
+import { Suspense, lazy, useEffect, useState } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { useAppSelector } from "../app/hooks";
-import { selectAuthToken } from "../app/loginSlice";
+import { selectAuthToken, selectUser } from "../app/loginSlice";
 import SuspensePage from "../pages/SuspensePage";
+import { UserType } from "../types/user";
 const Home = lazy(() => import("../pages/Home/Home"));
 const Profile = lazy(() => import("../pages/Profile/Profile"));
 const HostLanding = lazy(() => import("../pages/Host/HostLandingPage"));
@@ -23,9 +24,20 @@ const ManageTickets = lazy(
 
 const ManagePayment = lazy(() => import("../pages/Checkout/ManagePayment"));
 
+const AdminDashboard = lazy(() => import("../pages/Admin/AdminDashboard"));
+
 const Main = () => {
   const location = useLocation();
   const loginState = useAppSelector(selectAuthToken);
+  const user = useAppSelector(selectUser);
+  const [userType, setUserType] = useState<UserType>();
+
+  useEffect(() => {
+    if (loginState && user) {
+      const { type } = user;
+      setUserType(type);
+    }
+  }, [loginState]);
 
   return (
     <TransitionGroup component={null}>
@@ -59,6 +71,16 @@ const Main = () => {
             <Route
               path="/checkout/:id"
               element={loginState ? <ManagePayment /> : <UnauthorizedPage />}
+            />
+            <Route
+              path="/admin/dashboard"
+              element={
+                loginState && userType === UserType.ADMIN ? (
+                  <AdminDashboard />
+                ) : (
+                  <NotFound />
+                )
+              }
             />
             <Route path="*" element={<NotFound />} />
           </Routes>
