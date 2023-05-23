@@ -1,3 +1,4 @@
+import path from "path";
 import express, { Request, Response } from "express";
 import upload from "../utils/fileUpload";
 import { saveImagePathInDb } from "../utils/fileUpload";
@@ -6,6 +7,23 @@ import { checkIfUserExist } from "../utils/userHelpers";
 import { checkIfPropertyExists } from "../utils/propertyHelpers";
 
 const imageRoutes = express.Router();
+const imagesFolder = path.join(__dirname, "../../images");
+
+/**
+ * Route to fetch a single image
+ **/
+imageRoutes.get("/:filename", async (req, res) => {
+  const filename = req.params.filename;
+
+  const imagePath = path.join(imagesFolder, filename);
+
+  res.sendFile(imagePath, (err) => {
+    if (err) {
+      console.error(err);
+      res.status(404).send("Image not found");
+    }
+  });
+});
 
 // TODO Make it more secure
 imageRoutes.post(
