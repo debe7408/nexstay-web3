@@ -33,6 +33,25 @@ export const getAllProperties = async (): Promise<AllPropertiesResponse> => {
     return { message: "An unexpected error occurred", error: true };
   }
 };
+export const getPropertiesPerPage = async (
+  page: number
+): Promise<AllPropertiesResponse> => {
+  try {
+    const response = await axiosClient.get<ApiResponseAll>(
+      `/properties/page/${page}`
+    );
+
+    return {
+      message: response.data.message,
+      properties: response.data.properties,
+    };
+  } catch (error) {
+    if (isAxiosError(error)) {
+      return { message: error.response?.data.message, error: true };
+    }
+    return { message: "An unexpected error occurred", error: true };
+  }
+};
 
 type SinglePropertiesResponse = {
   message: string;
