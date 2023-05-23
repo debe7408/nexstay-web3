@@ -73,6 +73,26 @@ export const getAllProperties = async () => {
   return response as Property[];
 };
 
+export const getPropertiesByPage = async (skip: number, limit: number) => {
+  const sql = `SELECT * FROM properties_with_pictures LIMIT ${skip}, ${limit}`;
+
+  const response = await queryDb(sql);
+
+  if (response.length === 0) {
+    return [] as Property[];
+  }
+
+  response.forEach((property: any) => {
+    property.amenities = JSON.parse(property.amenities);
+    property.safety_amenities = JSON.parse(property.safety_amenities);
+    property.picture_paths = property.picture_paths
+      ? property.picture_paths.split(",")
+      : [];
+  });
+
+  return response as Property[];
+};
+
 export const getAllPropertiesWithOwner = async () => {
   const sql = `
     SELECT

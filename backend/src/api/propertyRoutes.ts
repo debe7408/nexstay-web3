@@ -14,6 +14,7 @@ import {
   getAllProperties,
   getPropertyByID,
   removeProperty,
+  getPropertiesByPage,
 } from "../utils/propertyHelpers";
 import {
   reserveProperty,
@@ -34,6 +35,25 @@ propertyRoutes.get("/", async (req, res) => {
 
   return res.status(200).json({
     message: "Returned all properties",
+    properties,
+  });
+});
+
+propertyRoutes.get("/page/:page", async (req, res) => {
+  const page = req.params.page;
+  const itemsPerPage = 20;
+  const skip = (Number(page) - 1) * itemsPerPage;
+  const properties = await getPropertiesByPage(skip, itemsPerPage);
+
+  if (!properties) {
+    return res.status(204).json({
+      message: "No properties found",
+      properties: [],
+    });
+  }
+
+  return res.status(200).json({
+    message: "Returned all properties for page " + page,
     properties,
   });
 });
