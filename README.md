@@ -28,11 +28,41 @@ Code base [Github](https://github.com/debe7408/trip.io)
 
 [Documentation](https://github.com/debe7408/trip.io/blob/main/Documentation_v2.pdf)
 
-## Deployment
 
-To deploy this project, see README.md of both Frontend and Backend in the corresponding folders.
+## Before Deployment
 
-There is also an option to deploy your own smart contract, more on that in the README.md of smart_contracts folder.
+#### To deploy this project locally, see README.md of both Frontend and Backend in the corresponding folders.
+
+#### There is also an option to deploy your own smart contract, more on that in the README.md of smart_contracts folder. Otherwise, please use the deployed smart contract, which be viewed on the [BSCSCAN](https://testnet.bscscan.com/address/0x6a81e84c64ae23c6a4dc09714f2e94fa45126248).
+
+Deployment documentation asumes you have Node.js and a package manager such as npm or yarn to install required packages.
+However, if you do not follow these steps before deploying any part of the system locally.
+
+Install Node.js from their [official website](https://nodejs.org/en/download) or via the terminal:
+```bash
+ apt-get install nodejs
+```
+
+Node package manager (npm) comes bundled with Node.js. However, if you prefer yarn, you can simply install it in your cli:
+
+```bash
+ npm install --global yarn
+```
+
+Additionally, in order to be able to clone the repositories and execute other git commands, you will need to install git.
+
+First check if you have git installed already.
+
+```bash
+ git --version
+```
+
+In case you do not have Git. It can be installed via the cli, or the via the GUI which can be found [here](https://git-scm.com/downloads) according to your OS.
+
+```bash
+ apt-get install git
+```
+
 
 ## Tech Stack
 
