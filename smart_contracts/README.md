@@ -2,6 +2,16 @@
 
 This part of the repository contains the Trip.io system's smart contracts, which are written in Solidity.
 
+## Appendix
+
+If you prefer to use already deployed smart contract, you can find the most up-to-date contract in this repository.
+
+[![Contract](https://img.shields.io/badge/BSCSCAN-Contract-success?style=flat&logo=binance)](https://testnet.bscscan.com/address/0x6a81e84c64ae23c6a4dc09714f2e94fa45126248)
+
+Contract address: 0x6a81e84c64ae23c6a4dc09714f2e94fa45126248
+
+However, keep in mind, if you're building on top of the system, using this contract means that the service fee will be sent to the owner address of the contract.
+
 ## Authors
 
 - Deividas Bendaravičius [@debe7408](https://www.github.com/debe7408)
@@ -12,10 +22,13 @@ To deploy this project locally, you need to add the following environment variab
 
 `PRIVATE_KEY` - your ETH wallet private key.
 
+`TOKEN_ADDRESS` - ERC20 token address you want to use as accepted currency.
+
 Here's an example of what your .env file should look like:
 
 ```bash
 PRIVATE_KEY="YOUR_PRIVATE_ETH_WALLET_KEY_HERE"
+TOKEN_ADDRESS="0x6fc24c93a5665845f7455eb1a72fb1f47510af42" #USDT in this case
 ```
 
 `⚠️ Note: The private key is only used to set the contract owner, who will initially receive funds. You can set this address to your vault address, which will distribute payments to property owners. ⚠️`
@@ -34,6 +47,12 @@ Navigate to the smart contracts folder:
 
 ```bash
   cd tripio/smart_contracts
+```
+
+Install Truffle:
+
+```bash
+  npm install -g truffle
 ```
 
 Install the required dependencies from the package.json file:
