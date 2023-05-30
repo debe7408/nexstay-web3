@@ -25,6 +25,10 @@ In order to run this project, you will need to add the following environment var
 
 `REACT_APP_PAYMENT_CONTRACT_ADDRESS` - address of smart contract responsible for payments
 
+The deployed smart contract can be found here:
+
+[![Contract](https://img.shields.io/badge/BSCSCAN-Contract-success?style=flat&logo=binance)](https://testnet.bscscan.com/address/0x6a81e84c64ae23c6a4dc09714f2e94fa45126248)
+
 Here is an example of how the .env file should look like:
 
 ```bash
@@ -40,9 +44,8 @@ REACT_APP_BASE_API_URL="http://localhost:3001/api"
 
 REACT_APP_GOOGLE_MAPS_API_KEY="YOUR_API_KEY_HERE"
 
-# This can be either obtained from the main README.md or your own contract.
-# Main README.md file has working and already deployed contract.
-REACT_APP_PAYMENT_CONTRACT_ADDRESS="0xb7f415A4B3D88242fD145f675048AA3122fb3D0A"
+# This can be either obtained as mentioned above or your own contract.
+REACT_APP_PAYMENT_CONTRACT_ADDRESS="0x6a81e84c64ae23c6a4dc09714f2e94fa45126248"
 ```
 
 ## Run Locally
