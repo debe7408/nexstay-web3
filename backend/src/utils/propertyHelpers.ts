@@ -73,8 +73,18 @@ export const getAllProperties = async () => {
   return response as Property[];
 };
 
-export const getPropertiesByPage = async (skip: number, limit: number) => {
-  const sql = `SELECT * FROM properties_with_pictures LIMIT ${skip}, ${limit}`;
+export const getPropertiesByPage = async (
+  skip: number,
+  limit: number,
+  country: string | null
+) => {
+  let sql = `SELECT * FROM properties_with_pictures`;
+
+  if (country) {
+    sql += ` WHERE country = '${country}'`;
+  }
+
+  sql += ` LIMIT ${skip}, ${limit}`;
 
   const response = await queryDb(sql);
 

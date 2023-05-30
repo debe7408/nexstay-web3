@@ -41,10 +41,14 @@ propertyRoutes.get("/", async (req, res) => {
 
 propertyRoutes.get("/page/:page", async (req, res) => {
   const page = req.params.page;
+  const country = req.query.country;
   const itemsPerPage = 20;
   const skip = (Number(page) - 1) * itemsPerPage;
-  const properties = await getPropertiesByPage(skip, itemsPerPage);
-
+  const properties = await getPropertiesByPage(
+    skip,
+    itemsPerPage,
+    country ? String(country) : null
+  );
   if (!properties) {
     return res.status(204).json({
       message: "No properties found",
