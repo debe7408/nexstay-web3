@@ -1,4 +1,4 @@
-import { Badge, IconButton, Menu, MenuItem } from "@mui/material";
+import { Badge, Menu, MenuItem } from "@mui/material";
 import React from "react";
 import { Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
@@ -11,6 +11,7 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import ProfileAvatar from "./Avatar";
 import { colors } from "../constants/colors";
 import { User, UserType } from "../types/user";
+import BalanceChip from "./BalanceChip";
 
 const ProfileBadge = () => {
   const { enqueueSnackbar } = useSnackbar();
@@ -128,6 +129,9 @@ const MenuItemsLoggedOut = (props: MenuItemsProps) => {
 const MenuItemsLoggedIn = (props: MenuItemsProps) => {
   return (
     <>
+      <MenuItem>
+        <BalanceChip />
+      </MenuItem>
       <MenuItem component={Link} to="/" onClick={props.onClick}>
         Home
       </MenuItem>

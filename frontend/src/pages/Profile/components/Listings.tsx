@@ -30,7 +30,7 @@ const Listings: React.FC<Props> = ({ userID }) => {
     <Container>
       <Grid item xs={12}>
         <Typography variant="h5">
-          {`Manage your listings [ ${ownedProperties?.length || 0} ]`}
+          {`Your listings [ ${ownedProperties?.length || 0} ]`}
         </Typography>
         <Divider />
       </Grid>

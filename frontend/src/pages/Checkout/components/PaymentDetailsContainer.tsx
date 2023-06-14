@@ -16,6 +16,12 @@ import { updateContactInfo } from "../../../api/updateContactInfo";
 import { useSnackbar } from "notistack";
 import { calculateDayDifference } from "../../../helperFunctions/dateFunctions";
 import { PropertyWithOwner } from "../../../types/property";
+import {
+  formatBigNumberForDisplay,
+  getTokenBalance,
+} from "../../../web3/web3Functions";
+import { useEffect, useState } from "react";
+import { web3Selectors } from "../../../app/web3Slice";
 
 interface Props {
   propertyInfo: PropertyWithOwner;
@@ -32,7 +38,10 @@ const PaymentDetailsContainer: React.FC<Props> = ({
 }) => {
   const { enqueueSnackbar } = useSnackbar();
   const user = useAppSelector(selectUser);
+  const { provider } = useAppSelector(web3Selectors);
   const dispatch = useAppDispatch();
+
+  const [userBalance, setUserBalance] = useState("0.0000");
 
   const totalNights = calculateDayDifference(
     reservationInfo.end_date,
@@ -42,6 +51,8 @@ const PaymentDetailsContainer: React.FC<Props> = ({
   const subtotalToolTip =
     "Subtotal is the price of the property times the number of nights.";
   const platformFeeToolTip = "Platform fee is 5% of the subtotal amount.";
+  const yourBalanceToolTip =
+    "This is your balance of the token that will be used for payments.";
 
   const buttonTexts = {
     [ReservationStatus.PENDING]: "Make Payment",
@@ -77,6 +88,15 @@ const PaymentDetailsContainer: React.FC<Props> = ({
       })
     ),
   });
+
+  useEffect(() => {
+    const fetchUserTokenBalance = async () => {
+      if (!provider) return;
+      const balance = await getTokenBalance(provider);
+      setUserBalance(formatBigNumberForDisplay(balance));
+    };
+    fetchUserTokenBalance();
+  }, [provider]);
 
   const onSubmit = handleSubmit(async (formData, event) => {
     if (!isDirty) {
@@ -137,6 +157,14 @@ const PaymentDetailsContainer: React.FC<Props> = ({
           <RowLabel>Total amount:</RowLabel>
           <RowText>${totalAmount}</RowText>
         </Row>
+        {reservationInfo.status === ReservationStatus.PENDING && (
+          <Row>
+            <RowLabel>
+              Your balance: <ToolTipIcon title={yourBalanceToolTip} />
+            </RowLabel>
+            <RowText>${userBalance}</RowText>
+          </Row>
+        )}
       </BottomContainer>
 
       <CustomButton

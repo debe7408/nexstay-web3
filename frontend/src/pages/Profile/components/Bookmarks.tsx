@@ -31,7 +31,7 @@ const Bookmarks: React.FC<Props> = ({ userID }) => {
   return (
     <Container>
       <Grid item xs={12}>
-        <Typography variant="h5">{`Manage your favorited [ ${
+        <Typography variant="h5">{`Your favorites [ ${
           bookmarkedProperties?.length || 0
         } ]`}</Typography>
 
