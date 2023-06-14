@@ -15,7 +15,10 @@ const Home = () => {
   const [hasMore, setHasMore] = useState(true);
 
   const fetchedProperties = useCallback(async () => {
-    const { message, properties, error } = await getPropertiesPerPage(page);
+    const { message, properties, error } = await getPropertiesPerPage(
+      page,
+      selectedCountry
+    );
     if (error || !properties) {
       return;
     }

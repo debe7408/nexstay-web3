@@ -35,8 +35,7 @@ export const getAllProperties = async (): Promise<AllPropertiesResponse> => {
 };
 export const getPropertiesPerPage = async (
   page: number,
-  country?: string,
-  city?: string
+  country?: string
 ): Promise<AllPropertiesResponse> => {
   try {
     const response = await axiosClient.get<ApiResponseAll>(
