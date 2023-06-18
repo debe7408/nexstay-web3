@@ -1,7 +1,6 @@
 import { Web3Auth } from "@web3auth/modal";
 import { CHAIN_NAMESPACES } from "@web3auth/base";
 import { Web3Provider } from "@ethersproject/providers";
-import Logo from "../assets/logo.svg";
 import subscribeAuthEvents from "./web3authEvents";
 
 export const initWeb3Auth = async () => {
@@ -15,7 +14,6 @@ export const initWeb3Auth = async () => {
         blockExplorer: process.env.REACT_APP_BLOCK_EXPLORER,
       },
       uiConfig: {
-        appLogo: Logo,
         theme: "dark",
       },
       web3AuthNetwork: "testnet",
