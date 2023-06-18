@@ -115,9 +115,6 @@ const Home = () => {
           minHeight: "100vh",
         }}
       >
-        <Button onClick={handleOnUpgrade}>Upgrade</Button>
-        <Button onClick={handleOnDowngrade}>Downgrade</Button>
-        <Button onClick={handleSendStream}>Stream</Button>
         <Grid item xs={12}>
           <h1>Welcome. Your journey starts here</h1>
         </Grid>

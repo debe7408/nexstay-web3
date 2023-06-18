@@ -95,7 +95,6 @@ const AccommodationBody: React.FC<Props> = ({ property, editor }) => {
   };
 
   const handleReport = () => {
-    console.log("AsD");
     setOpenReportDialog(true);
   };
 

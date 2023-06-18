@@ -6,6 +6,7 @@ import { colors } from "../../constants/colors";
 import {
   paymentTransaction,
   approvalTransaction,
+  handleSendStream,
 } from "../../web3/transactions";
 import { useAppSelector } from "../../app/hooks";
 import { web3Selectors } from "../../app/web3Slice";
@@ -25,6 +26,7 @@ import { Transaction } from "../../types/transaction";
 import { calculateDayDifference } from "../../helperFunctions/dateFunctions";
 import LeaveReviewContainer from "./components/LeaveReviewContainer";
 import { PropertyWithOwner } from "../../types/property";
+import { sfApi } from "../../app/store";
 
 const ManagePayment: React.FC = () => {
   const { enqueueSnackbar } = useSnackbar();
@@ -34,6 +36,7 @@ const ManagePayment: React.FC = () => {
   const [reservationData, setReservationData] = useState<Reservation>();
   const [propertyInfo, setPropertyInfo] = useState<PropertyWithOwner>();
   const [transactionInfo, setTransactionInfo] = useState<Transaction>();
+  const [createFlow] = sfApi.useCreateFlowMutation();
   const { id: reservationId } = useParams();
 
   const fetchReservationData = useCallback(async () => {
@@ -150,6 +153,53 @@ const ManagePayment: React.FC = () => {
     navigate("/myProfile/manage-reservations");
   };
 
+  const handlePaymentAsStream = async () => {
+    if (!propertyInfo || !reservationData) return;
+    const totalNights = calculateDayDifference(
+      reservationData.end_date,
+      reservationData.start_date
+    );
+
+    const totalAmount = (
+      Number(propertyInfo?.price) *
+      1.05 *
+      totalNights
+    ).toFixed(4);
+    if (!provider) return;
+    setLoading(true);
+
+    const response = await handleSendStream(
+      provider,
+      totalAmount,
+      propertyInfo?.ownerAddress,
+      createFlow
+    );
+
+    if (!response.hash || response.error) {
+      enqueueSnackbar(response.error, { variant: "error" });
+      setLoading(false);
+      return;
+    }
+
+    enqueueSnackbar(`Payment sucessfull. Transaction hash: ${response.hash}`, {
+      variant: "success",
+    });
+
+    const confirmResponse = await confirmReservation(
+      reservationId!,
+      response.hash
+    );
+
+    enqueueSnackbar(confirmResponse.message, {
+      variant: confirmResponse.error ? "error" : "success",
+    });
+
+    setLoading(false);
+    if (confirmResponse.error) return;
+
+    navigate("/myProfile/manage-reservations");
+  };
+
   return reservationData && propertyInfo ? (
     <Container>
       <Header>
@@ -165,6 +215,7 @@ const ManagePayment: React.FC = () => {
           propertyInfo={propertyInfo}
           reservationInfo={reservationData}
           handlePayment={handlePayment}
+          handlePaymentAsStream={handlePaymentAsStream}
           loading={loading}
         />
         <ReservationDetailsContainer

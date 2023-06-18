@@ -24,6 +24,10 @@ const ManageTickets = lazy(
 
 const ManagePayment = lazy(() => import("../pages/Checkout/ManagePayment"));
 
+const ManageStreams = lazy(
+  () => import("../pages/ManageStreams/ManageStreams")
+);
+
 const AdminDashboard = lazy(() => import("../pages/Admin/AdminDashboard"));
 
 const Main = () => {
@@ -71,6 +75,10 @@ const Main = () => {
             <Route
               path="/checkout/:id"
               element={loginState ? <ManagePayment /> : <UnauthorizedPage />}
+            />
+            <Route
+              path="/streams/"
+              element={loginState ? <ManageStreams /> : <UnauthorizedPage />}
             />
             <Route
               path="/admin/dashboard"

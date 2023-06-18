@@ -26,12 +26,14 @@ import { web3Selectors } from "../../../app/web3Slice";
 interface Props {
   propertyInfo: PropertyWithOwner;
   handlePayment: () => void;
+  handlePaymentAsStream: () => void;
   loading: boolean;
   reservationInfo: Reservation;
 }
 
 const PaymentDetailsContainer: React.FC<Props> = ({
   handlePayment,
+  handlePaymentAsStream,
   propertyInfo,
   loading,
   reservationInfo,
@@ -60,6 +62,7 @@ const PaymentDetailsContainer: React.FC<Props> = ({
     [ReservationStatus.CANCELED]: "Cancelled",
     [ReservationStatus.COMPLETED]: "Completed",
     [ReservationStatus.EXPIRED]: "Expired",
+    stream: "Pay as a Stream",
   };
 
   const subtotalAmount = Number(propertyInfo.price) * Number(totalNights);
@@ -122,6 +125,30 @@ const PaymentDetailsContainer: React.FC<Props> = ({
       });
     }
   });
+  const onSubmitAsStream = handleSubmit(async (formData, event) => {
+    if (!isDirty) {
+      enqueueSnackbar("There were no changes.", {
+        variant: "info",
+      });
+      handlePaymentAsStream();
+      return;
+    }
+
+    const { hasError } = await updateContactInfo(formData);
+
+    if (!hasError) {
+      enqueueSnackbar("Contact information updated", {
+        variant: "success",
+      });
+      dispatch(fetchAndUpdateUserInfo());
+
+      handlePaymentAsStream();
+    } else {
+      enqueueSnackbar("Contact could not be updated", {
+        variant: "error",
+      });
+    }
+  });
 
   return (
     <Container>
@@ -175,6 +202,17 @@ const PaymentDetailsContainer: React.FC<Props> = ({
         disabled={reservationInfo.status !== ReservationStatus.PENDING}
       >
         {buttonTexts[reservationInfo.status]}
+      </CustomButton>
+      <Divider />
+
+      <CustomButton
+        variant="contained"
+        color="primary"
+        onClick={onSubmitAsStream}
+        loading={loading}
+        disabled={reservationInfo.status !== ReservationStatus.PENDING}
+      >
+        {buttonTexts.stream}
       </CustomButton>
     </Container>
   );

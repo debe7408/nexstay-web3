@@ -145,6 +145,9 @@ const MenuItemsLoggedIn = (props: MenuItemsProps) => {
       >
         Reservations
       </MenuItem>
+      <MenuItem component={Link} to="/streams" onClick={props.onClick}>
+        Streams
+      </MenuItem>
       <MenuItem component={Link} to="/host/information" onClick={props.onClick}>
         Add property
       </MenuItem>
