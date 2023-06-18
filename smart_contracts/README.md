@@ -1,6 +1,6 @@
-# Trip.io Smart Contracts
+# NEXSTAY Smart Contracts
 
-This part of the repository contains the Trip.io system's smart contracts, which are written in Solidity.
+This part of the repository contains the NEXSTAY system's smart contracts, which are written in Solidity.
 
 ## Appendix
 
@@ -38,15 +38,15 @@ TOKEN_ADDRESS="0x6fc24c93a5665845f7455eb1a72fb1f47510af42" #USDT in this case
 Clone the repository using one of the following commands:
 
 ```bash
-  git clone https://github.com/debe7408/trip.io.git
-  git clone git@github.com:debe7408/trip.io.git
-  gh repo clone debe7408/trip.io
+  git clone https://github.com/debe7408/nexstay-web3.git
+  git clone git@github.com:debe7408/nexstay-web3.git
+  gh repo clone debe7408/nexstay-web3
 ```
 
 Navigate to the smart contracts folder:
 
 ```bash
-  cd tripio/smart_contracts
+  cd nexstay-web3/smart_contracts
 ```
 
 Install Truffle:

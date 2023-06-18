@@ -1,6 +1,6 @@
-# Trip.io Backend
+# NEXSTAY Backend
 
-This repository holds the backend part of the Trip.io system.
+This repository holds the backend part of the NEXSTAY system.
 
 ## Authors
 
@@ -33,9 +33,9 @@ DB_USER=admin
 
 DB_PASSWORD=admin
 
-DB_DATABASE=tripio
+DB_DATABASE=nexstay
 
-JWT_SECRET="tripio-super-secret-key"
+JWT_SECRET="nexstay-super-secret-key"
 ```
 
 ## Run Locally
@@ -45,15 +45,15 @@ After setting up the environmental variables, you can go ahead and run your serv
 Clone the repository by one of the following ways:
 
 ```bash
-  git clone https://github.com/debe7408/trip.io.git
-  git clone git@github.com:debe7408/trip.io.git
-  gh repo clone debe7408/trip.io
+  git clone https://github.com/debe7408/nexstay-web3.git
+  git clone git@github.com:debe7408/nexstay-web3.git
+  gh repo clone debe7408/nexstay-web3
 ```
 
 Go to the backend folder
 
 ```bash
-  cd tripio/backend
+  cd nexstay-web3/backend
 ```
 
 Install required dependencies from package.json file

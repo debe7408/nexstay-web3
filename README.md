@@ -1,6 +1,6 @@
-# Trip.io
+# NEXSTAY
 
-Tripio - an acommodation system, that enables users to create listings and book acommodations while traveling abroad, with a little spice - a Web3 integration, using blockchains and crypto as payments, in addition with being able to stream them instead of paying the full amount at once!
+Experience a paradigm shift in the world of travel with NEXSTAY, an exceptional accommodation system that transcends conventional boundaries. Seamlessly empowering users to create listings and book accommodations while exploring foreign destinations, NEXSTAY goes the extra mile by introducing a captivating Web3 integration. By leveraging blockchain technology and cryptocurrencies, NEXSTAY revolutionizes payment methods, ensuring uncompromised security and enhanced convenience. The innovation doesn't stop there: NEXSTAY introduces a groundbreaking feature allowing users to stream cryptocurrencies, enabling the flexibility of incremental payments rather than the traditional lump-sum approach. Prepare to embark on a transformative journey where cutting-edge technology merges harmoniously with the timeless allure of exploration.
 
 ## 🚀 About Me
 
@@ -10,15 +10,15 @@ I'm a a third-year computer science student at Vilnius University, trying to bec
 
 This is a university project for 3rd year course work, as well as, project system architecture course.
 
-Code base [Github](https://github.com/debe7408/trip.io)
+Code base [Github](https://github.com/debe7408/nexstay-web3)
 
 ## Features
 
-- Book a place to stay.
-- Create your own listings.
-- Connect with Socials or Web3 providers.
-- Secure transactions via Smart Contracts on Binance SmartChain testnet.
-- Streamable payments.
+- Book a place to stay
+- Create your own listings and earn
+- Connect with Socials or Web3 providers, no passwords required!
+- Secure transactions via Smart Contracts
+- Streamable payments
 
 ## Authors
 
@@ -26,8 +26,7 @@ Code base [Github](https://github.com/debe7408/trip.io)
 
 ## Documentation
 
-[Documentation](https://github.com/debe7408/trip.io/blob/main/Documentation_v2.pdf)
-
+[Documentation](https://github.com/debe7408/nexstay-web3/blob/main/Documentation_v2.pdf)
 
 ## Before Deployment
 
@@ -39,6 +38,7 @@ Deployment documentation asumes you have Node.js and a package manager such as n
 However, if you do not follow these steps before deploying any part of the system locally.
 
 Install Node.js from their [official website](https://nodejs.org/en/download) or via the terminal:
+
 ```bash
  apt-get install nodejs
 ```
@@ -62,7 +62,6 @@ In case you do not have Git. It can be installed via the cli, or the via the GUI
 ```bash
  apt-get install git
 ```
-
 
 ## Tech Stack
 

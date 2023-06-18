@@ -1,6 +1,6 @@
-# Trip.io React.js
+# NEXSTAY React.js
 
-This repository holds the frontend part of the Trip.io system.
+This repository holds the frontend part of the NEXSTAY system.
 The project is written in Typescript and React.js.
 
 ## Authors
@@ -55,15 +55,15 @@ The project depends on Web3Auth, so before starting a locally run version of the
 Clone the repository by one of the following ways:
 
 ```bash
-  git clone https://github.com/debe7408/trip.io.git
-  git clone git@github.com:debe7408/trip.io.git
-  gh repo clone debe7408/trip.io
+  git clone https://github.com/debe7408/nexstay-web3.git
+  git clone git@github.com:debe7408/nexstay-web3.git
+  gh repo clone debe7408/nexstay-web3
 ```
 
 Go to the frontend folder
 
 ```bash
-  cd tripio/frontend
+  cd nexstay-web3/frontend
 ```
 
 Install required dependencies from package.json file

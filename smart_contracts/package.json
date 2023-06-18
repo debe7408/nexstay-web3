@@ -1,9 +1,9 @@
 {
   "name": "smart_contracts",
-  "version": "0.0.1",
-  "description": "Trip.io project's smart contracts",
+  "version": "0.5.0",
+  "description": "NEXSTAYS' smart contracts",
   "main": "index.js",
-  "repository": "https://github.com/debe7408/trip.io",
+  "repository": "https://github.com/debe7408/nexstay-web3",
   "author": "Deividas Bendaravicius",
   "license": "MIT",
   "private": false,

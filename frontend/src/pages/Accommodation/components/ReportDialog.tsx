@@ -59,10 +59,10 @@ const ReportDialog: React.FC<Props> = ({ open, handleClose, propertyId }) => {
       <DialogTitle>{"Please tell us more about the issue"}</DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-slide-description">
-          Trip.io is committed to providing a safe and secure marketplace for
+          NEXSTAY is committed to providing a safe and secure marketplace for
           our community. If you believe someone is violating our policies, let
           us know by completing the form below. We'll review your report and
-          take appropriate action.{" "}
+          take appropriate action.
           <b>
             Make sure to provide as much information as possible to help us
             investigate your report.

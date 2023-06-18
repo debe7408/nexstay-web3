@@ -1,9 +1,9 @@
 {
-  "name": "trip.io-backend",
-  "version": "0.0.1",
-  "description": "The backend of Trip.io system",
+  "name": "nexstay-web3-backend",
+  "version": "1.0.0",
+  "description": "The backend of NEXSTAY system",
   "main": "index.js",
-  "repository": "https://github.com/debe7408/trip.io",
+  "repository": "https://github.com/debe7408/nexstay-web3",
   "author": "Deividas Bendaravicius",
   "license": "MIT",
   "private": false,

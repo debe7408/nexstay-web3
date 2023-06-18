@@ -1,6 +1,6 @@
 {
-  "name": "trip-io",
-  "version": "0.0.1",
+  "name": "nexstay-web3-frontend",
+  "version": "1.0.0",
   "private": true,
   "dependencies": {
     "@fontsource/roboto": "^4.5.8",
