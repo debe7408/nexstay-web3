@@ -14,7 +14,6 @@ const SectionTitle: React.FC<Props> = ({ title }): JSX.Element => {
           variant="h4"
           sx={{
             fontWeight: "bold",
-            color: { xs: `${themes.dark.dark_accent}`, md: "black" },
           }}
         >
           {title}

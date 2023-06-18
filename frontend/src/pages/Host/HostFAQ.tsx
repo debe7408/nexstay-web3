@@ -18,7 +18,6 @@ const HostFAQComponent = () => {
       maxWidth="xl"
       sx={{
         backgroundColor: `${themes.dark.main}`,
-        color: `${themes.dark.dark_accent}`,
         paddingTop: "50px",
         paddingBottom: "50px",
       }}
@@ -32,7 +31,9 @@ const HostFAQComponent = () => {
               textAlign: "left",
             }}
           >
-            <Typography variant="h4">Let's answer your questions</Typography>
+            <Typography variant="h4" color="secondary">
+              Let's answer your questions
+            </Typography>
           </StyledBox>
         </Grid>
         <Grid item xs={12} lg={6}>

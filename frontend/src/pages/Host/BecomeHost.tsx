@@ -44,14 +44,8 @@ const BecomeHostComponent: React.FC<Props> = ({
         >
           <Grid item xs={12} md={12} lg={6}>
             <StyledBox textAlign="left">
-              <Typography
-                variant="h3"
-                sx={{
-                  fontWeight: "bold",
-                  color: { xs: `${themes.dark.dark_accent}`, md: "black" },
-                }}
-              >
-                Creating a listing has never been easier...
+              <Typography variant="h3">
+                Listing creation made effortless
               </Typography>
             </StyledBox>
           </Grid>
@@ -60,13 +54,14 @@ const BecomeHostComponent: React.FC<Props> = ({
               <List>
                 <ListItem>
                   <ListItemText
-                    primary="1. Describe your place"
-                    secondary="Just need the basic information to get started."
+                    primary="1. Tell us about yourself"
+                    secondary="Just need the basic contact information to get started."
                     primaryTypographyProps={{
                       variant: "h4",
                     }}
                     secondaryTypographyProps={{
                       variant: "body1",
+                      color: "secondary",
                     }}
                   ></ListItemText>
                   <ListItemIcon>
@@ -77,13 +72,14 @@ const BecomeHostComponent: React.FC<Props> = ({
 
                 <ListItem>
                   <ListItemText
-                    primary="2. Add amenities and photos"
-                    secondary="Make your place unique by adding available amenities and pictures of the place."
+                    primary="2. Describe your listing"
+                    secondary="Make it sell itself by adding amenities and pictures."
                     primaryTypographyProps={{
                       variant: "h4",
                     }}
                     secondaryTypographyProps={{
                       variant: "body1",
+                      color: "secondary",
                     }}
                   ></ListItemText>
                   <ListItemIcon>
@@ -94,20 +90,20 @@ const BecomeHostComponent: React.FC<Props> = ({
 
                 <ListItem>
                   <ListItemText
-                    primary="3. Set price and finish"
-                    secondary="Set your price and you're ready to go!"
+                    primary="3. Set price and finish!"
+                    secondary="It's really that easy."
                     primaryTypographyProps={{
                       variant: "h4",
                     }}
                     secondaryTypographyProps={{
                       variant: "body1",
+                      color: "secondary",
                     }}
                   ></ListItemText>
                   <ListItemIcon>
                     <CheckCircleOutlineOutlinedIcon />
                   </ListItemIcon>
                 </ListItem>
-                <Divider variant="inset" component="li" />
               </List>
             </StyledBox>
           </Grid>

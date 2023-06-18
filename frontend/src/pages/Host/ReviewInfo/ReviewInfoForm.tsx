@@ -1,4 +1,4 @@
-import { Grid, InputAdornment, TextField } from "@mui/material";
+import { Grid, InputAdornment, TextField, Typography } from "@mui/material";
 import { FieldErrors, UseFormRegister } from "react-hook-form";
 import { PropertyForm } from "../../../types/property";
 import styled from "styled-components";
@@ -63,7 +63,9 @@ const ReviewInfoForm: React.FC<Props> = ({ register, errors }) => {
       </Grid>
       {errors && (
         <Grid item xs={12} textAlign={"center"}>
-          Please fill out all the information
+          <Typography color="secondary">
+            Please fill out all the information
+          </Typography>
         </Grid>
       )}
     </Grid>

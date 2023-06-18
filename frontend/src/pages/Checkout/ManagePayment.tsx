@@ -27,6 +27,7 @@ import { calculateDayDifference } from "../../helperFunctions/dateFunctions";
 import LeaveReviewContainer from "./components/LeaveReviewContainer";
 import { PropertyWithOwner } from "../../types/property";
 import { sfApi } from "../../app/store";
+import { Paper } from "@mui/material";
 
 const ManagePayment: React.FC = () => {
   const { enqueueSnackbar } = useSnackbar();
@@ -206,11 +207,11 @@ const ManagePayment: React.FC = () => {
         <PaymentInfoAlert status={reservationData.status} />
       </Header>
       {reservationData.status === ReservationStatus.COMPLETED && (
-        <Wrapper>
+        <Paper component={Wrapper}>
           <LeaveReviewContainer reservationId={reservationId!} />
-        </Wrapper>
+        </Paper>
       )}
-      <Wrapper>
+      <Paper component={Wrapper}>
         <PaymentDetailsContainer
           propertyInfo={propertyInfo}
           reservationInfo={reservationData}
@@ -222,7 +223,7 @@ const ManagePayment: React.FC = () => {
           reservationInfo={reservationData}
           transactionInfo={transactionInfo}
         />
-      </Wrapper>
+      </Paper>
     </Container>
   ) : (
     <DataNotFound />
@@ -248,7 +249,6 @@ const Wrapper = styled.div`
   margin-right: 10%;
   gap: 20px;
   padding: 20px;
-  background-color: ${colors.white};
   border-radius: 10px;
 `;
 

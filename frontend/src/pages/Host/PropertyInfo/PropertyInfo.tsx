@@ -71,7 +71,7 @@ const PropertyInfoComponent: React.FC<Props> = ({
       <Container maxWidth="lg">
         <PropertyType register={register} errors={errors} />
         <PropertyLocation register={register} errors={errors} />
-        <SizingInfo register={register} errors={errors} />
+        <SizingInfo errors={errors} setValue={setValue} />
         <AmenitiesInfo setValue={setValue} />
         <PictureUpload errors={errors} register={register} />
         <StepperNavigation

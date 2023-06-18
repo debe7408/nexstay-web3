@@ -14,17 +14,6 @@ const GlobalStyles = createGlobalStyle`
 
   }
 
-  @media screen and (min-width: 0px) and (max-width: 600px) {
-    body { background: linear-gradient(
-      to bottom,
-      ${themes.dark.main} 0%,
-      ${themes.dark.dark_accent} 100%
-    ); !important }
-  }
-  @media screen and (min-width: 600px) {
-    body { background: #f6ebf4 !important; }
-  }
-
   .fade-enter {
     opacity: 0;
   }

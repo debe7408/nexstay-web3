@@ -60,7 +60,7 @@ const ReviewInfoComponent: React.FC<Props> = ({
             paddingBottom: "20px",
           }}
         >
-          <SectionTitle title="Final touches!" />
+          <SectionTitle title="Final touches" />
           <ReviewInfoForm register={register} errors={errors} />
 
           <StepperNavigation

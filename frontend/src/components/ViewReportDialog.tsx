@@ -38,7 +38,7 @@ const ViewReportDialog: React.FC<Props> = ({ open, handleClose, ticket }) => {
         <Chip
           variant="outlined"
           label={ticket.status}
-          color={ticket.status === TicketStatus.OPEN ? "success" : "info"}
+          color={ticket.status === TicketStatus.OPEN ? "info" : "success"}
           sx={{ marginLeft: 1 }}
         />
       </DialogTitle>
@@ -62,7 +62,7 @@ const ViewReportDialog: React.FC<Props> = ({ open, handleClose, ticket }) => {
       </DialogContent>
 
       <DialogActions>
-        <Button onClick={handleClose} color={"error"}>
+        <Button onClick={handleClose} color={"error"} variant="contained">
           Close
         </Button>
       </DialogActions>
@@ -84,7 +84,6 @@ const Label = styled.label`
 
 const Text = styled.p`
   font-size: 15px;
-  background-color: #f5f5f5;
   padding: 12px;
   border-radius: 4px;
   border: 1px solid #ddd;

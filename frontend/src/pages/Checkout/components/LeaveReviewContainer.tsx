@@ -5,7 +5,6 @@ import { useSnackbar } from "notistack";
 import SectionTitle from "../../../components/SectionTitle";
 import RatingComponent from "../../../components/RatingComponent";
 import CustomButton from "../../../components/CustomButton";
-import { colors } from "../../../constants/colors";
 import ErrorComponent from "../../../components/ErrorComponent";
 import { getReviewByReservationId, postReview } from "../../../api/reviewAPI";
 import { useNavigate } from "react-router-dom";
@@ -119,7 +118,6 @@ const Container = styled.div`
   width: 100%;
   padding: 20px;
   gap: 20px;
-  background-color: ${colors.pastelPurple}};
   border-radius: 10px;
 `;
 

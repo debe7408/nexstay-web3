@@ -1,11 +1,19 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import Table from "../components/Table";
 import { Reservation } from "../types/reservation";
 import { formatDate } from "../helperFunctions/dateFunctions";
 import CustomButton from "./CustomButton";
 import Timer from "./Timer";
 import dayjs from "dayjs";
+import styled from "styled-components";
+import {
+  Paper,
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
+} from "@mui/material";
 
 interface ReservationsTableProps {
   reservations: Reservation[];
@@ -25,35 +33,35 @@ const ReservationsTable: React.FC<ReservationsTableProps> = ({
   };
 
   return (
-    <>
+    <StyledPaper>
       <Table>
-        <thead>
-          <tr>
-            <th>Reservation ID</th>
-            <th>Check-in Date</th>
-            <th>Check-out Date</th>
-            <th>Status</th>
-            <th>Reserved on</th>
-            <th>Manage</th>
-            <th>Accommodation</th>
-          </tr>
-        </thead>
-        <tbody>
+        <TableHead>
+          <TableRow>
+            <TableCell>Reservation ID</TableCell>
+            <TableCell>Check-in Date</TableCell>
+            <TableCell>Check-out Date</TableCell>
+            <TableCell>Status</TableCell>
+            <TableCell>Reserved on</TableCell>
+            <TableCell>Manage</TableCell>
+            <TableCell>Accommodation</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
           {reservations.map((reservation) => (
-            <tr key={reservation.id}>
-              <td>#{reservation.id}</td>
-              <td>{formatDate(reservation.start_date)}</td>
-              <td>{formatDate(reservation.end_date)}</td>
-              <td>
+            <TableRow key={reservation.id}>
+              <TableCell>#{reservation.id}</TableCell>
+              <TableCell>{formatDate(reservation.start_date)}</TableCell>
+              <TableCell>{formatDate(reservation.end_date)}</TableCell>
+              <TableCell>
                 <Timer
                   deadline={dayjs(reservation.booking_time)
                     .add(30, "minute")
                     .toDate()}
                   label={reservation.status.toLocaleUpperCase()}
                 />
-              </td>
-              <td>{formatDate(reservation.booking_time)}</td>
-              <td>
+              </TableCell>
+              <TableCell>{formatDate(reservation.booking_time)}</TableCell>
+              <TableCell>
                 <CustomButton
                   variant="contained"
                   color="primary"
@@ -61,23 +69,32 @@ const ReservationsTable: React.FC<ReservationsTableProps> = ({
                 >
                   Edit
                 </CustomButton>
-              </td>
-              <td>
+              </TableCell>
+              <TableCell>
                 <CustomButton
                   fullWidth
-                  variant="contained"
+                  variant="outlined"
                   color="secondary"
                   onClick={() => openProperty(reservation.property_id)}
                 >
                   View
                 </CustomButton>
-              </td>
-            </tr>
+              </TableCell>
+            </TableRow>
           ))}
-        </tbody>
+        </TableBody>
       </Table>
-    </>
+    </StyledPaper>
   );
 };
+
+const StyledPaper = styled(Paper)`
+  transition: 0.3s;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 30px rgba(0, 0, 0, 0.12);
+  }
+`;
 
 export default ReservationsTable;

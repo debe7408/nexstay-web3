@@ -1,22 +1,34 @@
-import { Box, Divider, Grid, Typography } from "@mui/material";
+import {
+  Box,
+  Divider,
+  Grid,
+  Typography,
+  Paper,
+  TextField,
+} from "@mui/material";
 import SectionTitle from "../../../components/SectionTitle";
 import styled from "styled-components";
 import StepperButton from "../../../components/StepperButton";
-import { useState } from "react";
-import { FieldErrors, UseFormRegister } from "react-hook-form";
+import { useEffect, useState } from "react";
+import { FieldErrors, UseFormRegister, UseFormSetValue } from "react-hook-form";
 import { PropertyInfoForm } from "../../../types/property";
 interface Props {
-  register: UseFormRegister<PropertyInfoForm>;
   errors: FieldErrors<PropertyInfoForm>;
+  setValue: UseFormSetValue<PropertyInfoForm>;
 }
 
-/**
- * TODO: Fix the state update issue
- */
-const SizingInfo: React.FC<Props> = ({ register, errors }) => {
+const SizingInfo: React.FC<Props> = ({ errors, setValue }) => {
   const [guestCount, setGuestCount] = useState(1);
   const [bedCount, setBedCount] = useState(1);
   const [bathroomCount, setBathroomCount] = useState(1);
+
+  console.log(errors);
+
+  useEffect(() => {
+    setValue("size.guests", guestCount);
+    setValue("size.beds", bedCount);
+    setValue("size.bathrooms", bathroomCount);
+  }, [guestCount, bedCount, setBathroomCount]);
 
   return (
     <Grid
@@ -31,42 +43,30 @@ const SizingInfo: React.FC<Props> = ({ register, errors }) => {
       }}
     >
       <SectionTitle title="How many guests can your place accommodate?" />
-      <GridItem item xs={12} md={12} lg={12}>
+      <Paper component={GridItem} item xs={12} md={12} lg={12}>
         <Typography variant="h5">Guests</Typography>
         <Box sx={{ flex: "1 1 auto" }} />
-        <input type="hidden" value={guestCount} {...register("size.guests")} />
+        <TextField key={"size.guests"} value={guestCount} type="hidden">
+          {guestCount}
+        </TextField>
         <StepperButton count={guestCount} setCount={setGuestCount} />
-      </GridItem>
-      <Divider
-        flexItem
-        sx={{
-          width: "100%",
-        }}
-      />
+      </Paper>
 
-      <GridItem item xs={12} md={12} lg={12}>
+      <Paper component={GridItem} item xs={12} md={12} lg={12}>
         <Typography variant="h5">Beds</Typography>
         <Box sx={{ flex: "1 1 auto" }} />
-        <input type="hidden" value={bedCount} {...register("size.beds")} />
+        <TextField key={"size.beds"} value={bedCount} type="hidden">
+          {bedCount}
+        </TextField>
         <StepperButton count={bedCount} setCount={setBedCount} />
-      </GridItem>
-      <Divider
-        flexItem
-        sx={{
-          width: "100%",
-        }}
-      />
+      </Paper>
 
-      <GridItem item xs={12} md={12} lg={12}>
+      <Paper component={GridItem} item xs={12} md={12} lg={12}>
         <Typography variant="h5">Bathrooms</Typography>
         <Box sx={{ flex: "1 1 auto" }} />
-        <input
-          type="hidden"
-          value={bathroomCount}
-          {...register("size.bathrooms")}
-        />
+        <TextField key={"size.bathrooms"} value={bathroomCount} type="hidden" />
         <StepperButton count={bathroomCount} setCount={setBathroomCount} />
-      </GridItem>
+      </Paper>
     </Grid>
   );
 };
@@ -74,6 +74,9 @@ const SizingInfo: React.FC<Props> = ({ register, errors }) => {
 const GridItem = styled(Grid)`
   display: flex;
   flex-direction: row;
+  padding-left: 10px;
+  margin-bottom: 10px;
+  border: 1px solid white;
 `;
 
 export default SizingInfo;

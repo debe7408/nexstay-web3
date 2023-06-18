@@ -92,6 +92,7 @@ const Container = styled.div`
   gap: 20px;
   background-color: ${colors.pastelPurple};
   border-radius: 10px;
+  color: ${colors.navyBlue};
 `;
 
 const BottomContainer = styled.div`

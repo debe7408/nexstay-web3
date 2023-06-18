@@ -63,10 +63,7 @@ const Main = () => {
               path="/myProfile/manage-tickets"
               element={loginState ? <ManageTickets /> : <UnauthorizedPage />}
             />
-            <Route
-              path="/host/information"
-              element={loginState ? <HostLanding /> : <UnauthorizedPage />}
-            />
+            <Route path="/host/information" element={<HostLanding />} />
             <Route
               path="/host/start-hosting"
               element={loginState ? <HostForm /> : <UnauthorizedPage />}

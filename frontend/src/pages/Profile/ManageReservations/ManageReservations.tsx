@@ -72,7 +72,7 @@ const ManageReservationsPage: React.FC = () => {
         </Grid>
         <Grid item>
           <CustomButton
-            variant="contained"
+            variant="outlined"
             color="primary"
             onClick={handleAddReservation}
           >

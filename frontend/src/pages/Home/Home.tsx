@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { Grid, Container, Button } from "@mui/material";
+import { Grid, Container, Button, Typography } from "@mui/material";
 import InfiniteScroll from "react-infinite-scroll-component";
 import PropertyContainer from "../../components/PropertyContainer";
 import LoadingComponent from "../../components/PropertyLoadingComponent";
@@ -116,7 +116,19 @@ const Home = () => {
         }}
       >
         <Grid item xs={12}>
-          <h1>Welcome. Your journey starts here</h1>
+          <Typography
+            variant="h3"
+            align="center"
+            sx={{
+              marginTop: "20px",
+              background:
+                "linear-gradient(to right, #DDD7F9 15%, #080E63 100%)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+            }}
+          >
+            The beginning of your NEXT STAY...
+          </Typography>
         </Grid>
         <Grid item xs={12}>
           <LocationAutoComplete

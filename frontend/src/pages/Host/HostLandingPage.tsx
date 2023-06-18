@@ -10,7 +10,7 @@ const HostFAQ = () => {
   const [selectedNights, setSelectedNights] = useState(1);
   return (
     <>
-      <Container maxWidth="xl" sx={{}}>
+      <Container maxWidth="xl">
         <Grid
           container
           spacing={2}
@@ -24,30 +24,26 @@ const HostFAQ = () => {
           <Grid item xs={12} md={12} lg={6}>
             <StyledBox>
               <Typography
-                variant="h3"
+                variant="h2"
                 sx={{
                   fontWeight: "500",
-                  color: {
-                    xs: `${themes.dark.dark_accent}`,
-                    md: `${themes.dark.main}`,
-                  },
                 }}
               >
                 Become a Host
               </Typography>
-              <Typography variant="h3" sx={{ color: `black` }} gutterBottom>
+              <Typography variant="h3" gutterBottom color="#9683ec">
                 ...and earn money
               </Typography>
               <Typography variant="subtitle1">
                 <b>{selectedNights} night</b> at an estimated cost of € 57
               </Typography>
-              <Typography variant="h2">€ {57 * selectedNights}</Typography>
+              <Typography variant="h2">$ {57 * selectedNights}</Typography>
               <Slider
                 size="medium"
                 defaultValue={1}
                 max={10}
                 min={1}
-                onChange={(event, value) => setSelectedNights(Number(value))}
+                onChange={(_, value) => setSelectedNights(Number(value))}
                 valueLabelDisplay="auto"
                 valueLabelFormat={(value) => `${value} nights`}
                 color="secondary"
@@ -62,35 +58,28 @@ const HostFAQ = () => {
           <Grid item xs={12}>
             <StyledBox>
               <Typography variant="h3">
-                Become a host in just few steps with{" "}
-                <b
-                  style={{
-                    color: `${themes.dark.main}`,
-                  }}
-                >
-                  Easy Setup
-                </b>
+                Embark on a remarkable journey as a host in 3 steps
               </Typography>
             </StyledBox>
           </Grid>
           <Grid item xs={12} md={6} lg={3}>
             <StyledBox>
-              <Typography variant="h4" gutterBottom>
-                1. Create your listing
+              <Typography variant="h4" gutterBottom color="#9683ec">
+                1. Create listing
               </Typography>
             </StyledBox>
           </Grid>
           <Grid item xs={12} md={6} lg={3}>
             <StyledBox>
-              <Typography variant="h4" gutterBottom>
+              <Typography variant="h4" gutterBottom color="#9683ec">
                 2. Set your price
               </Typography>
             </StyledBox>
           </Grid>
           <Grid item xs={12} md={6} lg={3}>
             <StyledBox>
-              <Typography variant="h4" gutterBottom>
-                3. Get your first booking
+              <Typography variant="h4" gutterBottom color="#9683ec">
+                3. Start earning
               </Typography>
             </StyledBox>
           </Grid>
@@ -100,17 +89,12 @@ const HostFAQ = () => {
                 Ready to become a host?
               </Typography>
               <Button
-                variant="contained"
-                sx={{
-                  backgroundColor: `${themes.dark.main}`,
-                  ":hover": {
-                    backgroundColor: `${themes.dark.dark_accent}`,
-                  },
-                }}
+                variant="outlined"
+                color="secondary"
                 component={Link}
                 to="/host/start-hosting"
               >
-                <AddHomeOutlinedIcon /> Become a host!
+                <AddHomeOutlinedIcon /> Start hosting!
               </Button>
             </StyledBox>
           </Grid>

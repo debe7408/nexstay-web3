@@ -45,7 +45,7 @@ const AdminDrawer: React.FC<Props> = ({ handleSwitchTab }) => {
             <CloseIcon />
           </StyledIconButton>
         </StyledToolbar>
-        <List subheader={<ListSubheader>Management overview</ListSubheader>}>
+        <List>
           <ListItemButton onClick={() => handleSwitchTab(0)} key={"Users"}>
             <ListItemIcon>
               <GroupIcon />

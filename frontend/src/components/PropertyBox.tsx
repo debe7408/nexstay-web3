@@ -1,4 +1,4 @@
-import { Grid, Box, Typography } from "@mui/material";
+import { Grid, Box, Typography, Paper } from "@mui/material";
 import React from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
@@ -36,7 +36,7 @@ const PropertyBox: React.FC<PropertyComponentProps> = ({
       lg={itemsPerRow?.lg || 3}
       key={item.id}
     >
-      <StyledBox onClick={handleOpenPropertyInfo}>
+      <StyledBox component={Paper} onClick={handleOpenPropertyInfo}>
         <Image src={imageSrc} alt={item.name} />
         <Content>
           <Typography variant="h6" component="h6">
@@ -65,9 +65,7 @@ const StyledBox = styled(Box)`
   margin: 1px;
   transition: transform 0.2s;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  border-radius: 5px;
   cursor: pointer;
-
   &:hover {
     transform: scale(1.1);
     backdrop-filter: blur(8px);
@@ -78,7 +76,7 @@ const Image = styled.img`
   width: 100%;
   height: 200px;
   object-fit: cover;
-  border-radius: 5px;
+  border-radius: 10px;
 `;
 
 const Content = styled(Box)`

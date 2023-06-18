@@ -1,8 +1,7 @@
 import styled from "styled-components";
-import { Radio, FormControlLabel, Grid } from "@mui/material";
+import { Radio, FormControlLabel, Grid, Paper } from "@mui/material";
 import { Favorite as FavoriteIcon } from "@mui/icons-material";
 import StyledBox from "../../../components/StyledBox";
-import { themes } from "../../../constants/colors";
 import { UseFormRegister } from "react-hook-form";
 import { PropertyInfoForm } from "../../../types/property";
 
@@ -44,21 +43,19 @@ const Box = styled.div`
   align-items: center;
   padding: 10px;
   width: 200px;
-  border-radius: 8px;
+  border-radius: 10px;
   background-color: ${(props: { selected: boolean }) =>
-    props.selected ? themes.dark.main : "white"};
+    props.selected ? "#836de9" : "#08041b"}
   color: ${(props: { selected: boolean }) =>
-    props.selected ? themes.dark.text : "black"};
+    props.selected ? "#BFC695" : "#08041b"};
   border: ${(props: { selected: boolean }) =>
-    props.selected
-      ? `2px solid ${themes.dark.main}`
-      : `2px solid ${themes.light.dark_accent}`};
+    props.selected ? `2px solid #BFC695` : `2px solid #08041b`};
   transition: all 0.2s ease-in-out;
 
   &:hover {
-    background-color: ${themes.dark.main};
-    color: ${themes.dark.text};
-    border: 2px solid ${themes.dark.main};
+    background-color: #BFC695;
+    color: #000000;
+    border: 2px solid #08041b; 
   }
 `;
 

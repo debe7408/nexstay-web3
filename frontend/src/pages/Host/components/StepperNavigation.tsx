@@ -16,14 +16,20 @@ const StepperNavigation: React.FC<Props> = ({
   return (
     <Grid item xs={12}>
       <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-        <Button disabled={activeStep === 0} onClick={handlePreviousStep}>
+        <Button
+          variant="outlined"
+          disabled={activeStep === 0}
+          onClick={handlePreviousStep}
+        >
           Back
         </Button>
         <Box sx={{ flex: "1 1 auto" }} />
         {activeStep === 0 ? (
-          <Button onClick={handleNextStep}>Next</Button>
+          <Button variant="outlined" onClick={handleNextStep}>
+            Next
+          </Button>
         ) : (
-          <Button type="submit">
+          <Button type="submit" variant="outlined">
             {activeStep === steps.length - 1 ? "Submit" : "Next"}
           </Button>
         )}

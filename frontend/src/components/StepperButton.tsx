@@ -26,11 +26,16 @@ const StepperButton: React.FC<Props> = ({ count, setCount }) => {
         gap: "5px",
       }}
     >
-      <IconButton disabled={count === 1} size="small" onClick={decrement}>
+      <IconButton
+        disabled={count === 1}
+        size="small"
+        onClick={decrement}
+        color="secondary"
+      >
         <RemoveIcon />
       </IconButton>
       <Typography variant="h5">{count}</Typography>
-      <IconButton size="small" onClick={increment}>
+      <IconButton size="small" onClick={increment} color="secondary">
         <AddIcon />
       </IconButton>
     </Box>

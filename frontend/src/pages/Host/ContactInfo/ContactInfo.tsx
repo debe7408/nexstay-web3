@@ -53,7 +53,7 @@ const ContactInfoComponent: React.FC<Props> = ({
 
   const onSubmit = handleSubmit(async (formData, event) => {
     if (!isDirty) {
-      enqueueSnackbar("There were no changes.", {
+      enqueueSnackbar("There were no changes to user data", {
         variant: "info",
       });
       handleNextStep();
@@ -89,7 +89,7 @@ const ContactInfoComponent: React.FC<Props> = ({
             paddingBottom: "20px",
           }}
         >
-          <SectionTitle title="Let's setup your contact information first..." />
+          <SectionTitle title="From strangers to partners. Tell us about yourself" />
           <Grid item xs={12} md={12} lg={12}>
             <StyledBox>
               <ContactInfoForm register={register} errors={errors} />

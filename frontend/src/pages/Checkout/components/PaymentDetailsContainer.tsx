@@ -103,7 +103,7 @@ const PaymentDetailsContainer: React.FC<Props> = ({
 
   const onSubmit = handleSubmit(async (formData, event) => {
     if (!isDirty) {
-      enqueueSnackbar("There were no changes.", {
+      enqueueSnackbar("There were no changes to user data.", {
         variant: "info",
       });
       handlePayment();
@@ -127,7 +127,7 @@ const PaymentDetailsContainer: React.FC<Props> = ({
   });
   const onSubmitAsStream = handleSubmit(async (formData, event) => {
     if (!isDirty) {
-      enqueueSnackbar("There were no changes.", {
+      enqueueSnackbar("There were no changes to user data", {
         variant: "info",
       });
       handlePaymentAsStream();
@@ -196,7 +196,7 @@ const PaymentDetailsContainer: React.FC<Props> = ({
 
       <CustomButton
         variant="contained"
-        color="primary"
+        color="secondary"
         onClick={onSubmit}
         loading={loading}
         disabled={reservationInfo.status !== ReservationStatus.PENDING}
@@ -206,7 +206,7 @@ const PaymentDetailsContainer: React.FC<Props> = ({
       <Divider />
 
       <CustomButton
-        variant="contained"
+        variant="outlined"
         color="primary"
         onClick={onSubmitAsStream}
         loading={loading}
@@ -225,9 +225,7 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: space-between;
   width: 60%;
-  padding: 20px;
-  background-color: ${colors.white};
-  border-radius: 10px;
+  padding: 10px;
   min-height: 675px;
 `;
 
@@ -244,7 +242,6 @@ const Row = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  color: ${colors.navyBlue};
 `;
 
 const RowLabel = styled.div`

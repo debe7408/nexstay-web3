@@ -60,8 +60,6 @@ const Header = styled(Grid)`
   border-radius: 4px;
   padding: 8px;
   gap: 8px;
-  color: ${colors.white};
-  background-color: ${colors.navyBlue};
   box-shadow: 0 8px 16px -8px rgba(0, 0, 0, 0.3);
 `;
 

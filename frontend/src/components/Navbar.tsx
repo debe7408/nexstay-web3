@@ -1,36 +1,54 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { AppBar, Toolbar, Typography } from "@mui/material";
-import Logo from "../assets/logo.svg";
-import styled from "styled-components";
-import { themes } from "../constants/colors";
+import React, { useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import {
+  AppBar,
+  IconButton,
+  Toolbar,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import ProfileBadge from "./ProfileBadgeComponent";
 import NetworkChip from "./NetworkChip";
+import LightModeIcon from "@mui/icons-material/LightMode";
+import DarkModeIcon from "@mui/icons-material/DarkMode";
+import { ColorModeContext } from "..";
 
 const Navbar: React.FC = () => {
+  const colorMode = useContext(ColorModeContext);
+  const theme = useTheme();
+
+  const navigate = useNavigate();
   return (
-    <StyledAppBar position="static">
+    <AppBar position="static">
       <Toolbar>
-        <Typography variant="h6">
-          <Link to="/">
-            <img src={Logo} alt="Logo" height="20" />
-          </Link>
+        <Typography
+          variant="h6"
+          component="h6"
+          onClick={() => navigate("/")}
+          sx={{
+            cursor: "pointer",
+          }}
+        >
+          NEXSTAY
         </Typography>
+        {theme.palette.mode === "light" ? (
+          <IconButton onClick={colorMode.toggleColorMode}>
+            <LightModeIcon />
+          </IconButton>
+        ) : (
+          <IconButton onClick={colorMode.toggleColorMode}>
+            <DarkModeIcon />
+          </IconButton>
+        )}
+
         <Typography variant="h6" style={{ flexGrow: 1 }}></Typography>
+
         <Typography variant="h6" style={{ flexGrow: 1 }}></Typography>
         <NetworkChip />
         <ProfileBadge />
       </Toolbar>
-    </StyledAppBar>
+    </AppBar>
   );
 };
-
-const StyledAppBar = styled(AppBar)`
-  background: linear-gradient(
-    to right,
-    ${themes.dark.main} 0%,
-    ${themes.dark.dark_accent} 100%
-  );
-`;
 
 export default Navbar;

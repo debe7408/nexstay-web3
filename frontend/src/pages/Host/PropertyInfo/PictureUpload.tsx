@@ -58,14 +58,16 @@ const StyledBox = styled(Box)<CustomBoxProps>(({ errors }) => ({
   justifyContent: "center",
   alignItems: "center",
   flexDirection: "column",
-  backgroundColor: "#ffff",
+  backgroundColor: "#100835",
   border: errors ? "3px solid red" : "",
-  borderRadius: "16px",
+  borderRadius: "10px",
   boxShadow: "0px 4px 30px rgba(0, 0, 0, 0.08)",
   padding: "30px",
   cursor: "pointer",
+  transition: "background-color 300ms ease-out",
+
   "&:hover": {
-    backgroundColor: "#F5F5F5",
+    backgroundColor: "rgba(47, 44, 64, 1)",
   },
 }));
 

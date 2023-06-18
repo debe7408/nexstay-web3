@@ -7,6 +7,7 @@ import {
   TableRow,
   TableCell,
   Paper,
+  useTheme,
 } from "@mui/material";
 import styled from "styled-components";
 import { colors } from "../../../constants/colors";
@@ -18,8 +19,9 @@ interface Props {
 }
 
 const ReusableTable: React.FC<Props> = ({ headers, data, onClickHandler }) => {
+  const theme = useTheme();
   return (
-    <StyledTableContainer as={Paper}>
+    <StyledTableContainer as={Paper} theme={theme}>
       <MuiTable>
         <TableHead>
           <TableRow>
@@ -51,7 +53,7 @@ const StyledTableContainer = styled(TableContainer)`
 
 const StyledTableRow = styled(TableRow)`
   &:nth-of-type(even) {
-    background-color: ${colors.pastelPurple};
+    background-color: ${(props) => props.theme.palette.background.paper};
   }
 
   & > * {
@@ -59,9 +61,8 @@ const StyledTableRow = styled(TableRow)`
   }
 
   &:hover {
-    background-color: ${colors.navyBlue};
+    background-color: ${(props) => props.theme.palette.background.default};
     & > * {
-      color: ${colors.white};
       cursor: pointer;
     }
   }

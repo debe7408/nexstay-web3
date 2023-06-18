@@ -54,7 +54,7 @@ const EditProfileForm: React.FC<Props> = ({ user }) => {
 
   const onSubmit = handleSubmit(async (formData) => {
     if (!isDirty) {
-      enqueueSnackbar("There were no changes.", {
+      enqueueSnackbar("There were no changes to user data", {
         variant: "info",
       });
       setEditable(false);
