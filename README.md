@@ -1,8 +1,8 @@
 # NEXSTAY
+
 <p align="center">
   <img src="frontend/src/assets/logo.png" />
 </p>
-
 
 Experience a paradigm shift in the world of travel with NEXSTAY, an exceptional accommodation system that transcends conventional boundaries. Seamlessly empowering users to create listings and book accommodations while exploring foreign destinations, NEXSTAY goes the extra mile by introducing a captivating Web3 integration. By leveraging blockchain technology and cryptocurrencies, NEXSTAY revolutionizes payment methods, ensuring uncompromised security and enhanced convenience. The innovation doesn't stop there: NEXSTAY introduces a groundbreaking feature allowing users to stream cryptocurrencies, enabling the flexibility of incremental payments rather than the traditional lump-sum approach. Prepare to embark on a transformative journey where cutting-edge technology merges harmoniously with the timeless allure of exploration.
 
@@ -30,7 +30,7 @@ Code base [Github](https://github.com/debe7408/nexstay-web3)
 
 ## Documentation
 
-[Documentation](https://github.com/debe7408/nexstay-web3/blob/main/Documentation_v2.pdf)
+[Course work documentation](https://github.com/debe7408/nexstay-web3/blob/main/docs/CourseWork.pdf)
 
 ## Before Deployment
 
