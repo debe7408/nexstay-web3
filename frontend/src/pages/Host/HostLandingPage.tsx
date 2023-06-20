@@ -50,11 +50,7 @@ const HostFAQ = () => {
               />
             </StyledBox>
           </Grid>
-          <Grid item xs={12} md={12} lg={6}>
-            <StyledBox>
-              <h2>This will include a map</h2>
-            </StyledBox>
-          </Grid>
+          <Grid item xs={12} md={12} lg={6}></Grid>
           <Grid item xs={12}>
             <StyledBox>
               <Typography variant="h3">
